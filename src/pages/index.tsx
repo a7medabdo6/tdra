@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container, Grid } from "@mui/material";
+import { Card, Container, Grid, Typography } from "@mui/material";
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
@@ -46,13 +46,25 @@ function Dashboard() {
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={4}>
-          <StaticsCard bgcolor={COLORS.white} valueColor={COLORS.primary} />
+          <StaticsCard
+            text="Commnuication count"
+            bgcolor={COLORS.white}
+            valueColor={COLORS.primary}
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <StaticsCard bgcolor={COLORS.white} valueColor={COLORS.primary} />
+          <StaticsCard
+            text="Succeed"
+            bgcolor={COLORS.white}
+            valueColor={COLORS.primary}
+          />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <StaticsCard bgcolor={COLORS.white} valueColor={COLORS.primary} />
+          <StaticsCard
+            text="Failed"
+            bgcolor={COLORS.white}
+            valueColor={COLORS.primary}
+          />
         </Grid>
       </Grid>
       <div className="first_chart">
@@ -75,9 +87,18 @@ function Dashboard() {
             justifyContent: "space-between",
           }}
         >
-          <StaticsCard alignText="center" valueColor={COLORS.black} />
-          <StaticsCard alignText="center" valueColor={COLORS.green} />
           <StaticsCard
+            text="Response Time"
+            alignText="center"
+            valueColor={COLORS.black}
+          />
+          <StaticsCard
+            alignText="center"
+            text="Integration Status"
+            valueColor={COLORS.green}
+          />
+          <StaticsCard
+            text="Total Calls"
             alignText="center"
             bgcolor={COLORS.primary}
             textColor={COLORS.white}
@@ -103,9 +124,18 @@ function Dashboard() {
             justifyContent: "space-between",
           }}
         >
-          <StaticsCard alignText="center" valueColor={COLORS.black} />
-          <StaticsCard alignText="center" valueColor={COLORS.red} />
           <StaticsCard
+            text="Response Time"
+            alignText="center"
+            valueColor={COLORS.black}
+          />
+          <StaticsCard
+            text="Integration Status"
+            alignText="center"
+            valueColor={COLORS.red}
+          />
+          <StaticsCard
+            text="Total Calls"
             alignText="center"
             bgcolor={COLORS.primary}
             textColor={COLORS.white}
@@ -128,6 +158,9 @@ function Dashboard() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
+          <Typography component="h5" variant="h5" sx={{ marginBlock: "20px" }}>
+            Transaction Table
+          </Typography>
           <BasicTable Headers={Headers} data={dummyData} />
         </Grid>
       </Grid>

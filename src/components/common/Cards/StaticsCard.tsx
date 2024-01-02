@@ -10,6 +10,7 @@ interface StaticsCardProps {
   textColor?: string;
   valueColor?: string;
   border?: boolean;
+  text?: string;
 }
 const StaticsCard: React.FC<StaticsCardProps> = ({
   alignText = "end",
@@ -17,6 +18,7 @@ const StaticsCard: React.FC<StaticsCardProps> = ({
   textColor = "unset",
   valueColor = "unset",
   border = true,
+  text = "Grid",
 }) => {
   return (
     <Card
@@ -31,7 +33,7 @@ const StaticsCard: React.FC<StaticsCardProps> = ({
       <CardContent>
         <CardContent sx={{ padding: 0, paddingBottom: "0px !important" }}>
           <Typography variant="h6" sx={{ color: textColor }}>
-            Grid Item 1
+            {text}
           </Typography>
           <Typography
             color="primary"
