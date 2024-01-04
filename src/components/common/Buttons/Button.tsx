@@ -6,15 +6,18 @@ interface BasicButtonProps {
   bgColor: string;
   text: string;
   style?: any;
+  onClick?: any;
 }
 const BasicButton: React.FC<BasicButtonProps> = ({
   textColor,
   bgColor,
   text,
   style,
+  onClick,
 }) => {
   return (
     <Button
+      onClick={onClick}
       sx={{
         backgroundColor: bgColor,
         color: textColor,

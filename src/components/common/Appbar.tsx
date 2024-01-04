@@ -12,6 +12,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import { Container } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 interface AppBarProps extends MuiAppBarProps {
@@ -40,15 +41,25 @@ const AppBar = styled(MuiAppBar, {
 interface ResponsiveAppBarProps {
   open: boolean; // Explicitly define the type of the 'open' prop
   handleDrawerOpen: () => void;
+  setOpen: any;
 }
 const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
   open,
   handleDrawerOpen,
+  setOpen,
 }) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const isSmallScreen = useMediaQuery("(max-width:1000px)");
+  React.useEffect(() => {
+    setOpen(true);
 
+    // Close the menu when the screen size changes to small
+    if (isSmallScreen) {
+      setOpen(false);
+    }
+  }, [isSmallScreen]);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -74,7 +85,13 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
               marginInline: "20px",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <IconButton
                 color="inherit"
                 aria-label="open drawer"

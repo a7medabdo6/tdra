@@ -8,7 +8,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-
+import CloseIcon from "@mui/icons-material/Close";
 import ResponsiveAppBar from "./Appbar";
 import { COLORS } from "../../constants/insex";
 import logo from "../../assets/images/logo.svg";
@@ -55,12 +55,15 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
   };
   const location = useLocation();
   const { pathname } = location;
-  console.log(pathname, "searchhhh");
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <ResponsiveAppBar open={open} handleDrawerOpen={handleDrawerOpen} />
+      <ResponsiveAppBar
+        open={open}
+        setOpen={setOpen}
+        handleDrawerOpen={handleDrawerOpen}
+      />
 
       <Drawer
         sx={{
@@ -76,6 +79,15 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
         open={open}
       >
         <DrawerHeader sx={{ display: "flex", justifyContent: "center" }}>
+          <CloseIcon
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "7px",
+              cursor: "pointer",
+            }}
+            onClick={() => setOpen(false)}
+          />
           <img style={{ height: "70px" }} src={logo} />
           {/* <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}

@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, useMediaQuery } from "@mui/material";
 
 import React from "react";
 import BasicTable from "../components/common/Table/Table";
@@ -22,6 +22,8 @@ const dummyData = [
     email: "companyA@example.com",
     servicesURL: "https://servicesA.com",
     isEnabled: true,
+    link: "/entity-details",
+    linkMapping: "/mapping-screen",
   },
   {
     id: 2,
@@ -30,6 +32,8 @@ const dummyData = [
     email: "companyB@example.com",
     servicesURL: "https://servicesB.com",
     isEnabled: false,
+    link: "/entity-details",
+    linkMapping: "/mapping-screen",
   },
   {
     id: 3,
@@ -38,30 +42,71 @@ const dummyData = [
     email: "companyC@example.com",
     servicesURL: "https://servicesC.com",
     isEnabled: true,
+    link: "/entity-details",
+    linkMapping: "/mapping-screen",
   },
   // Add more objects as needed
 ];
 
 const EntitiesManagement: React.FC<any> = () => {
+  const isSmallScreen = useMediaQuery("(max-width:700px)");
+
   return (
     <Container>
-      <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
+      <Grid
+        container
+        spacing={3}
+        sx={{ marginBlock: isSmallScreen ? "0px" : "20px" }}
+      >
         <Grid item xs={12} sm={12} md={12}>
-          <Grid container spacing={3}>
+          <Grid
+            container
+            spacing={3}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Grid
               item
-              xs={3}
+              xs={6}
               sm={3}
               md={3}
               sx={{
                 paddingTop: "10px !important",
+                marginBottom: "20px",
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
               }}
             >
               <Typography>Entity list</Typography>
             </Grid>
+            {isSmallScreen && (
+              <Grid
+                item
+                xs={6}
+                sm={3}
+                md={3}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  paddingTop: "10px !important",
+                  marginBottom: "20px",
+                }}
+              >
+                <BasicButton
+                  text="Add Entity"
+                  bgColor={COLORS.primary}
+                  textColor={COLORS.white}
+                />
+              </Grid>
+            )}
+
             <Grid
               item
-              xs={6}
+              xs={12}
               sm={6}
               md={6}
               sx={{
@@ -70,23 +115,25 @@ const EntitiesManagement: React.FC<any> = () => {
             >
               <SearchInput />
             </Grid>
-            <Grid
-              item
-              xs={3}
-              sm={3}
-              md={3}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                paddingTop: "10px !important",
-              }}
-            >
-              <BasicButton
-                text="Add Entity"
-                bgColor={COLORS.primary}
-                textColor={COLORS.white}
-              />
-            </Grid>
+            {!isSmallScreen && (
+              <Grid
+                item
+                xs={3}
+                sm={3}
+                md={3}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  paddingTop: "0px !important",
+                }}
+              >
+                <BasicButton
+                  text="Add Entity"
+                  bgColor={COLORS.primary}
+                  textColor={COLORS.white}
+                />
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>

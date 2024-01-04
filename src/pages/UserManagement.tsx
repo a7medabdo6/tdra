@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, useMediaQuery } from "@mui/material";
 
 import React from "react";
 import BasicTable from "../components/common/Table/Table";
@@ -23,6 +23,7 @@ const dummyData = [
     email: "companyA@example.com",
     servicesURL: "https://servicesA.com",
     isEnabled: true,
+    link: "/route-details",
   },
   {
     id: 2,
@@ -31,6 +32,7 @@ const dummyData = [
     email: "companyB@example.com",
     servicesURL: "https://servicesB.com",
     isEnabled: false,
+    link: "/route-details",
   },
   {
     id: 3,
@@ -39,38 +41,47 @@ const dummyData = [
     email: "companyC@example.com",
     servicesURL: "https://servicesC.com",
     isEnabled: true,
+    link: "/route-details",
   },
   // Add more objects as needed
 ];
 
 const UserManagement: React.FC<any> = () => {
+  const isSmallScreen = useMediaQuery("(max-width:700px)");
+
   return (
     <Container>
       <BasicTabs
         itemOne={
-          <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
+          <Grid
+            container
+            spacing={3}
+            sx={{ marginBlock: isSmallScreen ? "0px" : "20px" }}
+          >
             <Grid item xs={12} sm={12} md={12}>
               <Grid container spacing={3}>
                 <Grid
                   item
-                  xs={6}
+                  xs={12}
                   sm={6}
                   md={6}
                   sx={{
                     paddingTop: "0px !important",
+                    paddingLeft: "0px !important",
                   }}
                 >
                   <SearchInput />
                 </Grid>
                 <Grid
                   item
-                  xs={6}
+                  xs={12}
                   sm={6}
                   md={6}
                   sx={{
                     display: "flex",
-                    justifyContent: "flex-end",
-                    paddingTop: "10px !important",
+                    justifyContent: isSmallScreen ? "flex-start" : "flex-end",
+                    paddingTop: isSmallScreen ? "20px" : "10px !important",
+                    paddingLeft: isSmallScreen ? "0px !important" : "auto",
                   }}
                 >
                   <BasicButton
@@ -98,24 +109,26 @@ const UserManagement: React.FC<any> = () => {
               <Grid container spacing={3}>
                 <Grid
                   item
-                  xs={6}
+                  xs={12}
                   sm={6}
                   md={6}
                   sx={{
                     paddingTop: "0px !important",
+                    paddingLeft: "0px !important",
                   }}
                 >
                   <SearchInput />
                 </Grid>
                 <Grid
                   item
-                  xs={6}
+                  xs={12}
                   sm={6}
                   md={6}
                   sx={{
                     display: "flex",
-                    justifyContent: "flex-end",
-                    paddingTop: "10px !important",
+                    justifyContent: isSmallScreen ? "flex-start" : "flex-end",
+                    paddingTop: isSmallScreen ? "20px" : "10px !important",
+                    paddingLeft: isSmallScreen ? "0px !important" : "auto",
                   }}
                 >
                   <BasicButton

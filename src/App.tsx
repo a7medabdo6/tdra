@@ -10,6 +10,8 @@ import UserDetails from "./pages/UserDetails";
 import Dashboard from "./pages";
 import EntitiesManagement from "./pages/EntitiesManagement";
 import Layout from "./Layout";
+import EntityDetails from "./pages/EntityDetails";
+import MappingScreen from "./pages/MappingScreen";
 const router = [
   {
     path: "/",
@@ -28,8 +30,16 @@ const router = [
     element: <UserManagement />,
   },
   {
-    path: "/user-details",
+    path: "/route-details",
     element: <UserDetails />,
+  },
+  {
+    path: "/entity-details",
+    element: <EntityDetails />,
+  },
+  {
+    path: "/mapping-screen",
+    element: <MappingScreen />,
   },
 ];
 function App() {

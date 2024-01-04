@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import { Stack, Typography } from "@mui/material";
 import { COLORS } from "../../../constants/insex";
 import BasicButton from "../Buttons/Button";
+import { useNavigate } from "react-router-dom";
 
 interface TableProps {
   data: any[];
@@ -26,12 +27,15 @@ const BasicTable: React.FC<TableProps> = ({
   actions = false,
   haveButtons = false,
 }) => {
+  const navigate = useNavigate();
   return (
     <TableContainer
       sx={{
         boxShadow: "unset",
         backgroundColor: "unset",
         borderBlock: "1px solid rgba(224, 224, 224, 1)",
+        width: "100%",
+        overflow: "scroll",
       }}
       component={Paper}
     >
@@ -102,11 +106,15 @@ const BasicTable: React.FC<TableProps> = ({
                   <Stack spacing={2} direction="row">
                     <BasicButton
                       text="Edit"
+                      onClick={() => {
+                        navigate(row.link);
+                      }}
                       textColor={COLORS.orange}
                       bgColor={COLORS.lightOrange}
                     />
                     {middleBtn && (
                       <BasicButton
+                        onClick={() => navigate(row?.linkMapping)}
                         textColor={COLORS.orange}
                         bgColor={COLORS.lightOrange}
                         text="Edit Mapping"
