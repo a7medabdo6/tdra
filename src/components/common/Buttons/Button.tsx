@@ -4,7 +4,7 @@ import React from "react";
 interface BasicButtonProps {
   textColor: string;
   bgColor: string;
-  text: string;
+  text: any;
   style?: any;
   onClick?: any;
 }

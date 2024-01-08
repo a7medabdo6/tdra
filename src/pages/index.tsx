@@ -1,11 +1,15 @@
-import React from "react";
-import { Card, Container, Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Card, Container, Grid, Typography } from "@mui/material";
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
 import { BarChart } from "../components/Charts/BarChart";
 import BasicTable from "../components/common/Table/Table";
-
+import BasicButton from "../components/common/Buttons/Button";
+import ReactSimplyCarouselExample from "../components/Slider";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { useLogin } from "../Api/Hooks/Auth";
 const Headers = [
   "Id",
   "Entity Name",
@@ -42,24 +46,62 @@ const dummyData = [
   // Add more objects as needed
 ];
 function Dashboard() {
+  const { mutate } = useLogin();
+  useEffect(() => {
+    mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
+  }, []);
   return (
     <Container>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={12} md={12}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Typography component="h5" sx={{ color: "#666666" }} variant="h6">
+              Dashboard
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="From: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="To: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+          </Box>
+        </Grid>
+        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
           <StaticsCard
             text="Commnuication count"
             bgcolor={COLORS.white}
             valueColor={COLORS.primary}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
           <StaticsCard
             text="Succeed"
             bgcolor={COLORS.white}
             valueColor={COLORS.primary}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
           <StaticsCard
             text="Failed"
             bgcolor={COLORS.white}
@@ -78,7 +120,7 @@ function Dashboard() {
         </Grid>
         <Grid
           item
-          xs={3}
+          xs={12}
           sm={3}
           md={3}
           sx={{
@@ -115,7 +157,7 @@ function Dashboard() {
         </Grid>
         <Grid
           item
-          xs={3}
+          xs={12}
           sm={3}
           md={3}
           sx={{
@@ -151,16 +193,119 @@ function Dashboard() {
             sx={{
               backgroundColor: COLORS.grey,
               width: "100%",
-              height: "300px",
+              boxShadow: "unset",
+              position: "relative",
             }}
           >
+            <BasicButton
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "10px",
+                width: "150px",
+              }}
+              text={
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <FilterListIcon />
+                  <Typography>Filter</Typography> <KeyboardArrowDownIcon />{" "}
+                </Box>
+              }
+              bgColor={COLORS.secondary}
+              textColor={COLORS.white}
+            />
             <BarChart />
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
-          <Typography component="h5" variant="h5" sx={{ marginBlock: "20px" }}>
-            Transaction Table
-          </Typography>
+          <Card
+            sx={{
+              backgroundColor: COLORS.grey,
+              width: "100%",
+              position: "relative",
+              boxShadow: "unset",
+              height: "300px",
+            }}
+          >
+            <Typography component="h5" variant="h5" sx={{ margin: "20px" }}>
+              Top Entities
+            </Typography>
+            <ReactSimplyCarouselExample />
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h5" variant="h5" sx={{ margin: "10px" }}>
+              Transaction Table
+            </Typography>
+            <BasicButton
+              text="Export Excel"
+              bgColor={COLORS.primary}
+              textColor={COLORS.white}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBlock: "10px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="From: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="To: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="Source Entity"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="Destination Entity"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+          </Box>
+
           <BasicTable Headers={Headers} data={dummyData} />
         </Grid>
       </Grid>

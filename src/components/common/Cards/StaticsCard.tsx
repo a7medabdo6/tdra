@@ -26,7 +26,7 @@ const StaticsCard: React.FC<StaticsCardProps> = ({
         borderRadius: "25px",
         border: border ? `1px solid ${COLORS.secondary}` : "unset",
         boxShadow: "unset",
-        marginBlock: "10px",
+        marginBlock: "5px",
         background: bgcolor,
       }}
     >

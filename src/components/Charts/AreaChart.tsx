@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { COLORS } from "../../constants/insex";
 
 ChartJS.register(
@@ -26,7 +26,9 @@ ChartJS.register(
 );
 
 export const options = {
-  responsive: true,
+  // responsive: true,
+  maintainAspectRatio: false,
+
   plugins: {
     legend: {
       position: "top" as const,
@@ -100,8 +102,10 @@ export const data = {
 };
 
 export function AreaChartSimple() {
+  const isSmallScreen = useMediaQuery("(max-width:700px)");
+
   return (
-    <Box sx={{ height: "400px", width: "100% " }}>
+    <Box sx={{ height: isSmallScreen ? "300px" : "400px", width: "100% " }}>
       <Line options={options} data={data} />
     </Box>
   );

@@ -14,3 +14,8 @@ code {
 main{
   overflow-x: hidden;
 }
+@media only screen and (max-width: 768px) {
+  main{
+    padding-inline: 0px !important;
+  }
+}

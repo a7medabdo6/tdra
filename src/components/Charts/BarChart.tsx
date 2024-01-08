@@ -24,10 +24,12 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: "Chart.js Bar Chart - Stacked",
+      text: "",
     },
   },
-  responsive: true,
+  // responsive: true,
+  maintainAspectRatio: false,
+
   scales: {
     x: {
       stacked: true,
