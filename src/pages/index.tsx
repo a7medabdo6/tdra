@@ -48,7 +48,7 @@ const dummyData = [
 function Dashboard() {
   const { mutate } = useLogin();
   useEffect(() => {
-    mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
+    // mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
   }, []);
   return (
     <Container>
