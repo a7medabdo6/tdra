@@ -5,13 +5,17 @@ import theme from "./theme";
 import LookupManagement from "./pages/LookupManagement";
 import UserManagement from "./pages/UserManagement";
 import { QueryClient, QueryClientProvider } from "react-query";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import UserDetails from "./pages/UserDetails";
 import Dashboard from "./pages";
 import EntitiesManagement from "./pages/EntitiesManagement";
 import Layout from "./Layout";
 import EntityDetails from "./pages/EntityDetails";
-import MappingScreen from "./pages/MappingScreen";
+// import MappingScreen from "./pages/MappingScreen";
+import LookupDetails from "./pages/LookupDetails";
+import AddRole from "./pages/AddRole";
+import MappingDynamicInputs from "./pages/MappingDynamicInputs";
 const queryClient = new QueryClient();
 
 const router = [
@@ -32,16 +36,24 @@ const router = [
     element: <UserManagement />,
   },
   {
-    path: "/route-details",
+    path: "/add-role/:id",
+    element: <AddRole />,
+  },
+  {
+    path: "/user-details/:id",
     element: <UserDetails />,
   },
   {
-    path: "/entity-details",
+    path: "/entity-details/:id",
     element: <EntityDetails />,
   },
   {
-    path: "/mapping-screen",
-    element: <MappingScreen />,
+    path: "/lookup-details/:id",
+    element: <LookupDetails />,
+  },
+  {
+    path: "/mapping-screen/:id",
+    element: <MappingDynamicInputs />,
   },
 ];
 function App() {
@@ -59,6 +71,7 @@ function App() {
                 />
               ))}
             </Routes>
+            <ToastContainer />
           </Layout>
         </BrowserRouter>
       </ThemeProvider>

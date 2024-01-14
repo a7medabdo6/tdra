@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import React from "react";
 
 interface BasicButtonProps {
@@ -7,6 +7,7 @@ interface BasicButtonProps {
   text: any;
   style?: any;
   onClick?: any;
+  isLoading?: boolean;
 }
 const BasicButton: React.FC<BasicButtonProps> = ({
   textColor,
@@ -14,6 +15,7 @@ const BasicButton: React.FC<BasicButtonProps> = ({
   text,
   style,
   onClick,
+  isLoading,
 }) => {
   return (
     <Button
@@ -27,7 +29,13 @@ const BasicButton: React.FC<BasicButtonProps> = ({
       }}
       variant="contained"
     >
-      {text}
+      {isLoading ? (
+        <CircularProgress
+          sx={{ height: "20px !important", width: "20px !important" }}
+        />
+      ) : (
+        text
+      )}
     </Button>
   );
 };

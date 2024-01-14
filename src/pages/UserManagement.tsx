@@ -6,49 +6,36 @@ import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import BasicTabs from "../components/common/Tab";
 import SearchInput from "../components/common/Inputs/Searchinput";
+import { useDeleteUser, useUseres } from "../Api/Hooks/Users";
+import { useNavigate } from "react-router-dom";
+import ServerError from "../components/Error/ServerError";
+import SkeletonCom from "../components/Skeleton";
+import { useRolees } from "../Api/Hooks/Roles";
+import TableRole from "../components/common/Table/TableRole";
 const Headers = [
-  "Id",
-  "Entity Name",
-  "phone",
-  "Email ",
-  "Services URL",
-  "Is Enabled",
-  "Actions",
+  { label: "Id", key: "id" },
+  { label: "Username ", key: "userName" },
+  { label: "Full Name", key: "fullName" },
+  { label: "Mobile", key: "phoneNumber" },
+  { label: "Email", key: "email" },
+  { label: "Role", key: "role" },
 ];
-const dummyData = [
-  {
-    id: 1,
-    entityName: "Company A",
-    phone: "123-456-7890",
-    email: "companyA@example.com",
-    servicesURL: "https://servicesA.com",
-    isEnabled: true,
-    link: "/route-details",
-  },
-  {
-    id: 2,
-    entityName: "Company B",
-    phone: "987-654-3210",
-    email: "companyB@example.com",
-    servicesURL: "https://servicesB.com",
-    isEnabled: false,
-    link: "/route-details",
-  },
-  {
-    id: 3,
-    entityName: "Company C",
-    phone: "555-123-4567",
-    email: "companyC@example.com",
-    servicesURL: "https://servicesC.com",
-    isEnabled: true,
-    link: "/route-details",
-  },
-  // Add more objects as needed
+const HeadersRoles = [
+  { label: "Id", key: "id" },
+  { label: "Role Name ", key: "name" },
+  { label: "Assigned Modules", key: "modules" },
 ];
 
 const UserManagement: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
+  const { data, isLoading, isError } = useUseres();
+  const { data: roles, isLoading: isLoadingRoles } = useRolees();
 
+  const navigate = useNavigate();
+  const { mutate, isLoading: isLoadingDelete } = useDeleteUser();
+  const DeleteFun = (id: any) => {
+    mutate({ id });
+  };
   return (
     <Container>
       <BasicTabs
@@ -86,21 +73,29 @@ const UserManagement: React.FC<any> = () => {
                 >
                   <BasicButton
                     text="Add New User"
+                    onClick={() => navigate("/user-details/add")}
                     bgColor={COLORS.primary}
                     textColor={COLORS.white}
                   />
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <BasicTable
-                Headers={Headers}
-                data={dummyData}
-                actions={true}
-                middleBtn={false}
-                deletebtn={false}
-              />
-            </Grid>
+            {isError ? (
+              <ServerError />
+            ) : isLoading ? (
+              <SkeletonCom />
+            ) : (
+              <Grid item xs={12} sm={12} md={12}>
+                <BasicTable
+                  Headers={Headers}
+                  data={data}
+                  actions={true}
+                  middleBtn={false}
+                  deletebtn={false}
+                  link="/user-details"
+                />
+              </Grid>
+            )}
           </Grid>
         }
         itemTow={
@@ -133,22 +128,32 @@ const UserManagement: React.FC<any> = () => {
                 >
                   <BasicButton
                     text="Add New Role"
+                    onClick={() => navigate("/add-role/add")}
                     bgColor={COLORS.primary}
                     textColor={COLORS.white}
                   />
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-              <BasicTable
-                Headers={Headers}
-                data={dummyData}
-                actions={true}
-                middleBtn={false}
-                deletebtn={false}
-                haveButtons={true}
-              />
-            </Grid>
+            {isError ? (
+              <ServerError />
+            ) : isLoadingRoles ? (
+              <SkeletonCom />
+            ) : (
+              <Grid item xs={12} sm={12} md={12}>
+                <TableRole
+                  Headers={HeadersRoles}
+                  data={roles}
+                  actions={true}
+                  middleBtn={false}
+                  deletebtn={false}
+                  haveButtons={true}
+                  deleteFun={DeleteFun}
+                  isLoadingDelete={isLoadingDelete}
+                  link="/add-role"
+                />
+              </Grid>
+            )}
           </Grid>
         }
       />

@@ -5,55 +5,33 @@ import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import SearchInput from "../components/common/Inputs/Searchinput";
+import { useDeleteLookup, useLookupes } from "../Api/Hooks/Lookup";
+import { useNavigate } from "react-router-dom";
+import SkeletonCom from "../components/Skeleton";
+import ServerError from "../components/Error/ServerError";
 const Headers = [
-  "Id",
-  "Entity Name",
-  "phone",
-  "Email ",
-  "Services URL",
-  "Is Enabled",
-  "Actions",
-];
-const dummyData = [
-  {
-    id: 1,
-    entityName: "Company A",
-    phone: "123-456-7890",
-    email: "companyA@example.com",
-    servicesURL: "https://servicesA.com",
-    isEnabled: true,
-    link: "/route-details",
-  },
-  {
-    id: 2,
-    entityName: "Company B",
-    phone: "987-654-3210",
-    email: "companyB@example.com",
-    servicesURL: "https://servicesB.com",
-    isEnabled: false,
-    link: "/route-details",
-  },
-  {
-    id: 3,
-    entityName: "Company C",
-    phone: "555-123-4567",
-    email: "companyC@example.com",
-    servicesURL: "https://servicesC.com",
-    isEnabled: true,
-    link: "/route-details",
-  },
-  // Add more objects as needed
+  { label: "Id", key: "id" },
+  { label: "Lookup Value", key: "value" },
+  { label: "Description", key: "description" },
 ];
 
 const LookupManagement: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
-
+  const { data, isLoading, isError } = useLookupes();
+  const navigate = useNavigate();
+  const { mutate, isLoading: isLoadingDelete } = useDeleteLookup();
+  const DeleteFun = (id: any) => {
+    mutate({ id });
+  };
   return (
     <Container>
       <Grid
         container
         spacing={3}
-        sx={{ marginBlock: isSmallScreen ? "0px" : "20px" }}
+        sx={{
+          marginBlock: isSmallScreen ? "0px" : "20px",
+          justifyContent: "center",
+        }}
       >
         <Grid item xs={12} sm={12} md={12}>
           <Grid
@@ -96,6 +74,7 @@ const LookupManagement: React.FC<any> = () => {
                 }}
               >
                 <BasicButton
+                  onClick={() => navigate("/lookup-details/add")}
                   text="Add Lookup value"
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
@@ -129,6 +108,7 @@ const LookupManagement: React.FC<any> = () => {
               >
                 <BasicButton
                   text="Add Lookup value"
+                  onClick={() => navigate("/lookup-details/add")}
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
                 />
@@ -136,15 +116,24 @@ const LookupManagement: React.FC<any> = () => {
             )}
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <BasicTable
-            Headers={Headers}
-            data={dummyData}
-            actions={true}
-            middleBtn={false}
-            deletebtn={true}
-          />
-        </Grid>
+        {isError ? (
+          <ServerError />
+        ) : isLoading ? (
+          <SkeletonCom />
+        ) : (
+          <Grid item xs={12} sm={12} md={12}>
+            <BasicTable
+              Headers={Headers}
+              data={data}
+              actions={true}
+              middleBtn={false}
+              deletebtn={true}
+              deleteFun={DeleteFun}
+              isLoadingDelete={isLoadingDelete}
+              link="/lookup-details"
+            />
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

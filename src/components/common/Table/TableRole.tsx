@@ -6,12 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { COLORS } from "../../../constants/insex";
 import BasicButton from "../Buttons/Button";
 import { useNavigate } from "react-router-dom";
 import ModalForDelete from "../Modal";
-// import MenuListComposition from "../Buttons/Dropdown";
 
 interface TableProps {
   data: any[];
@@ -24,7 +23,7 @@ interface TableProps {
   isLoadingDelete?: boolean;
   deleteFun?: any;
 }
-const BasicTable: React.FC<TableProps> = ({
+const TableRole: React.FC<TableProps> = ({
   Headers,
   data,
   deletebtn = false,
@@ -72,7 +71,11 @@ const BasicTable: React.FC<TableProps> = ({
           <TableRow>
             {Headers?.map((item) => {
               return (
-                <TableCell key={item} align="center">
+                <TableCell
+                  key={item}
+                  sx={{ width: item.key != "modules" ? "150px" : "unset" }}
+                  align="left"
+                >
                   {item.label}
                 </TableCell>
               );
@@ -98,9 +101,17 @@ const BasicTable: React.FC<TableProps> = ({
                 </TableCell>
               )}
 
-              {Headers?.[2]?.key && (
-                <TableCell align="center">
-                  {row?.[`${Headers[2].key}`]}
+              {Headers?.[2]?.key == "modules" && Headers?.[2]?.key && (
+                <TableCell align="left">
+                  {row?.[`${Headers[2].key}`].map((item: any) => (
+                    <BasicButton
+                      style={{ marginBlock: "5px" }}
+                      key={item?.id}
+                      text={item?.name}
+                      textColor={COLORS.primary}
+                      bgColor={COLORS.lightprimary}
+                    />
+                  ))}
                 </TableCell>
               )}
               {Headers?.[3]?.key && (
@@ -136,11 +147,6 @@ const BasicTable: React.FC<TableProps> = ({
                 </TableCell>
               )}
               {Headers?.[5]?.key && (
-                <TableCell component="th" align="center" scope="row">
-                  {row?.[`${Headers[5].key}`]}
-                </TableCell>
-              )}
-              {/* {Headers?.[5]?.key && (
                 <TableCell align="center">
                   {row?.[`${Headers[5].key}`] ? (
                     <Typography color={COLORS.green}>Yes</Typography>
@@ -148,7 +154,8 @@ const BasicTable: React.FC<TableProps> = ({
                     <Typography color={COLORS.red}>No</Typography>
                   )}
                 </TableCell>
-              )} */}
+              )}
+              {console.log(link, "linkkkk")}
 
               {actions && (
                 <TableCell align="center">
@@ -162,7 +169,7 @@ const BasicTable: React.FC<TableProps> = ({
                     }}
                   >
                     <BasicButton
-                      text=" Edit"
+                      text=" tttt"
                       onClick={() => {
                         navigate(`${link}/${row.id}`);
                       }}
@@ -170,12 +177,6 @@ const BasicTable: React.FC<TableProps> = ({
                       bgColor={COLORS.lightOrange}
                     />
                     {middleBtn && (
-                      // <MenuListComposition
-                      //   text="Edit Mapping"
-                      //   textColor={COLORS.orange}
-                      //   bgColor={COLORS.lightOrange}
-                      //   rowData={row}
-                      // />
                       <BasicButton
                         onClick={() => navigate(`/mapping-screen/${row.id}`)}
                         textColor={COLORS.orange}
@@ -211,4 +212,4 @@ const BasicTable: React.FC<TableProps> = ({
     </TableContainer>
   );
 };
-export default BasicTable;
+export default TableRole;

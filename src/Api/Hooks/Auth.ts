@@ -1,4 +1,3 @@
-// useUser.ts
 import {
   useMutation,
   UseMutationResult,
@@ -31,6 +30,7 @@ export const useLogin = (): UseMutationResult<any, Error, LoginPayload> => {
   return useMutation(login, {
     onSuccess: (data) => {
       console.log("Login successful:", data);
+      localStorage.setItem("token", data?.token);
     },
     onError: (error) => {
       console.error("Error during login:", error.message);
