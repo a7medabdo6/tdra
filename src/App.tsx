@@ -16,6 +16,8 @@ import EntityDetails from "./pages/EntityDetails";
 import LookupDetails from "./pages/LookupDetails";
 import AddRole from "./pages/AddRole";
 import MappingDynamicInputs from "./pages/MappingDynamicInputs";
+import MappingMockup from "./pages/Mapping-mockup";
+import MappingMockingTo from "./pages/Mapping-mockup-to";
 const queryClient = new QueryClient();
 
 const router = [
@@ -54,6 +56,14 @@ const router = [
   {
     path: "/mapping-screen/:id",
     element: <MappingDynamicInputs />,
+  },
+  {
+    path: "/mapping-mock/:id",
+    element: <MappingMockup />,
+  },
+  {
+    path: "/mapping-mock-to/:id",
+    element: <MappingMockingTo />,
   },
 ];
 function App() {

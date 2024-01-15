@@ -97,7 +97,7 @@ function MappingDynamicInputs() {
           // type: event.target.value?.name,
           toEntityFieldId: event.target.value.id,
           key: index,
-          fromEntityField: fromId,
+          fromEntityFieldId: fromId,
         },
       ];
     });
