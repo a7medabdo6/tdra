@@ -6,7 +6,6 @@ import {
   Grid,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import { COLORS } from "../constants/insex";
@@ -14,8 +13,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { usePostMapping } from "../Api/Hooks/EntityMapping";
 import { useNavigate, useParams } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
-import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+// import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import MenuListComposition from "../components/common/Buttons/Dropdown";
 import BasicButton from "../components/common/Buttons/Button";
 import {
@@ -23,20 +21,20 @@ import {
   useOneEntityWithMapping,
 } from "../Api/Hooks/EntityManagment";
 
-const EntityFieldType = [
-  "None",
-  "Int",
-  "String",
-  "Date",
-  "Enum",
-  "List",
-  "Attachment",
-];
-interface InputField {
-  name: string;
-  type: string;
-  key: number;
-}
+// const EntityFieldType = [
+//   "None",
+//   "Int",
+//   "String",
+//   "Date",
+//   "Enum",
+//   "List",
+//   "Attachment",
+// ];
+// interface InputField {
+//   name: string;
+//   type: string;
+//   key: number;
+// }
 function MappingDynamicInputs() {
   const { id } = useParams();
   const [selectedEntity, setSelectedEntity] = React.useState<any>({
@@ -48,39 +46,39 @@ function MappingDynamicInputs() {
   const { mutate, isLoading: isLoadingMapping } = usePostMapping();
   const { mutate: mutateLinkMapping, isLoading: isLoadingFieldMapping } =
     useAddUpdateFieldMappingEntity();
-  const [onLabelClick, setOnLabelClick] = useState<any>({ "0": false });
+  // const [onLabelClick, setOnLabelClick] = useState<any>({ "0": false });
 
   // useEffect(() => {
   //   if (data) {
   //   }
   // }, [data]);
 
-  const [inputFields, setInputFields] = useState<InputField[]>([]);
+  // const [inputFields, setInputFields] = useState<InputField[]>([]);
 
-  useEffect(() => {
-    // Initialize input fields with keys on mount
-    setInputFields([{ name: "", type: "", key: generateKey() }]);
-  }, []);
+  // useEffect(() => {
+  //   // Initialize input fields with keys on mount
+  //   setInputFields([{ name: "", type: "", key: generateKey() }]);
+  // }, []);
 
-  const generateKey = (): number => {
-    return Date.now();
-  };
+  // const generateKey = (): number => {
+  //   return Date.now();
+  // };
   const Submit = () => {
     mutate({
       fromEntityId: id ? +id : null,
       toEntityId: selectedEntity?.id,
-      fields: inputFields,
+      fields: [],
     });
   };
-  const handleInputChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>,
-    fieldName: "name" | "type"
-  ): void => {
-    const values = [...inputFields];
-    values[index][fieldName] = event.target.value;
-    setInputFields(values);
-  };
+  // const handleInputChange = (
+  //   index: number,
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  //   fieldName: "name" | "type"
+  // ): void => {
+  //   const values = [...inputFields];
+  //   values[index][fieldName] = event.target.value;
+  //   setInputFields(values);
+  // };
   const [dynamicInputsMapping, setdynamicInputsMapping] = useState<any>([]);
   const HandleDynamicInputsChange = (
     event: any,
@@ -109,18 +107,18 @@ function MappingDynamicInputs() {
     console.log(dynamicInputsMapping, "dynamicInputsMapping");
   }, [dynamicInputsMapping]);
 
-  const handleAddField = (): void => {
-    setInputFields([
-      ...inputFields,
-      { name: "", type: "", key: generateKey() },
-    ]);
-  };
+  // const handleAddField = (): void => {
+  //   setInputFields([
+  //     ...inputFields,
+  //     { name: "", type: "", key: generateKey() },
+  //   ]);
+  // };
 
-  const handleRemoveField = (index: number): void => {
-    const values = [...inputFields];
-    values.splice(index, 1);
-    setInputFields(values);
-  };
+  // const handleRemoveField = (index: number): void => {
+  //   const values = [...inputFields];
+  //   values.splice(index, 1);
+  //   setInputFields(values);
+  // };
   // useEffect(() => {
   //   console.log(onLabelClick, "onlab");
   // }, [onLabelClick]);
@@ -282,7 +280,7 @@ function MappingDynamicInputs() {
             {selectedEntity.name != "To Mapping" && (
               <Grid item xs={12} sm={12} md={12} sx={{ marginBlock: 4 }}>
                 <Grid container spacing={3}>
-                  {inputFields.map((inputField, index) => (
+                  {/* {inputFields.map((inputField, index) => (
                     <Grid
                       key={inputField.key}
                       item
@@ -388,8 +386,8 @@ function MappingDynamicInputs() {
                         />
                       </Box>
                     </Grid>
-                  ))}
-                  <Grid
+                  ))} */}
+                  {/* <Grid
                     item
                     xs={12}
                     sm={12}
@@ -406,7 +404,7 @@ function MappingDynamicInputs() {
                       }}
                       onClick={() => handleAddField()}
                     />
-                  </Grid>
+                  </Grid> */}
 
                   <Grid
                     item
