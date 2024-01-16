@@ -142,9 +142,28 @@ function MappingDynamicInputs() {
                           // value={obj?.phone}
                           onChange={(e) => {
                             setInputFields((old: any) => {
+                              if (old.length > 0) {
+                                const newarr = old.filter(
+                                  (sub: any) => item.id == sub.id
+                                );
+                                const oldone = old.filter(
+                                  (sub: any) => item.id != sub.id
+                                );
+                                if (newarr?.length > 0) {
+                                  console.log(newarr, "neeeeeee");
+
+                                  newarr[0].value = e.target.value;
+                                  return [...oldone, newarr[0]];
+                                } else {
+                                  return [
+                                    ...old,
+                                    { id: item?.id, value: e.target.value },
+                                  ];
+                                }
+                              }
                               return [
                                 ...old,
-                                { id: item.id, value: e.target.value },
+                                { id: item?.id, value: e.target.value },
                               ];
                             });
                           }}
