@@ -34,6 +34,13 @@ const PostMapping = async (payload: any): Promise<any> => {
   );
   return response.data;
 };
+const PostEditAddENT = async (payload: any): Promise<any> => {
+  const response = await instance.post(
+    "Entity/add-update-entity-with-fields",
+    payload
+  );
+  return response.data;
+};
 
 const deleteone = async (payload: any): Promise<any> => {
   const response = await instance.delete(`EntityMapping/${payload.id}`);
@@ -79,6 +86,38 @@ export const usePostMapping = (): UseMutationResult<any, Error> => {
       setTimeout(() => {
         navigate(-1);
       }, 1000);
+    },
+    onError: () => {
+      toast.error("Server Error!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    },
+  });
+};
+export const useAddEditEntity = (): UseMutationResult<any, Error> => {
+  // const navigate = useNavigate();
+  return useMutation(PostEditAddENT, {
+    onSuccess: () => {
+      toast.success("Entity Updated  successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // setTimeout(() => {
+      //   navigate(-1);
+      // }, 1000);
     },
     onError: () => {
       toast.error("Server Error!", {

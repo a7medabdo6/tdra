@@ -3,23 +3,39 @@ import {
   Box,
   Checkbox,
   Container,
+  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import {
-  useAddUpdateEntity,
-  useDeleteEntity,
-  useOneEntity,
-} from "../Api/Hooks/EntityManagment";
+import { useAddUpdateEntity, useOneEntity } from "../Api/Hooks/EntityManagment";
 import SkeletonCom from "../components/Skeleton";
+import { useAddEditEntity } from "../Api/Hooks/EntityMapping";
+interface InputField {
+  name: string;
+  type: string;
+  key: number;
+}
+const EntityFieldType = [
+  "None",
+  "Int",
+  "String",
+  "Date",
+  "Enum",
+  "List",
+  "Attachment",
+];
 function EntityDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -37,15 +53,55 @@ function EntityDetails() {
   useEffect(() => {
     if (data) {
       setObj(data);
+      setInputFields(data?.fields);
     }
   }, [data]);
   const { mutate, isLoading: isLoadingUpdate } = useAddUpdateEntity();
-  const { mutate: deleteOne, isLoading: isLoadingDelete } = useDeleteEntity();
+  // const { mutate: deleteOne, isLoading: isLoadingDelete } = useDeleteEntity();
   const updateOrAdd = () => {
     mutate(obj);
   };
-  const Delete = () => {
-    deleteOne(obj);
+  // const Delete = () => {
+  //   deleteOne(obj);
+  // };
+  const { mutate: mutateAddEditEntity, isLoading: isLoadingMapping } =
+    useAddEditEntity();
+
+  const [onLabelClick, setOnLabelClick] = useState<any>({ "0": false });
+
+  const [inputFields, setInputFields] = useState<InputField[]>([]);
+  const generateKey = (): number => {
+    return Date.now();
+  };
+  // useEffect(() => {
+  //   // Initialize input fields with keys on mount
+  //   setInputFields([{ name: "", type: "", key: generateKey() }]);
+  // }, []);
+  const handleInputChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>,
+    fieldName: "name" | "type"
+  ): void => {
+    const values = [...inputFields];
+    values[index][fieldName] = event.target.value;
+    setInputFields(values);
+  };
+  const handleAddField = (): void => {
+    setInputFields([
+      ...inputFields,
+      { name: "", type: "", key: generateKey() },
+    ]);
+  };
+  const handleRemoveField = (index: number): void => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
+  };
+  const Submit = () => {
+    mutateAddEditEntity({
+      id: id ? +id : null,
+      fields: inputFields,
+    });
   };
   return (
     <Container>
@@ -316,9 +372,9 @@ function EntityDetails() {
 
                 <BasicButton
                   text="Cancel"
-                  onClick={Delete}
+                  onClick={() => navigate(-1)}
                   bgColor={COLORS.white}
-                  isLoading={isLoadingDelete}
+                  // isLoading={isLoadingDelete}
                   textColor={COLORS.secondary}
                   style={{
                     border: `1px solid ${COLORS.secondary}`,
@@ -332,6 +388,184 @@ function EntityDetails() {
                 />
               </Grid>
             </Grid>
+            {id != "add" && (
+              <Grid item xs={12} sm={12} md={12} sx={{ marginBlock: 4 }}>
+                <Grid container spacing={3}>
+                  {inputFields.map((inputField, index) => (
+                    <Grid
+                      key={inputField.key}
+                      item
+                      xs={6}
+                      sm={6}
+                      md={6}
+                      sx={{
+                        paddingTop: "0px !important",
+                      }}
+                    >
+                      {!onLabelClick[`${index}`] && (
+                        <Typography
+                          onClick={() =>
+                            setOnLabelClick((old: any) => {
+                              return { ...old, [index]: true };
+                            })
+                          }
+                          sx={{ marginInline: "8px", cursor: "pointer" }}
+                        >
+                          {inputField?.name
+                            ? inputField?.name
+                            : "Enter to edit label"}
+                        </Typography>
+                      )}
+
+                      {onLabelClick[`${index}`] && (
+                        <TextField
+                          sx={{
+                            "& .MuiOutlinedInput-root": {
+                              height: "40px",
+                              backgroundColor: "transparent",
+                              borderRadius: "14px",
+                              border: "unset !important",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "unset !important",
+                            },
+                          }}
+                          variant="outlined"
+                          placeholder="label  "
+                          style={{ width: "100%", borderRadius: "20px" }}
+                          id={`label-${inputField.key}`}
+                          value={inputField.name}
+                          onChange={(e: any) =>
+                            handleInputChange(index, e, "name")
+                          }
+                          onBlur={() =>
+                            setOnLabelClick((old: any) => {
+                              return { ...old, [index]: false };
+                            })
+                          }
+                        />
+                      )}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <FormControl
+                          sx={{
+                            m: 1,
+                            minWidth: 120,
+                            "&.MuiFormControl-root": {
+                              height: "40px",
+                              width: "100% !important",
+                              marginTop: "0px",
+                            },
+                          }}
+                        >
+                          <Select
+                            sx={{
+                              "&.MuiInputBase-root": {
+                                height: "40px",
+                                borderRadius: " 14px",
+                                backgroundColor: "#bcbbbb1c",
+                              },
+                            }}
+                            id={`value-${inputField.key}`}
+                            value={inputField.type}
+                            onChange={(e: any) =>
+                              handleInputChange(index, e, "type")
+                            }
+                            displayEmpty
+                            inputProps={{ "aria-label": "Without label" }}
+                          >
+                            {EntityFieldType?.map((item: any) => (
+                              <MenuItem key={item} value={item}>
+                                {item}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+
+                        <DoDisturbOnIcon
+                          type="button"
+                          sx={{
+                            cursor: "pointer",
+                            color: index != 0 ? COLORS.red : COLORS.black,
+                          }}
+                          onClick={() => handleRemoveField(index)}
+                        />
+                      </Box>
+                    </Grid>
+                  ))}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    sx={{
+                      paddingTop: "20px !important",
+                    }}
+                  >
+                    <AddCircleOutlineIcon
+                      sx={{
+                        borderRadius: "10px",
+                        color: COLORS.primary,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleAddField()}
+                    />
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      paddingTop: "10px !important",
+                      marginTop: "5%",
+                    }}
+                  >
+                    <BasicButton
+                      text="Save"
+                      bgColor={COLORS.primary}
+                      textColor={COLORS.white}
+                      style={{
+                        borderRadius: "10px",
+                      }}
+                      isLoading={isLoadingMapping}
+                      onClick={Submit}
+                    />
+                    {/* <BasicButton
+                      text="Edit"
+                      bgColor={COLORS.secondary}
+                      textColor={COLORS.white}
+                      style={{
+                        borderRadius: "10px",
+                      }}
+                    /> */}
+                    <BasicButton
+                      text="Cancel"
+                      bgColor={COLORS.white}
+                      textColor={COLORS.secondary}
+                      style={{
+                        border: `1px solid ${COLORS.secondary}`,
+                        borderRadius: "10px",
+                        "&:hover": {
+                          border: `1px solid ${COLORS.secondary}`,
+                          color: COLORS.secondary,
+                          backgroundColor: COLORS.white,
+                        },
+                      }}
+                      onClick={() => navigate(-1)}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
           </Grid>
         )}
       </Grid>

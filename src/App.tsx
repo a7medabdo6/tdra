@@ -18,52 +18,98 @@ import AddRole from "./pages/AddRole";
 import MappingDynamicInputs from "./pages/MappingDynamicInputs";
 import MappingMockup from "./pages/Mapping-mockup";
 import MappingMockingTo from "./pages/Mapping-mockup-to";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./pages/Login";
 const queryClient = new QueryClient();
 
 const router = [
   {
     path: "/",
-    element: <Dashboard />,
+    element: (
+      <Layout>
+        <Dashboard />
+      </Layout>
+    ),
   },
   {
     path: "/entities-management",
-    element: <EntitiesManagement />,
+    element: (
+      <Layout>
+        <EntitiesManagement />
+      </Layout>
+    ),
   },
   {
     path: "/lookup-management",
-    element: <LookupManagement />,
+    element: (
+      <Layout>
+        <LookupManagement />
+      </Layout>
+    ),
   },
   {
     path: "/user-management",
-    element: <UserManagement />,
+    element: (
+      <Layout>
+        <UserManagement />
+      </Layout>
+    ),
   },
   {
     path: "/add-role/:id",
-    element: <AddRole />,
+    element: (
+      <Layout>
+        <AddRole />
+      </Layout>
+    ),
   },
   {
     path: "/user-details/:id",
-    element: <UserDetails />,
+    element: (
+      <Layout>
+        <UserDetails />
+      </Layout>
+    ),
   },
   {
     path: "/entity-details/:id",
-    element: <EntityDetails />,
+    element: (
+      <Layout>
+        <EntityDetails />
+      </Layout>
+    ),
   },
   {
     path: "/lookup-details/:id",
-    element: <LookupDetails />,
+    element: (
+      <Layout>
+        <LookupDetails />
+      </Layout>
+    ),
   },
   {
     path: "/mapping-screen/:id",
-    element: <MappingDynamicInputs />,
+    element: (
+      <Layout>
+        <MappingDynamicInputs />
+      </Layout>
+    ),
   },
   {
     path: "/mapping-mock/:id",
-    element: <MappingMockup />,
+    element: (
+      <Layout>
+        <MappingMockup />
+      </Layout>
+    ),
   },
   {
     path: "/mapping-mock-to/:id",
-    element: <MappingMockingTo />,
+    element: (
+      <Layout>
+        <MappingMockingTo />
+      </Layout>
+    ),
   },
 ];
 function App() {
@@ -71,8 +117,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Layout>
-            <Routes>
+          <Routes>
+            <Route path={"/login"} element={<Login />} />
+            <Route element={<PrivateRoute />}>
               {router.map((item) => (
                 <Route
                   key={item?.path}
@@ -80,9 +127,9 @@ function App() {
                   element={item?.element}
                 />
               ))}
-            </Routes>
-            <ToastContainer />
-          </Layout>
+            </Route>
+          </Routes>
+          <ToastContainer />
         </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>

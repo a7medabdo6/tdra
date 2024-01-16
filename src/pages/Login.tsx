@@ -1,0 +1,135 @@
+import * as React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import { Box, FormControl, TextField, Typography } from "@mui/material";
+import logo from "../assets/images/logo.svg";
+import BasicButton from "../components/common/Buttons/Button";
+import { COLORS } from "../constants/insex";
+export default function Login() {
+  return (
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      {" "}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <img src={logo} />
+        <Card
+          sx={{
+            minWidth: 370,
+            margin: "auto",
+            boxShadow: "unset",
+            display: "flex",
+            justifyContent: "space-around",
+            flexDirection: "column",
+            borderRadius: "20px",
+            height: "400px",
+          }}
+        >
+          <Typography sx={{ color: COLORS.primary }}>
+            Login To Your Account
+          </Typography>
+
+          <CardContent
+            sx={{
+              height: "180px",
+              display: "flex",
+              justifyContent: "space-around",
+              flexDirection: "column",
+            }}
+          >
+            <FormControl
+              sx={{
+                m: 1,
+                minWidth: 120,
+                "&.MuiFormControl-root": {
+                  height: "40px",
+                  width: "100% !important",
+                  marginTop: "0px",
+                },
+              }}
+            >
+              <Typography sx={{ padding: "10px" }}>Email</Typography>
+              <TextField
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    height: "40px",
+                    backgroundColor: "#bcbbbb1c",
+                    borderRadius: "14px",
+                    border: "unset !important",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "unset !important",
+                  },
+                }}
+                //   value={item?.value}
+                variant="outlined"
+                placeholder={"Email"}
+                style={{ width: "100%", borderRadius: "20px" }}
+                inputProps={{ "aria-label": "Without label" }}
+              ></TextField>
+            </FormControl>
+            <FormControl
+              sx={{
+                m: 1,
+                minWidth: 120,
+                "&.MuiFormControl-root": {
+                  height: "40px",
+                  width: "100% !important",
+                  marginTop: "0px",
+                },
+              }}
+            >
+              <Typography sx={{ padding: "10px" }}>Paasword</Typography>
+
+              <TextField
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    height: "40px",
+                    backgroundColor: "#bcbbbb1c",
+                    borderRadius: "14px",
+                    border: "unset !important",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "unset !important",
+                  },
+                }}
+                //   value={item?.value}
+                type="password"
+                variant="outlined"
+                placeholder={"Password"}
+                style={{ width: "100%", borderRadius: "20px" }}
+                inputProps={{ "aria-label": "Without label" }}
+              ></TextField>
+            </FormControl>
+          </CardContent>
+          <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+            <BasicButton
+              text="Login"
+              bgColor={COLORS.primary}
+              textColor={COLORS.white}
+              style={{
+                borderRadius: "10px",
+              }}
+              // isLoading={isLoadingFieldMapping}
+              // onClick={SubmitMapping}
+            />
+          </CardActions>
+        </Card>
+      </Box>
+    </Box>
+  );
+}

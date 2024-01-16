@@ -51,7 +51,7 @@ const deleteone = async (payload: any): Promise<any> => {
   return response.data;
 };
 export const useAddUpdateEntity = (): UseMutationResult<any, Error> => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return useMutation(addUpdate, {
     onSuccess: () => {
       toast.success("Entity Updated  successfully!", {
@@ -64,9 +64,9 @@ export const useAddUpdateEntity = (): UseMutationResult<any, Error> => {
         progress: undefined,
         theme: "colored",
       });
-      setTimeout(() => {
-        navigate(-1);
-      }, 1000);
+      // setTimeout(() => {
+      //   navigate(-1);
+      // }, 1000);
     },
     onError: (error) => {
       console.error("Error during addUpdate:", error.message);
