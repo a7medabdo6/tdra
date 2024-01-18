@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Card, Container, Grid, Typography } from "@mui/material";
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
@@ -9,7 +9,8 @@ import BasicButton from "../components/common/Buttons/Button";
 import ReactSimplyCarouselExample from "../components/Slider";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { useLogin } from "../Api/Hooks/Auth";
+import { useGetCommunicationsCount } from "../Api/Hooks/Dashboard";
+import SkeletonCom from "../components/Skeleton";
 const Headers = [
   "Id",
   "Entity Name",
@@ -46,10 +47,10 @@ const dummyData = [
   // Add more objects as needed
 ];
 function Dashboard() {
-  const { mutate } = useLogin();
-  useEffect(() => {
-    mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
-  }, []);
+  const { data, isLoading } = useGetCommunicationsCount({ filter: 1 });
+  // useEffect(() => {
+  //   mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
+  // }, []);
   return (
     <Container>
       <Grid container spacing={3}>
@@ -87,27 +88,54 @@ function Dashboard() {
             </Box>
           </Box>
         </Grid>
-        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
-          <StaticsCard
-            text="Commnuication count"
-            bgcolor={COLORS.white}
-            valueColor={COLORS.primary}
-          />
-        </Grid>
-        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
-          <StaticsCard
-            text="Succeed"
-            bgcolor={COLORS.white}
-            valueColor={COLORS.primary}
-          />
-        </Grid>
-        <Grid sx={{ paddingTop: "10px !important" }} item xs={12} sm={6} md={4}>
-          <StaticsCard
-            text="Failed"
-            bgcolor={COLORS.white}
-            valueColor={COLORS.primary}
-          />
-        </Grid>
+        {isLoading ? (
+          <SkeletonCom />
+        ) : (
+          <>
+            <Grid
+              sx={{ paddingTop: "10px !important" }}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+            >
+              <StaticsCard
+                text="Commnuication count"
+                count={data?.communicationCount}
+                bgcolor={COLORS.white}
+                valueColor={COLORS.primary}
+              />
+            </Grid>
+            <Grid
+              sx={{ paddingTop: "10px !important" }}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+            >
+              <StaticsCard
+                text="Succeed"
+                count={data?.communicationSucceedCount}
+                bgcolor={COLORS.white}
+                valueColor={COLORS.primary}
+              />
+            </Grid>
+            <Grid
+              sx={{ paddingTop: "10px !important" }}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+            >
+              <StaticsCard
+                text="Failed"
+                count={data?.communicationFailedCount}
+                bgcolor={COLORS.white}
+                valueColor={COLORS.primary}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
       <div className="first_chart">
         <AreaChartSimple />

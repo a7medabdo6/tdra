@@ -11,6 +11,7 @@ interface StaticsCardProps {
   valueColor?: string;
   border?: boolean;
   text?: string;
+  count?: any;
 }
 const StaticsCard: React.FC<StaticsCardProps> = ({
   alignText = "end",
@@ -19,6 +20,7 @@ const StaticsCard: React.FC<StaticsCardProps> = ({
   valueColor = "unset",
   border = true,
   text = "Grid",
+  count,
 }) => {
   return (
     <Card
@@ -41,7 +43,7 @@ const StaticsCard: React.FC<StaticsCardProps> = ({
             sx={{ textAlign: alignText, color: valueColor, fontWeight: "bold" }}
           >
             {" "}
-            232.93
+            {count}
           </Typography>
         </CardContent>
       </CardContent>

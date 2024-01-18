@@ -6,7 +6,32 @@ import { Box, FormControl, TextField, Typography } from "@mui/material";
 import logo from "../assets/images/logo.svg";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
+import { useLogin } from "../Api/Hooks/Auth";
+import { useNavigate } from "react-router-dom";
 export default function Login() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const { mutate, isLoading } = useLogin();
+
+  const submit = () => {
+    mutate({ email, password });
+  };
+
+  const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+  const user = localStorage.getItem("user");
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [user, navigate]);
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/"); // Change "/dashboard" to the desired authenticated page
+    }
+  }, [isAuthenticated, navigate]);
   return (
     <Box
       sx={{
@@ -39,7 +64,13 @@ export default function Login() {
             height: "400px",
           }}
         >
-          <Typography sx={{ color: COLORS.primary }}>
+          <Typography
+            sx={{
+              color: COLORS.primary,
+              marginInline: "auto",
+              fontWeight: "bold",
+            }}
+          >
             Login To Your Account
           </Typography>
 
@@ -74,8 +105,13 @@ export default function Login() {
                   "& .MuiOutlinedInput-notchedOutline": {
                     border: "unset !important",
                   },
+                  "& .MuiFormHelperText-root": {
+                    color: COLORS.red,
+                  },
                 }}
-                //   value={item?.value}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                // helperText="Incorrect entry."
                 variant="outlined"
                 placeholder={"Email"}
                 style={{ width: "100%", borderRadius: "20px" }}
@@ -109,6 +145,8 @@ export default function Login() {
                 }}
                 //   value={item?.value}
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 variant="outlined"
                 placeholder={"Password"}
                 style={{ width: "100%", borderRadius: "20px" }}
@@ -124,8 +162,8 @@ export default function Login() {
               style={{
                 borderRadius: "10px",
               }}
-              // isLoading={isLoadingFieldMapping}
-              // onClick={SubmitMapping}
+              isLoading={isLoading}
+              onClick={submit}
             />
           </CardActions>
         </Card>

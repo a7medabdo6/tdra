@@ -5,6 +5,7 @@ import {
   UseQueryResult,
 } from "react-query";
 import { instance } from "../axios";
+import { toast } from "react-toastify";
 
 interface User {
   id: number;
@@ -29,8 +30,20 @@ const login = async (payload: LoginPayload): Promise<any> => {
 export const useLogin = (): UseMutationResult<any, Error, LoginPayload> => {
   return useMutation(login, {
     onSuccess: (data) => {
-      console.log("Login successful:", data);
+      toast.success("User logged successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // console.log("Login successful:", data);
       localStorage.setItem("token", data?.token);
+      localStorage.setItem("user", JSON.stringify(data));
+      window.location.replace("/");
     },
     onError: (error) => {
       console.error("Error during login:", error.message);
