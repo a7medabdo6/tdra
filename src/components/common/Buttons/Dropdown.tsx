@@ -28,7 +28,7 @@ const MenuListComposition: React.FC<BasicButtonProps> = ({
   const [open, setOpen] = React.useState(false);
 
   const anchorRef = React.useRef<HTMLButtonElement>(null);
-  const { data } = useEntities();
+  const { data } = useEntities("");
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };

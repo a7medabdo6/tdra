@@ -1,6 +1,6 @@
-import { Container, Grid, useMediaQuery } from "@mui/material";
+import { Container, Grid, debounce, useMediaQuery } from "@mui/material";
 
-import React from "react";
+import React, { useState } from "react";
 import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
@@ -28,14 +28,27 @@ const HeadersRoles = [
 
 const UserManagement: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
-  const { data, isLoading, isError } = useUseres();
-  const { data: roles, isLoading: isLoadingRoles } = useRolees();
+  const [text, setText] = useState("");
+  const [textRoles, setTextRoles] = useState("");
+
+  const { data, isLoading, isError } = useUseres(text);
+  const { data: roles, isLoading: isLoadingRoles } = useRolees(textRoles);
 
   const navigate = useNavigate();
   const { mutate, isLoading: isLoadingDelete } = useDeleteUser();
   const DeleteFun = (id: any) => {
     mutate({ id });
   };
+  const onChangeSearch = (value: string) => {
+    setText(value);
+  };
+  const debouncedOnChange = debounce(onChangeSearch, 500);
+
+  const onChangeSearchRoles = (value: string) => {
+    setTextRoles(value);
+  };
+  const debouncedOnChangeRoles = debounce(onChangeSearchRoles, 500);
+
   return (
     <Container>
       <BasicTabs
@@ -57,7 +70,7 @@ const UserManagement: React.FC<any> = () => {
                     paddingLeft: "0px !important",
                   }}
                 >
-                  <SearchInput />
+                  <SearchInput onchange={debouncedOnChange} />
                 </Grid>
                 <Grid
                   item
@@ -112,7 +125,7 @@ const UserManagement: React.FC<any> = () => {
                     paddingLeft: "0px !important",
                   }}
                 >
-                  <SearchInput />
+                  <SearchInput onchange={debouncedOnChangeRoles} />
                 </Grid>
                 <Grid
                   item

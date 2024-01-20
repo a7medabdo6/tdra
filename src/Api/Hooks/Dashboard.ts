@@ -17,8 +17,8 @@ const getcommunicationscount = async (data: any): Promise<any> => {
   return response.data;
 };
 
-const fetchall = async (): Promise<any> => {
-  const response = await instance.get(`Lookup/get-lookups`);
+const fetchall = async (text: string): Promise<any> => {
+  const response = await instance.get(`Lookup/get-lookups?name=${text}`);
   return response.data;
 };
 
@@ -86,8 +86,8 @@ export const useDeleteLookup = (): UseMutationResult<any, Error> => {
     },
   });
 };
-export const useLookupes = (): UseQueryResult<any> => {
-  return useQuery(["Lookupes"], () => fetchall(), {
+export const useLookupes = (text: string): UseQueryResult<any> => {
+  return useQuery(["Lookupes", text], () => fetchall(text), {
     onSuccess: () => {},
     onError: (error: any) => {
       toast.error(error?.response?.data?.Message, {

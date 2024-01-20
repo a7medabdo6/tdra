@@ -23,8 +23,8 @@ const fetchOneWithMapping = async (data: any): Promise<any> => {
   return response.data;
 };
 
-const fetchall = async (): Promise<any> => {
-  const response = await instance.get(`Entity/get-entities`);
+const fetchall = async (text: string): Promise<any> => {
+  const response = await instance.get(`Entity/get-entities?name=${text}`);
   return response.data;
 };
 
@@ -157,8 +157,8 @@ export const useDeleteEntity = (): UseMutationResult<any, Error> => {
     },
   });
 };
-export const useEntities = (): UseQueryResult<any> => {
-  return useQuery(["entities "], () => fetchall(), {
+export const useEntities = (text: any): UseQueryResult<any> => {
+  return useQuery(["entities ", text], () => fetchall(text), {
     onSuccess: () => {},
     onError: (error: Error) => {
       console.error("Error fetching Entities : ", error.message);

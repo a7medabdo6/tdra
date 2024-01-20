@@ -2,9 +2,10 @@ import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
-function SearchInput() {
+const SearchInput: React.FC<any> = ({ onchange }) => {
   return (
     <TextField
+      onChange={(e) => onchange(e.target.value)}
       sx={{
         "& .MuiOutlinedInput-root": {
           height: "40px",
@@ -20,7 +21,7 @@ function SearchInput() {
         },
       }}
       variant="outlined"
-      placeholder="Search Lookup Value"
+      placeholder="Search "
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -31,6 +32,6 @@ function SearchInput() {
       style={{ width: "100%", borderRadius: "20px" }}
     />
   );
-}
+};
 
 export default SearchInput;

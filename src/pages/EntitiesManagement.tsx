@@ -1,6 +1,12 @@
-import { Container, Grid, Typography, useMediaQuery } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  debounce,
+  useMediaQuery,
+} from "@mui/material";
 
-import React from "react";
+import React, { useState } from "react";
 import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
@@ -53,8 +59,15 @@ const Headers = [
 
 const EntitiesManagement: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
-  const { data, isLoading } = useEntities();
+  const [text, setText] = useState("");
+
+  const { data, isLoading } = useEntities(text);
   const navigate = useNavigate();
+  const onChangeSearch = (value: string) => {
+    setText(value);
+  };
+  const debouncedOnChange = debounce(onChangeSearch, 500);
+
   return (
     <Container>
       <Grid
@@ -118,7 +131,7 @@ const EntitiesManagement: React.FC<any> = () => {
                 paddingTop: "0px !important",
               }}
             >
-              <SearchInput />
+              <SearchInput onchange={debouncedOnChange} />
             </Grid>
             {!isSmallScreen && (
               <Grid

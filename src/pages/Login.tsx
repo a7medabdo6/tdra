@@ -7,7 +7,7 @@ import logo from "../assets/images/logo.svg";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import { useLogin } from "../Api/Hooks/Auth";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -17,21 +17,21 @@ export default function Login() {
     mutate({ email, password });
   };
 
-  const [isAuthenticated, setIsAuthenticated] = React.useState(true);
-  const user = localStorage.getItem("user");
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [user, navigate]);
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/"); // Change "/dashboard" to the desired authenticated page
-    }
-  }, [isAuthenticated, navigate]);
+  // const [isAuthenticated, setIsAuthenticated] = React.useState(true);
+  // const user = localStorage.getItem("user");
+  // const navigate = useNavigate();
+  // React.useEffect(() => {
+  //   if (user) {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     setIsAuthenticated(false);
+  //   }
+  // }, [user, navigate]);
+  // React.useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/");
+  //   }
+  // }, [isAuthenticated, navigate]);
   return (
     <Box
       sx={{

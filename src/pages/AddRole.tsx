@@ -198,6 +198,7 @@ function AddRole() {
                   />
                 )}
                 <BasicButton
+                  onClick={() => navigate(-1)}
                   text="Cancel"
                   bgColor={COLORS.white}
                   textColor={COLORS.secondary}

@@ -19,7 +19,7 @@ import { useRolees } from "../Api/Hooks/Roles";
 function UserDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data: roles } = useRolees();
+  const { data: roles } = useRolees("");
   const { data, isLoading } =
     id != "add" ? useOneUser({ id }) : { data: null, isLoading: false };
   const [obj, setObj] = useState({
@@ -369,6 +369,7 @@ function UserDetails() {
                 )}
                 <BasicButton
                   text="Cancel"
+                  onClick={() => navigate(-1)}
                   bgColor={COLORS.white}
                   textColor={COLORS.secondary}
                   style={{

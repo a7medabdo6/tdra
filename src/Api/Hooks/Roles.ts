@@ -15,8 +15,8 @@ const fetchOne = async (data: any): Promise<any> => {
   return response.data;
 };
 
-const fetchall = async (): Promise<any> => {
-  const response = await instance.get(`Role/get-roles-modules`);
+const fetchall = async (text: string): Promise<any> => {
+  const response = await instance.get(`Role/get-roles-modules?name=${text}`);
   return response.data;
 };
 
@@ -84,8 +84,8 @@ export const useDeleteRole = (): UseMutationResult<any, Error> => {
     },
   });
 };
-export const useRolees = (): UseQueryResult<any> => {
-  return useQuery(["Rolees"], () => fetchall(), {
+export const useRolees = (text: string): UseQueryResult<any> => {
+  return useQuery(["Rolees", text], () => fetchall(text), {
     onSuccess: () => {},
     onError: (error: any) => {
       toast.error(error?.response?.data?.Message, {
