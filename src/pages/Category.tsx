@@ -11,32 +11,28 @@ import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import SearchInput from "../components/common/Inputs/Searchinput";
-import { useDeleteLookup } from "../Api/Hooks/Lookup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 import ServerError from "../components/Error/ServerError";
-import { useOneCategory } from "../Api/Hooks/Category";
+import { useCategoryes, useDeleteCategory } from "../Api/Hooks/Category";
 const Headers = [
   { label: "Id", key: "id" },
-  { label: "Lookup Value", key: "value" },
-  { label: "Description", key: "description" },
+  { label: "Name ", key: "name" },
+  // { label: "Description", key: "description" },
 ];
 
-const LookupManagement: React.FC<any> = () => {
-  const { id } = useParams();
-
+const Category: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
   const [text, setText] = useState("");
 
-  const { data, isLoading, isError } = useOneCategory(id);
+  const { data, isLoading, isError } = useCategoryes(text);
   const navigate = useNavigate();
-  const { mutate, isLoading: isLoadingDelete } = useDeleteLookup();
+  const { mutate, isLoading: isLoadingDelete } = useDeleteCategory();
   const DeleteFun = (id: any) => {
     mutate({ id });
   };
   const onChangeSearch = (value: string) => {
     setText(value);
-    console.log(text);
   };
   const debouncedOnChange = debounce(onChangeSearch, 500);
 
@@ -91,8 +87,8 @@ const LookupManagement: React.FC<any> = () => {
                 }}
               >
                 <BasicButton
-                  onClick={() => navigate("/lookup-details/add")}
-                  text="Add Lookup value"
+                  onClick={() => navigate("/category-details/add")}
+                  text="Add Category "
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
                   style={{ fontSize: "9px" }}
@@ -124,8 +120,8 @@ const LookupManagement: React.FC<any> = () => {
                 }}
               >
                 <BasicButton
-                  text="Add Lookup value"
-                  onClick={() => navigate("/lookup-details/add")}
+                  text="Add Category"
+                  onClick={() => navigate("/category-details/add")}
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
                 />
@@ -141,13 +137,14 @@ const LookupManagement: React.FC<any> = () => {
           <Grid item xs={12} sm={12} md={12}>
             <BasicTable
               Headers={Headers}
-              data={data.lookupValues}
+              data={data}
               actions={true}
               middleBtn={false}
               deletebtn={true}
               deleteFun={DeleteFun}
               isLoadingDelete={isLoadingDelete}
-              link="/lookup-details"
+              link="/lookup-management"
+              textForEdit="View"
             />
           </Grid>
         )}
@@ -156,4 +153,4 @@ const LookupManagement: React.FC<any> = () => {
   );
 };
 
-export default LookupManagement;
+export default Category;

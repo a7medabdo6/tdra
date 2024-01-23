@@ -23,6 +23,7 @@ interface TableProps {
   link?: string;
   isLoadingDelete?: boolean;
   deleteFun?: any;
+  textForEdit?: string;
 }
 const BasicTable: React.FC<TableProps> = ({
   Headers,
@@ -34,6 +35,7 @@ const BasicTable: React.FC<TableProps> = ({
   link,
   isLoadingDelete,
   deleteFun,
+  textForEdit,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(null);
@@ -110,7 +112,7 @@ const BasicTable: React.FC<TableProps> = ({
                       onClick={() => {
                         navigate(`${link}/${row.id}`);
                       }}
-                      text="Edit"
+                      text={textForEdit ? textForEdit : "Edit"}
                       textColor={COLORS.primary}
                       bgColor={COLORS.lightprimary}
                     />
@@ -126,7 +128,7 @@ const BasicTable: React.FC<TableProps> = ({
                       onClick={() => {
                         navigate(`${link}/${row.id}`);
                       }}
-                      text="Edit"
+                      text={textForEdit ? textForEdit : "Edit"}
                       textColor={COLORS.primary}
                       bgColor={COLORS.lightprimary}
                     />
@@ -162,7 +164,7 @@ const BasicTable: React.FC<TableProps> = ({
                     }}
                   >
                     <BasicButton
-                      text=" Edit"
+                      text={textForEdit ? textForEdit : "Edit"}
                       onClick={() => {
                         navigate(`${link}/${row.id}`);
                       }}
@@ -170,12 +172,6 @@ const BasicTable: React.FC<TableProps> = ({
                       bgColor={COLORS.lightOrange}
                     />
                     {middleBtn && (
-                      // <MenuListComposition
-                      //   text="Edit Mapping"
-                      //   textColor={COLORS.orange}
-                      //   bgColor={COLORS.lightOrange}
-                      //   rowData={row}
-                      // />
                       <BasicButton
                         onClick={() => navigate(`/mapping-screen/${row.id}`)}
                         textColor={COLORS.orange}

@@ -13,6 +13,12 @@ const fetchOne = async (data: any): Promise<any> => {
   const response = await instance.get(`Entity/${data?.id}-with-fields`);
   return response.data;
 };
+const EntityFieldMappingsByEntityId = async (data: any): Promise<any> => {
+  const response = await instance.get(
+    `EntityFieldMapping/get-entity-field-mappings-by-entity-id-${data?.id}`
+  );
+  return response.data;
+};
 const fetchOneConnectionTo = async (data: any): Promise<any> => {
   const response = await instance.get(`Connection/to-entity-${data?.id}`);
   return response.data;
@@ -27,7 +33,10 @@ const fetchall = async (text: string): Promise<any> => {
   const response = await instance.get(`Entity/get-entities?name=${text}`);
   return response.data;
 };
-
+const fetchEntityFieldGetfields = async (): Promise<any> => {
+  const response = await instance.get(`EntityField/get-all-fields`);
+  return response.data;
+};
 const addUpdate = async (payload: any): Promise<any> => {
   const response = await instance.post("Entity/add-update-entity", payload);
   return response.data;
@@ -41,6 +50,13 @@ const PostMock = async (payload: any): Promise<any> => {
 const addUpdatefieldMapping = async (payload: any): Promise<any> => {
   const response = await instance.post(
     "EntityFieldMapping/add-list-entity-field-mapping",
+    payload
+  );
+  return response.data;
+};
+const addUpdateListEntityFieldMapping = async (payload: any): Promise<any> => {
+  const response = await instance.post(
+    "EntityFieldMapping/add-update-list-entity-field-mapping",
     payload
   );
   return response.data;
@@ -100,6 +116,33 @@ export const useAddUpdateFieldMappingEntity = (): UseMutationResult<
     },
   });
 };
+export const useaddUpdateListEntityFieldMapping = (): UseMutationResult<
+  any,
+  Error
+> => {
+  const navigate = useNavigate();
+  return useMutation(addUpdateListEntityFieldMapping, {
+    onSuccess: () => {
+      toast.success("Entity Mapping Updated  successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 1000);
+    },
+    onError: (error) => {
+      console.error("Error during addUpdate:", error.message);
+    },
+  });
+};
+
 export const usePostMock = (): UseMutationResult<any, Error> => {
   const navigate = useNavigate();
   return useMutation(PostMock, {
@@ -173,6 +216,18 @@ export const useOneEntity = (data: any): UseQueryResult<any> => {
     },
   });
 };
+
+export const useOneEntityFieldMappingsByEntityId = (
+  data: any
+): UseQueryResult<any> => {
+  return useQuery(["one-entity"], () => EntityFieldMappingsByEntityId(data), {
+    onSuccess: () => {},
+    onError: (error: Error) => {
+      console.error("Error fetching one : ", error.message);
+    },
+  });
+};
+
 export const useOneEntityMockingTo = (data: any): UseQueryResult<any> => {
   return useQuery(["one_to "], () => fetchOneConnectionTo(data), {
     onSuccess: () => {},
@@ -184,6 +239,15 @@ export const useOneEntityMockingTo = (data: any): UseQueryResult<any> => {
 
 export const useOneEntityWithMapping = (data: any): UseQueryResult<any> => {
   return useQuery(["onewithMapping "], () => fetchOneWithMapping(data), {
+    onSuccess: () => {},
+    onError: (error: Error) => {
+      console.error("Error fetching one : ", error.message);
+    },
+  });
+};
+
+export const useGetAllEntityField = (): UseQueryResult<any> => {
+  return useQuery(["get-all-fields "], () => fetchEntityFieldGetfields(), {
     onSuccess: () => {},
     onError: (error: Error) => {
       console.error("Error fetching one : ", error.message);

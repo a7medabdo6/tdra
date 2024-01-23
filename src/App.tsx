@@ -20,6 +20,8 @@ import MappingMockup from "./pages/Mapping-mockup";
 import MappingMockingTo from "./pages/Mapping-mockup-to";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
+import Category from "./pages/Category";
+import CategoryDetails from "./pages/CategoryDetails";
 const queryClient = new QueryClient();
 
 const router = [
@@ -40,7 +42,15 @@ const router = [
     ),
   },
   {
-    path: "/lookup-management",
+    path: "/lookup-categories",
+    element: (
+      <Layout>
+        <Category />
+      </Layout>
+    ),
+  },
+  {
+    path: "/lookup-management/:id",
     element: (
       <Layout>
         <LookupManagement />
@@ -87,6 +97,15 @@ const router = [
       </Layout>
     ),
   },
+  {
+    path: "/category-details/:id",
+    element: (
+      <Layout>
+        <CategoryDetails />
+      </Layout>
+    ),
+  },
+
   {
     path: "/mapping-screen/:id",
     element: (

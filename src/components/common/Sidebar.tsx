@@ -97,7 +97,7 @@ const Sidebar: React.FC<SideBarProps> = ({ children }) => {
           {[
             { label: "Dashboard and Reports", link: "/" },
             { label: "Entities Management", link: "/entities-management" },
-            { label: "Lookup Management", link: "/lookup-management" },
+            { label: "Lookup Management", link: "/lookup-categories" },
             { label: "User Management", link: "/user-management" },
           ].map((item) => (
             <Link

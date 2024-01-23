@@ -3,39 +3,33 @@ import {
   Box,
   Checkbox,
   Container,
-  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import DoDisturbOnIcon from "@mui/icons-material/DoDisturbOn";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAddUpdateEntity, useOneEntity } from "../Api/Hooks/EntityManagment";
 import SkeletonCom from "../components/Skeleton";
-import { useAddEditEntity } from "../Api/Hooks/EntityMapping";
-interface InputField {
-  name: string;
-  type: string;
-  key: number;
-}
-const EntityFieldType = [
-  "None",
-  "Int",
-  "String",
-  "Date",
-  "Enum",
-  "List",
-  "Attachment",
-];
+// interface InputField {
+//   name: string;
+//   type: string;
+//   key: number;
+// }
+// const EntityFieldType = [
+//   "None",
+//   "Int",
+//   "String",
+//   "Date",
+//   "Enum",
+//   "List",
+//   "Attachment",
+// ];
 function EntityDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -53,7 +47,7 @@ function EntityDetails() {
   useEffect(() => {
     if (data) {
       setObj(data);
-      setInputFields(data?.fields);
+      // setInputFields(data?.fields);
     }
   }, [data]);
   const { mutate, isLoading: isLoadingUpdate } = useAddUpdateEntity();
@@ -64,45 +58,45 @@ function EntityDetails() {
   // const Delete = () => {
   //   deleteOne(obj);
   // };
-  const { mutate: mutateAddEditEntity, isLoading: isLoadingMapping } =
-    useAddEditEntity();
+  // const { mutate: mutateAddEditEntity, isLoading: isLoadingMapping } =
+  //   useAddEditEntity();
 
-  const [onLabelClick, setOnLabelClick] = useState<any>({ "0": false });
+  // const [onLabelClick, setOnLabelClick] = useState<any>({ "0": false });
 
-  const [inputFields, setInputFields] = useState<InputField[]>([]);
-  const generateKey = (): number => {
-    return Date.now();
-  };
+  // const [inputFields, setInputFields] = useState<InputField[]>([]);
+  // const generateKey = (): number => {
+  //   return Date.now();
+  // };
   // useEffect(() => {
   //   // Initialize input fields with keys on mount
   //   setInputFields([{ name: "", type: "", key: generateKey() }]);
   // }, []);
-  const handleInputChange = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>,
-    fieldName: "name" | "type"
-  ): void => {
-    const values = [...inputFields];
-    values[index][fieldName] = event.target.value;
-    setInputFields(values);
-  };
-  const handleAddField = (): void => {
-    setInputFields([
-      ...inputFields,
-      { name: "", type: "", key: generateKey() },
-    ]);
-  };
-  const handleRemoveField = (index: number): void => {
-    const values = [...inputFields];
-    values.splice(index, 1);
-    setInputFields(values);
-  };
-  const Submit = () => {
-    mutateAddEditEntity({
-      id: id ? +id : null,
-      fields: inputFields,
-    });
-  };
+  // const handleInputChange = (
+  //   index: number,
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  //   fieldName: "name" | "type"
+  // ): void => {
+  //   const values = [...inputFields];
+  //   values[index][fieldName] = event.target.value;
+  //   setInputFields(values);
+  // };
+  // const handleAddField = (): void => {
+  //   setInputFields([
+  //     ...inputFields,
+  //     { name: "", type: "", key: generateKey() },
+  //   ]);
+  // };
+  // const handleRemoveField = (index: number): void => {
+  //   const values = [...inputFields];
+  //   values.splice(index, 1);
+  //   setInputFields(values);
+  // };
+  // const Submit = () => {
+  //   mutateAddEditEntity({
+  //     id: id ? +id : null,
+  //     fields: inputFields,
+  //   });
+  // };
   return (
     <Container>
       <Grid container spacing={3}>
@@ -388,7 +382,7 @@ function EntityDetails() {
                 />
               </Grid>
             </Grid>
-            {id != "add" && (
+            {/* {id != "add" && (
               <Grid item xs={12} sm={12} md={12} sx={{ marginBlock: 4 }}>
                 <Grid container spacing={3}>
                   {inputFields.map((inputField, index) => (
@@ -539,14 +533,7 @@ function EntityDetails() {
                       isLoading={isLoadingMapping}
                       onClick={Submit}
                     />
-                    {/* <BasicButton
-                      text="Edit"
-                      bgColor={COLORS.secondary}
-                      textColor={COLORS.white}
-                      style={{
-                        borderRadius: "10px",
-                      }}
-                    /> */}
+                   
                     <BasicButton
                       text="Cancel"
                       bgColor={COLORS.white}
@@ -565,7 +552,7 @@ function EntityDetails() {
                   </Grid>
                 </Grid>
               </Grid>
-            )}
+            )} */}
           </Grid>
         )}
       </Grid>
