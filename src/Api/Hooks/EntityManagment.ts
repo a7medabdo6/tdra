@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const fetchOne = async (data: any): Promise<any> => {
-  const response = await instance.get(`Entity/${data?.id}-with-fields`);
+  const response = await instance.get(`Entity/${data?.id}`);
   return response.data;
 };
 const EntityFieldMappingsByEntityId = async (data: any): Promise<any> => {

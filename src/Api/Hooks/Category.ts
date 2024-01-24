@@ -106,7 +106,7 @@ export const useCategoryes = (text: string): UseQueryResult<any> => {
   });
 };
 export const useOneCategory = (data: any): UseQueryResult<any> => {
-  return useQuery(["oneCategory "], () => fetchOne(data), {
+  return useQuery(["oneCategory ", data], () => fetchOne(data), {
     onSuccess: () => {},
     onError: (error: Error) => {
       console.error("Error fetching one : ", error.message);

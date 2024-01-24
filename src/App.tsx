@@ -115,7 +115,7 @@ const router = [
     ),
   },
   {
-    path: "/mapping-mock/:id",
+    path: "/mapping-mock",
     element: (
       <Layout>
         <MappingMockup />

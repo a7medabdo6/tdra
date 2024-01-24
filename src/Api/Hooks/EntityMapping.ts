@@ -18,6 +18,12 @@ const fetchall = async (): Promise<any> => {
   const response = await instance.get(`EntityMapping/get-entities`);
   return response.data;
 };
+const fetchallfieldswithoutdocument = async (): Promise<any> => {
+  const response = await instance.get(
+    `EntityField/get-all-fields-without-document`
+  );
+  return response.data;
+};
 
 const addUpdate = async (payload: any): Promise<any> => {
   const response = await instance.post(
@@ -174,6 +180,19 @@ export const useEntities = (): UseQueryResult<any> => {
       console.error("Error fetching Entities : ", error.message);
     },
   });
+};
+
+export const useFetchAllFieldsWithoutDocument = (): UseQueryResult<any> => {
+  return useQuery(
+    ["fetchallfieldswithoutdocument "],
+    () => fetchallfieldswithoutdocument(),
+    {
+      onSuccess: () => {},
+      onError: (error: Error) => {
+        console.error("Error fetching Entities : ", error.message);
+      },
+    }
+  );
 };
 export const useOneEntityMapping = (data: any): UseQueryResult<any> => {
   return useQuery(["oneEntityMapping "], () => fetchOne(data), {

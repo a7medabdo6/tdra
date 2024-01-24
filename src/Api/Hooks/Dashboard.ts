@@ -17,10 +17,21 @@ const getcommunicationscount = async (data: any): Promise<any> => {
   return response.data;
 };
 
-const fetchall = async (text: string): Promise<any> => {
-  const response = await instance.get(`Lookup/get-lookups?name=${text}`);
-  return response.data;
-};
+const fetchCommunicationgetcommunicationsperstatusmonth =
+  async (): Promise<any> => {
+    const response = await instance.get(
+      `Communication/get-communications-per-status-month`
+    );
+    return response.data;
+  };
+
+const fetchAPICommunicationgetapicommunicationssend =
+  async (): Promise<any> => {
+    const response = await instance.get(
+      `APICommunication/get-api-communications-send`
+    );
+    return response.data;
+  };
 
 const addUpdate = async (payload: any): Promise<any> => {
   const response = await instance.post("Lookup/add-update-lookup", payload);
@@ -86,27 +97,60 @@ export const useDeleteLookup = (): UseMutationResult<any, Error> => {
     },
   });
 };
-export const useLookupes = (text: string): UseQueryResult<any> => {
-  return useQuery(["Lookupes", text], () => fetchall(text), {
-    onSuccess: () => {},
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.Message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      console.error(
-        "Error fetching Lookupes : ",
-        error?.response?.data?.Message
-      );
-    },
-  });
-};
+export const useFetchCommunicationgetcommunicationsperstatusmonth =
+  (): UseQueryResult<any> => {
+    return useQuery(
+      ["Communicationgetcommunicationsperstatusmonth"],
+      () => fetchCommunicationgetcommunicationsperstatusmonth(),
+      {
+        onSuccess: () => {},
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.Message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          console.error(
+            "Error fetching Lookupes : ",
+            error?.response?.data?.Message
+          );
+        },
+      }
+    );
+  };
+
+export const useFetchAPICommunicationgetapicommunicationssend =
+  (): UseQueryResult<any> => {
+    return useQuery(
+      ["APICommunicationgetapicommunicationssend"],
+      () => fetchAPICommunicationgetapicommunicationssend(),
+      {
+        onSuccess: () => {},
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.Message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          console.error(
+            "Error fetching Lookupes : ",
+            error?.response?.data?.Message
+          );
+        },
+      }
+    );
+  };
+
 export const useGetCommunicationsCount = (data: any): UseQueryResult<any> => {
   return useQuery(
     ["communicationscount "],

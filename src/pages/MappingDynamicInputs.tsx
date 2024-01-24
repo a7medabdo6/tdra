@@ -43,19 +43,23 @@ function MappingDynamicInputs() {
     setInputFields([]);
     if (data?.length > 0 && one?.length > 0) {
       for (let index = 0; index < data?.length; index++) {
-        const result = one?.find((obj: any) => obj.id === data[index]?.id);
-
-        setInputFields((old: any) => {
-          return [
-            ...old,
-            {
-              fieldName: result?.fieldName,
-              fieldMappedName: result?.fieldMappedName,
-              entityId: id,
-              ...(result?.fieldName ? { id: data[index]?.id } : {}),
-            },
-          ];
-        });
+        const result = one?.find(
+          (obj: any) => obj.fieldName === data[index]?.name
+        );
+        if (result) {
+          setInputFields((old: any) => {
+            return [
+              ...old,
+              {
+                fieldName: result?.fieldName,
+                fieldMappedName: result?.fieldMappedName,
+                entityId: id,
+                index: data[index]?.id,
+                ...(result?.fieldName ? { id: result?.id } : {}),
+              },
+            ];
+          });
+        }
       }
     }
   }, [one, data]);
@@ -152,10 +156,10 @@ function MappingDynamicInputs() {
                           setInputFields((old: any) => {
                             if (old.length > 0) {
                               const newarr = old.filter(
-                                (sub: any) => item.id == sub.id
+                                (sub: any) => item.id == sub.index
                               );
                               const oldone = old.filter(
-                                (sub: any) => item.id != sub.id
+                                (sub: any) => item.id != sub.index
                               );
                               if (newarr?.length > 0) {
                                 // console.log(newarr, "neeeeeee");
@@ -169,7 +173,7 @@ function MappingDynamicInputs() {
                                     fieldName: item?.name,
                                     fieldMappedName: e.target.value,
                                     entityId: id,
-                                    id: item?.id,
+                                    index: item?.id,
                                   },
                                 ];
                               }
@@ -180,7 +184,7 @@ function MappingDynamicInputs() {
                                 fieldName: item?.name,
                                 fieldMappedName: e.target.value,
                                 entityId: id,
-                                id: item?.id,
+                                index: item?.id,
                               },
                             ];
                           });

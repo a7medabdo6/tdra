@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Card, Container, Grid, Typography } from "@mui/material";
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
@@ -9,8 +9,13 @@ import BasicButton from "../components/common/Buttons/Button";
 import ReactSimplyCarouselExample from "../components/Slider";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { useGetCommunicationsCount } from "../Api/Hooks/Dashboard";
+import {
+  useFetchAPICommunicationgetapicommunicationssend,
+  useFetchCommunicationgetcommunicationsperstatusmonth,
+  useGetCommunicationsCount,
+} from "../Api/Hooks/Dashboard";
 import SkeletonCom from "../components/Skeleton";
+// import { useLogin } from "../Api/Hooks/Auth";
 const Headers = [
   "Id",
   "Entity Name",
@@ -48,9 +53,48 @@ const dummyData = [
 ];
 function Dashboard() {
   const { data, isLoading } = useGetCommunicationsCount({ filter: 1 });
-  // useEffect(() => {
-  //   mutate({ email: "olak@blackstoneeit.com", password: "P@ssw0rd" });
-  // }, []);
+  const { data: communicationgetcommunicationsperstatusmonth } =
+    useFetchCommunicationgetcommunicationsperstatusmonth();
+  const { data: aPICommunicationgetapicommunicationssend } =
+    useFetchAPICommunicationgetapicommunicationssend();
+  // const { mutate } = useLogin();
+  const [firstChart, setFirstChart] = useState<any>({});
+  const [secondChart, setSecondChart] = useState<any>({});
+
+  useEffect(() => {
+    const months =
+      communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+        (item: any) => item.month
+      );
+    const succeedCounts =
+      communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+        (item: any) => item.succeedCount
+      );
+    const failedCounts =
+      communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+        (item: any) => item.failedCount
+      );
+    const counts = communicationgetcommunicationsperstatusmonth?.counts;
+    setFirstChart({ months, succeedCounts, failedCounts, counts });
+    console.log(communicationgetcommunicationsperstatusmonth);
+  }, [communicationgetcommunicationsperstatusmonth]);
+
+  useEffect(() => {
+    const months =
+      aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.month
+      );
+    const succeedCounts =
+      aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.succeedCount
+      );
+    const failedCounts =
+      aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.failedCount
+      );
+    const counts = aPICommunicationgetapicommunicationssend?.counts;
+    setSecondChart({ months, succeedCounts, failedCounts, counts });
+  }, [aPICommunicationgetapicommunicationssend]);
   return (
     <Container>
       <Grid container spacing={3}>
@@ -138,12 +182,12 @@ function Dashboard() {
         )}
       </Grid>
       <div className="first_chart">
-        <AreaChartSimple />
+        <AreaChartSimple data={firstChart} />
       </div>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
         <Grid item xs={12} sm={9} md={9}>
           <Card>
-            <AreaChartSimple />
+            <AreaChartSimple data={secondChart} />
           </Card>
         </Grid>
         <Grid
