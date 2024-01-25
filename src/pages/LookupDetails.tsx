@@ -63,7 +63,7 @@ function LookupDetails() {
           </Box>
 
           <Typography sx={{ marginInline: "10px" }}>
-            {id == "add" ? " Add Entity " : " Edit Entity Details"}
+            {id == "add" ? " Add Lookup " : " Edit Lookup Details"}
           </Typography>
         </Grid>
         {isLoading && data ? (
