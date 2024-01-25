@@ -14,7 +14,7 @@ import { styled } from "@mui/material/styles";
 import { Container } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -48,6 +48,13 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
   handleDrawerOpen,
   setOpen,
 }) => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    window.location.reload();
+  };
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -66,6 +73,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    logout();
   };
 
   return (
@@ -105,7 +113,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap component="div">
-                Hello Admin
+                Hello {user?.userName}
               </Typography>
             </Box>
 
@@ -129,7 +137,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                // onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
