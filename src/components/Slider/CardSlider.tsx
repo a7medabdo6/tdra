@@ -2,7 +2,7 @@ import { Box, Card, Typography } from "@mui/material";
 import React from "react";
 import { COLORS } from "../../constants/insex";
 
-function CardSlider() {
+function CardSlider({ item }: any) {
   return (
     <Card
       sx={{
@@ -20,11 +20,13 @@ function CardSlider() {
         variant="h6"
         sx={{ lineHeight: "1.2", color: COLORS.secondary }}
       >
-        Entity Name will be here and may take 3 lines
+        {item?.entity}
       </Typography>
       <Box sx={{ marginBlock: "10px" }}>
-        <Typography sx={{ color: COLORS.secondary }}>Total Sent: 30</Typography>
-        <Typography>Total Recieved : 30</Typography>
+        <Typography sx={{ color: COLORS.secondary }}>
+          Total Sent: {item?.totalSent}
+        </Typography>
+        <Typography>Total Recieved : {item?.totalReceived}</Typography>
       </Box>
     </Card>
   );

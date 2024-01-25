@@ -22,6 +22,7 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import Category from "./pages/Category";
 import CategoryDetails from "./pages/CategoryDetails";
+import { useEffect } from "react";
 const queryClient = new QueryClient();
 
 const router = [
@@ -132,6 +133,22 @@ const router = [
   },
 ];
 function App() {
+  useEffect(() => {
+    const tokenKey = "token";
+
+    const token = localStorage.getItem(tokenKey);
+
+    if (token) {
+      const timeoutId = setTimeout(() => {
+        localStorage.removeItem(tokenKey);
+        localStorage.removeItem("user");
+        window.location.reload();
+      }, 3600000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>

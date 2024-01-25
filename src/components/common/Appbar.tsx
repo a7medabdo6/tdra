@@ -137,7 +137,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                // onClose={handleCloseUserMenu}
+                onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>

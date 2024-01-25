@@ -4,62 +4,32 @@ import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
 import { BarChart } from "../components/Charts/BarChart";
-import BasicTable from "../components/common/Table/Table";
+// import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import ReactSimplyCarouselExample from "../components/Slider";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
+  useFetchAPICommunicationgetapicommunicationsreceive,
   useFetchAPICommunicationgetapicommunicationssend,
   useFetchCommunicationgetcommunicationsperstatusmonth,
   useGetCommunicationsCount,
 } from "../Api/Hooks/Dashboard";
 import SkeletonCom from "../components/Skeleton";
-// import { useLogin } from "../Api/Hooks/Auth";
-const Headers = [
-  "Id",
-  "Entity Name",
-  "phone",
-  "Email ",
-  "Services URL",
-  "Is Enabled",
-];
-const dummyData = [
-  {
-    id: 1,
-    entityName: "Company A",
-    phone: "123-456-7890",
-    email: "companyA@example.com",
-    servicesURL: "https://servicesA.com",
-    isEnabled: true,
-  },
-  {
-    id: 2,
-    entityName: "Company B",
-    phone: "987-654-3210",
-    email: "companyB@example.com",
-    servicesURL: "https://servicesB.com",
-    isEnabled: false,
-  },
-  {
-    id: 3,
-    entityName: "Company C",
-    phone: "555-123-4567",
-    email: "companyC@example.com",
-    servicesURL: "https://servicesC.com",
-    isEnabled: true,
-  },
-  // Add more objects as needed
-];
+
 function Dashboard() {
   const { data, isLoading } = useGetCommunicationsCount({ filter: 1 });
   const { data: communicationgetcommunicationsperstatusmonth } =
     useFetchCommunicationgetcommunicationsperstatusmonth();
   const { data: aPICommunicationgetapicommunicationssend } =
     useFetchAPICommunicationgetapicommunicationssend();
+
+  const { data: aPICommunicationgetapicommunicationsrecieve } =
+    useFetchAPICommunicationgetapicommunicationsreceive();
   // const { mutate } = useLogin();
   const [firstChart, setFirstChart] = useState<any>({});
   const [secondChart, setSecondChart] = useState<any>({});
+  const [thirdChart, setThirdChart] = useState<any>({});
 
   useEffect(() => {
     const months =
@@ -95,6 +65,23 @@ function Dashboard() {
     const counts = aPICommunicationgetapicommunicationssend?.counts;
     setSecondChart({ months, succeedCounts, failedCounts, counts });
   }, [aPICommunicationgetapicommunicationssend]);
+
+  useEffect(() => {
+    const months =
+      aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.month
+      );
+    const succeedCounts =
+      aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.succeedCount
+      );
+    const failedCounts =
+      aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
+        (item: any) => item.failedCount
+      );
+    const counts = aPICommunicationgetapicommunicationsrecieve?.counts;
+    setThirdChart({ months, succeedCounts, failedCounts, counts });
+  }, [aPICommunicationgetapicommunicationsrecieve]);
   return (
     <Container>
       <Grid container spacing={3}>
@@ -203,12 +190,16 @@ function Dashboard() {
         >
           <StaticsCard
             text="Response Time"
+            count={
+              aPICommunicationgetapicommunicationssend?.averageResponseTime
+            }
             alignText="center"
             valueColor={COLORS.black}
           />
           <StaticsCard
             alignText="center"
             text="Integration Status"
+            count={aPICommunicationgetapicommunicationssend?.integrationStatus}
             valueColor={COLORS.green}
           />
           <StaticsCard
@@ -218,13 +209,14 @@ function Dashboard() {
             textColor={COLORS.white}
             valueColor={COLORS.white}
             border={false}
+            count={aPICommunicationgetapicommunicationssend?.totalCallsCount}
           />
         </Grid>
       </Grid>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
         <Grid item xs={12} sm={9} md={9}>
           <Card>
-            <AreaChartSimple />
+            <AreaChartSimple data={thirdChart} />
           </Card>
         </Grid>
         <Grid
@@ -241,11 +233,17 @@ function Dashboard() {
           <StaticsCard
             text="Response Time"
             alignText="center"
+            count={
+              aPICommunicationgetapicommunicationsrecieve?.averageResponseTime
+            }
             valueColor={COLORS.black}
           />
           <StaticsCard
             text="Integration Status"
             alignText="center"
+            count={
+              aPICommunicationgetapicommunicationsrecieve?.integrationStatus
+            }
             valueColor={COLORS.red}
           />
           <StaticsCard
@@ -255,6 +253,7 @@ function Dashboard() {
             textColor={COLORS.white}
             valueColor={COLORS.white}
             border={false}
+            count={aPICommunicationgetapicommunicationsrecieve?.totalCallsCount}
           />
         </Grid>
       </Grid>
@@ -311,7 +310,7 @@ function Dashboard() {
             <ReactSimplyCarouselExample />
           </Card>
         </Grid>
-        <Grid item xs={12} sm={12} md={12}>
+        {/* <Grid item xs={12} sm={12} md={12}>
           <Box
             sx={{
               display: "flex",
@@ -379,7 +378,7 @@ function Dashboard() {
           </Box>
 
           <BasicTable Headers={Headers} data={dummyData} />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );

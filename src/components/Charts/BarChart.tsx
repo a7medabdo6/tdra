@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { COLORS } from "../../constants/insex";
+import { useFetchCommunicationgetcommunicationspertypemonth } from "../../Api/Hooks/Dashboard";
 
 ChartJS.register(
   CategoryScale,
@@ -49,44 +50,35 @@ export const options = {
   cornerRadius: 20, // Adjust the border radius here
 };
 
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-];
-
-// Replace faker with your own dummy data
-const generateDummyData = () => {
-  return labels.map(() => Math.floor(Math.random() * 2000));
-};
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Sent",
-      data: generateDummyData(),
-      backgroundColor: COLORS.primary,
-      borderRadius: 20, // Add border radius to the bars
-    },
-    {
-      label: "Received",
-      data: generateDummyData(),
-      backgroundColor: COLORS.secondary,
-      borderRadius: 20, // Add border radius to the bars
-    },
-  ],
-};
-
 export function BarChart() {
-  return <Bar options={options} data={data} />;
+  const { data } = useFetchCommunicationgetcommunicationspertypemonth();
+  console.log(data, "dataaaa");
+
+  const [firstChart, setFirstChart] = useState<any>({});
+
+  useEffect(() => {
+    const months = data?.map((item: any) => item.month);
+    const sentCount = data?.map((item: any) => item.sentCount);
+    const receivedCount = data?.map((item: any) => item.receivedCount);
+    setFirstChart({ months, sentCount, receivedCount });
+  }, [data]);
+
+  const datachart = {
+    labels: firstChart?.months,
+    datasets: [
+      {
+        label: "Sent",
+        data: firstChart?.sentCount,
+        backgroundColor: COLORS.primary,
+        borderRadius: 20, // Add border radius to the bars
+      },
+      {
+        label: "Received",
+        data: firstChart?.receivedCount,
+        backgroundColor: COLORS.secondary,
+        borderRadius: 20, // Add border radius to the bars
+      },
+    ],
+  };
+  return <Bar options={options} data={datachart} />;
 }

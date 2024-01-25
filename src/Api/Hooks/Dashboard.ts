@@ -17,6 +17,10 @@ const getcommunicationscount = async (data: any): Promise<any> => {
   return response.data;
 };
 
+const fetchTopEntities = async (): Promise<any> => {
+  const response = await instance.get(`Entity/get-top-entities/`);
+  return response.data;
+};
 const fetchCommunicationgetcommunicationsperstatusmonth =
   async (): Promise<any> => {
     const response = await instance.get(
@@ -25,10 +29,25 @@ const fetchCommunicationgetcommunicationsperstatusmonth =
     return response.data;
   };
 
+const fetchCommunicationgetcommunicationspertypemonth =
+  async (): Promise<any> => {
+    const response = await instance.get(
+      `Communication/get-communications-per-type-month`
+    );
+    return response.data;
+  };
 const fetchAPICommunicationgetapicommunicationssend =
   async (): Promise<any> => {
     const response = await instance.get(
       `APICommunication/get-api-communications-send`
+    );
+    return response.data;
+  };
+
+const fetchAPICommunicationgetapicommunicationsreceive =
+  async (): Promise<any> => {
+    const response = await instance.get(
+      `APICommunication/get-api-communications-receive`
     );
     return response.data;
   };
@@ -123,12 +142,85 @@ export const useFetchCommunicationgetcommunicationsperstatusmonth =
       }
     );
   };
+export const useFetchCommunicationgetcommunicationspertypemonth =
+  (): UseQueryResult<any> => {
+    return useQuery(
+      ["Communicationgetcommunicationspertypemonth"],
+      () => fetchCommunicationgetcommunicationspertypemonth(),
+      {
+        onSuccess: () => {},
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.Message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          console.error(
+            "Error fetching Lookupes : ",
+            error?.response?.data?.Message
+          );
+        },
+      }
+    );
+  };
+export const useGetTopEntities = (): UseQueryResult<any> => {
+  return useQuery(["fetchTopEntities"], () => fetchTopEntities(), {
+    onSuccess: () => {},
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.Message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      console.error(
+        "Error fetching Lookupes : ",
+        error?.response?.data?.Message
+      );
+    },
+  });
+};
 
 export const useFetchAPICommunicationgetapicommunicationssend =
   (): UseQueryResult<any> => {
     return useQuery(
       ["APICommunicationgetapicommunicationssend"],
       () => fetchAPICommunicationgetapicommunicationssend(),
+      {
+        onSuccess: () => {},
+        onError: (error: any) => {
+          toast.error(error?.response?.data?.Message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          console.error(
+            "Error fetching Lookupes : ",
+            error?.response?.data?.Message
+          );
+        },
+      }
+    );
+  };
+export const useFetchAPICommunicationgetapicommunicationsreceive =
+  (): UseQueryResult<any> => {
+    return useQuery(
+      ["APICommunicationgetapicommunicationsreceive"],
+      () => fetchAPICommunicationgetapicommunicationsreceive(),
       {
         onSuccess: () => {},
         onError: (error: any) => {
