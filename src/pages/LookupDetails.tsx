@@ -18,8 +18,6 @@ function LookupDetails() {
     description: "",
   });
   useEffect(() => {
-    console.log(id, "iddddd");
-
     if (data) {
       setObj(data);
     }

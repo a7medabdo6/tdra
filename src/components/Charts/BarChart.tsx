@@ -52,7 +52,6 @@ export const options = {
 
 export function BarChart() {
   const { data } = useFetchCommunicationgetcommunicationspertypemonth();
-  console.log(data, "dataaaa");
 
   const [firstChart, setFirstChart] = useState<any>({});
 

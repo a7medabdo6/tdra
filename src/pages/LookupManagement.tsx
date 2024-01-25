@@ -26,7 +26,7 @@ const LookupManagement: React.FC<any> = () => {
   const { id } = useParams();
 
   const isSmallScreen = useMediaQuery("(max-width:700px)");
-  const [text, setText] = useState("");
+  const [, setText] = useState("");
 
   const { data, isLoading, isError } = useOneCategory(id);
   const navigate = useNavigate();
@@ -36,7 +36,6 @@ const LookupManagement: React.FC<any> = () => {
   };
   const onChangeSearch = (value: string) => {
     setText(value);
-    console.log(text);
   };
   const debouncedOnChange = debounce(onChangeSearch, 500);
 

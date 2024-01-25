@@ -36,15 +36,6 @@ const TableRole: React.FC<TableProps> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(null);
-  console.log({
-    deletebtn,
-    middleBtn,
-    actions,
-    haveButtons,
-    link,
-    isLoadingDelete,
-    deleteFun,
-  });
 
   const navigate = useNavigate();
   return (
@@ -155,7 +146,6 @@ const TableRole: React.FC<TableProps> = ({
                   )}
                 </TableCell>
               )}
-              {console.log(link, "linkkkk")}
 
               {actions && (
                 <TableCell align="center">

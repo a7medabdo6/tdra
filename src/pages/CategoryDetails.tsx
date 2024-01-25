@@ -17,8 +17,6 @@ function CategoryDetails() {
     name: "",
   });
   useEffect(() => {
-    // console.log(id, "iddddd");
-
     if (data) {
       setObj(data);
     }

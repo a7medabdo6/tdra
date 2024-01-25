@@ -20,8 +20,6 @@ function MappingScreen() {
   });
   useEffect(() => {
     if (data) {
-      console.log(obj, "objobjobj");
-
       setObj(data);
     }
   }, [data]);

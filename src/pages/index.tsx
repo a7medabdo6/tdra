@@ -16,6 +16,7 @@ import {
   useGetCommunicationsCount,
 } from "../Api/Hooks/Dashboard";
 import SkeletonCom from "../components/Skeleton";
+import DateInput from "../components/common/Buttons/DateInput";
 
 function Dashboard() {
   const { data, isLoading } = useGetCommunicationsCount({ filter: 1 });
@@ -46,7 +47,6 @@ function Dashboard() {
       );
     const counts = communicationgetcommunicationsperstatusmonth?.counts;
     setFirstChart({ months, succeedCounts, failedCounts, counts });
-    console.log(communicationgetcommunicationsperstatusmonth);
   }, [communicationgetcommunicationsperstatusmonth]);
 
   useEffect(() => {
@@ -104,14 +104,15 @@ function Dashboard() {
                 alignItems: "center",
               }}
             >
-              <BasicButton
-                text="From: 1/2023"
+              <DateInput
+                text="From: "
                 bgColor={COLORS.secondary}
                 textColor={COLORS.white}
                 style={{ padding: "5px 7px" }}
               />
-              <BasicButton
-                text="To: 1/2023"
+
+              <DateInput
+                text="To: "
                 bgColor={COLORS.secondary}
                 textColor={COLORS.white}
                 style={{ padding: "5px 7px" }}

@@ -33,7 +33,6 @@ function AddRole() {
   useEffect(() => {
     if (role) {
       const Ids = role.modules.map((item: any) => item.id);
-      console.log(role, "rolle");
 
       setObj((old: any) => {
         return { ...old, name: role.name, modules: Ids };

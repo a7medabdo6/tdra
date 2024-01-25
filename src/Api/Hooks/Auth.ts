@@ -40,7 +40,6 @@ export const useLogin = (): UseMutationResult<any, Error, LoginPayload> => {
         progress: undefined,
         theme: "colored",
       });
-      // console.log("Login successful:", data);
       localStorage.setItem("token", data?.token);
       localStorage.setItem("user", JSON.stringify(data));
       window.location.replace("/");
@@ -53,8 +52,8 @@ export const useLogin = (): UseMutationResult<any, Error, LoginPayload> => {
 
 export const useUser = (userId: number): UseQueryResult<User> => {
   return useQuery(["user", userId], () => fetchUser(userId), {
-    onSuccess: (data: User) => {
-      console.log("User data fetched successfully:", data);
+    onSuccess: () => {
+      // console.log("User data fetched successfully:", data);
     },
     onError: (error: Error) => {
       console.error("Error fetching user:", error.message);

@@ -39,7 +39,6 @@ function MappingDynamicInputs() {
     mutate(inputFields);
   };
   useEffect(() => {
-    // console.log(one, isLoadingone);
     setInputFields([]);
     if (data?.length > 0 && one?.length > 0) {
       for (let index = 0; index < data?.length; index++) {
@@ -63,9 +62,6 @@ function MappingDynamicInputs() {
       }
     }
   }, [one, data]);
-  useEffect(() => {
-    console.log(inputFields, "datadata");
-  }, [inputFields]);
 
   return (
     <Container>
@@ -162,8 +158,6 @@ function MappingDynamicInputs() {
                                 (sub: any) => item.id != sub.index
                               );
                               if (newarr?.length > 0) {
-                                // console.log(newarr, "neeeeeee");
-
                                 newarr[0].fieldMappedName = e.target.value;
                                 return [...oldone, newarr[0]];
                               } else {
