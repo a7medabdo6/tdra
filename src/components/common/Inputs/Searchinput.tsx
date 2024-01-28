@@ -2,7 +2,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchInput: React.FC<any> = ({ onchange }) => {
+const SearchInput: React.FC<any> = ({ onchange, style }) => {
   return (
     <TextField
       onChange={(e) => onchange(e.target.value)}
@@ -19,6 +19,7 @@ const SearchInput: React.FC<any> = ({ onchange }) => {
         "& .MuiOutlinedInput-notchedOutline": {
           border: "unset !important",
         },
+        ...style,
       }}
       variant="outlined"
       placeholder="Search "

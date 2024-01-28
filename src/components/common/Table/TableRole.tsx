@@ -159,7 +159,7 @@ const TableRole: React.FC<TableProps> = ({
                     }}
                   >
                     <BasicButton
-                      text=" tttt"
+                      text="Edit"
                       onClick={() => {
                         navigate(`${link}/${row.id}`);
                       }}

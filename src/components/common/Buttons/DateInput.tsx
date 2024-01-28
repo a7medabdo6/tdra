@@ -6,6 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 // import moment from "moment";
 import dayjs from "dayjs";
+import moment from "moment";
 
 interface BasicButtonProps {
   textColor: string;
@@ -14,14 +15,19 @@ interface BasicButtonProps {
   style?: any;
   onClick?: any;
   isLoading?: boolean;
+  initValue?: any;
+  name?: string;
+  onChange?: any;
 }
 const DateInput: React.FC<BasicButtonProps> = ({
   textColor,
   bgColor,
   text,
   style,
-
+  initValue = null,
   isLoading,
+  onChange,
+  name,
 }) => {
   const [selectedDate, setSelectedDate] = useState<any>("");
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
@@ -32,10 +38,13 @@ const DateInput: React.FC<BasicButtonProps> = ({
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date?.$d);
+    onChange((old: any) => {
+      return { ...old, [`${name}`]: moment(date?.$d).format("lll") };
+    });
     setIsDatePickerVisible(false);
   };
   useEffect(() => {
-    setSelectedDate(new Date());
+    setSelectedDate(initValue ? initValue : new Date());
   }, []);
 
   return (

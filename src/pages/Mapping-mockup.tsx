@@ -34,23 +34,21 @@ function MappingDynamicInputs() {
   const [inputFields, setInputFields] = useState<any>({});
   // const [selectedFile, setSelectedFile] = useState(null);
 
+  const [fileName, setFileName] = useState<any>("");
+
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
-    // setSelectedFile(file);
     if (file) {
       const reader = new FileReader();
-
+      const fileName = file.name;
+      setFileName(fileName);
       reader.onloadend = () => {
-        // The result property contains the base64 encoded string
         const base64String = reader.result;
         setBase64Image(base64String);
       };
 
-      // Read the image file as a data URL
       reader.readAsDataURL(file);
     }
-
-    // You can perform additional actions with the selected file if needed
   };
   const handleEntityChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -72,6 +70,8 @@ function MappingDynamicInputs() {
       fieldValues: {
         ...reset,
         // entityId: null,
+        ...(base64Image && { "File Name": fileName }),
+
         ...(base64Image && { Document: base64Image }),
       },
       ...(base64Image && { isAttachment: true }),

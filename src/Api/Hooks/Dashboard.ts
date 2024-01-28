@@ -11,8 +11,18 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const getcommunicationscount = async (data: any): Promise<any> => {
+  // Create a new URLSearchParams object
+  const params = new URLSearchParams();
+
+  // Iterate over the key-value pairs in the data object and append them to the URLSearchParams
+  for (const [key, value] of Object.entries(data)) {
+    params.append(key, String(value));
+  }
+
+  // Use the params object in your URL
+  const queryString = params.toString();
   const response = await instance.get(
-    `Communication/get-communications-count/?${data}`
+    `Communication/get-communications-count/?${queryString}`
   );
   return response.data;
 };
@@ -44,13 +54,23 @@ const fetchAPICommunicationgetapicommunicationssend =
     return response.data;
   };
 
-const fetchAPICommunicationgetapicommunicationsreceive =
-  async (): Promise<any> => {
-    const response = await instance.get(
-      `APICommunication/get-api-communications-receive`
-    );
-    return response.data;
-  };
+const fetchAPICommunicationgetapicommunicationsreceive = async (
+  data: any
+): Promise<any> => {
+  const params = new URLSearchParams();
+
+  // Iterate over the key-value pairs in the data object and append them to the URLSearchParams
+  for (const [key, value] of Object.entries(data)) {
+    params.append(key, String(value));
+  }
+
+  // Use the params object in your URL
+  const queryString = params.toString();
+  const response = await instance.get(
+    `APICommunication/get-api-communications-receive?${queryString}`
+  );
+  return response.data;
+};
 
 const addUpdate = async (payload: any): Promise<any> => {
   const response = await instance.post("Lookup/add-update-lookup", payload);
@@ -216,36 +236,37 @@ export const useFetchAPICommunicationgetapicommunicationssend =
       }
     );
   };
-export const useFetchAPICommunicationgetapicommunicationsreceive =
-  (): UseQueryResult<any> => {
-    return useQuery(
-      ["APICommunicationgetapicommunicationsreceive"],
-      () => fetchAPICommunicationgetapicommunicationsreceive(),
-      {
-        onSuccess: () => {},
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.Message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          console.error(
-            "Error fetching Lookupes : ",
-            error?.response?.data?.Message
-          );
-        },
-      }
-    );
-  };
+export const useFetchAPICommunicationgetapicommunicationsreceive = (
+  data: any
+): UseQueryResult<any> => {
+  return useQuery(
+    ["APICommunicationgetapicommunicationsreceive", data],
+    () => fetchAPICommunicationgetapicommunicationsreceive(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+    }
+  );
+};
 
 export const useGetCommunicationsCount = (data: any): UseQueryResult<any> => {
   return useQuery(
-    ["communicationscount "],
+    ["communicationscount ", data],
     () => getcommunicationscount(data),
     {
       onSuccess: () => {},

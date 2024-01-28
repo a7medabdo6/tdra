@@ -144,7 +144,7 @@ export const useaddUpdateListEntityFieldMapping = (): UseMutationResult<
 };
 
 export const usePostMock = (): UseMutationResult<any, Error> => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return useMutation(PostMock, {
     onSuccess: () => {
       toast.success("Entity Mocked  successfully!", {
@@ -157,9 +157,9 @@ export const usePostMock = (): UseMutationResult<any, Error> => {
         progress: undefined,
         theme: "colored",
       });
-      setTimeout(() => {
-        navigate(-1);
-      }, 1000);
+      // setTimeout(() => {
+      //   navigate(-1);
+      // }, 1000);
     },
     onError: (error) => {
       console.error("Error during addUpdate:", error.message);

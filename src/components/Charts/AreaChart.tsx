@@ -40,20 +40,20 @@ export const options = {
   },
 };
 
-// const labels = [
-//   "January",
-//   "February",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-//   "March",
-//   "April",
-//   "May",
-//   "June",
-//   "July",
-// ];
+const labels = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 // function generateRandomDataPoints(count: number) {
 //   const dataPoints = [];
 
@@ -69,8 +69,17 @@ export const options = {
 
 export function AreaChartSimple({ data }: any) {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
+  const succeedData = data?.succeedCounts;
+  const failedData = data?.failedCounts;
+
+  const maxSucceed = succeedData ? Math.max(...succeedData) : 0;
+  const maxFailed = failedData ? Math.max(...failedData) : 0;
+
+  const maxY = Math.max(maxSucceed, maxFailed) + 10;
+  console.log(maxY, "MAXXX");
+
   const dataChart = {
-    labels: data?.months,
+    labels: labels,
     datasets: [
       {
         fill: true,

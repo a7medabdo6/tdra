@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Card, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  Container,
+  Grid,
+  Typography,
+  debounce,
+} from "@mui/material";
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
@@ -17,17 +24,33 @@ import {
 } from "../Api/Hooks/Dashboard";
 import SkeletonCom from "../components/Skeleton";
 import DateInput from "../components/common/Buttons/DateInput";
+import moment from "moment";
+import SearchInput from "../components/common/Inputs/Searchinput";
 
 function Dashboard() {
-  const { data, isLoading } = useGetCommunicationsCount({ filter: 1 });
+  const [text, setText] = useState("");
+
+  const [filters, setFilters] = useState({
+    fromDate: moment("1/1/2024").format("lll"),
+    toDate: moment(new Date()).format("lll"),
+  });
+  const [filtersForBarChart, setFiltersForBarChart] = useState({
+    fromDate: moment("1/1/2024").format("lll"),
+    toDate: moment(new Date()).format("lll"),
+  });
+  const { data, isLoading } = useGetCommunicationsCount(filters);
   const { data: communicationgetcommunicationsperstatusmonth } =
     useFetchCommunicationgetcommunicationsperstatusmonth();
   const { data: aPICommunicationgetapicommunicationssend } =
     useFetchAPICommunicationgetapicommunicationssend();
 
-  const { data: aPICommunicationgetapicommunicationsrecieve } =
-    useFetchAPICommunicationgetapicommunicationsreceive();
-  // const { mutate } = useLogin();
+  const {
+    data: aPICommunicationgetapicommunicationsrecieve,
+    isLoading: aPICommunicationgetapicommunicationsrecieveLoading,
+  } = useFetchAPICommunicationgetapicommunicationsreceive({
+    ...filtersForBarChart,
+    name: text,
+  });
   const [firstChart, setFirstChart] = useState<any>({});
   const [secondChart, setSecondChart] = useState<any>({});
   const [thirdChart, setThirdChart] = useState<any>({});
@@ -82,6 +105,16 @@ function Dashboard() {
     const counts = aPICommunicationgetapicommunicationsrecieve?.counts;
     setThirdChart({ months, succeedCounts, failedCounts, counts });
   }, [aPICommunicationgetapicommunicationsrecieve]);
+  const [showFilters, setShowFilters] = useState(false);
+  const handleShowFilters = () => {
+    setShowFilters((old) => !old);
+  };
+
+  const onChangeSearch = (value: string) => {
+    setText(value);
+  };
+  const debouncedOnChange = debounce(onChangeSearch, 500);
+
   return (
     <Container>
       <Grid container spacing={3}>
@@ -105,7 +138,10 @@ function Dashboard() {
               }}
             >
               <DateInput
+                initValue={filters.fromDate}
                 text="From: "
+                onChange={setFilters}
+                name={"fromDate"}
                 bgColor={COLORS.secondary}
                 textColor={COLORS.white}
                 style={{ padding: "5px 7px" }}
@@ -113,6 +149,8 @@ function Dashboard() {
 
               <DateInput
                 text="To: "
+                onChange={setFilters}
+                name={"toDate"}
                 bgColor={COLORS.secondary}
                 textColor={COLORS.white}
                 style={{ padding: "5px 7px" }}
@@ -215,11 +253,16 @@ function Dashboard() {
         </Grid>
       </Grid>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
-        <Grid item xs={12} sm={9} md={9}>
-          <Card>
-            <AreaChartSimple data={thirdChart} />
-          </Card>
-        </Grid>
+        {aPICommunicationgetapicommunicationsrecieveLoading ? (
+          <SkeletonCom></SkeletonCom>
+        ) : (
+          <Grid item xs={12} sm={9} md={9}>
+            <Card>
+              <AreaChartSimple data={thirdChart} />
+            </Card>
+          </Grid>
+        )}
+
         <Grid
           item
           xs={12}
@@ -267,6 +310,7 @@ function Dashboard() {
               width: "100%",
               boxShadow: "unset",
               position: "relative",
+              overflow: "visible",
             }}
           >
             <BasicButton
@@ -291,7 +335,69 @@ function Dashboard() {
               }
               bgColor={COLORS.secondary}
               textColor={COLORS.white}
+              onClick={handleShowFilters}
             />
+            {showFilters && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  position: "absolute",
+                  right: "10px",
+                  top: "60px",
+                  // width: "150px",
+                  flexDirection: "column",
+                  backgroundColor: "white",
+                  padding: "20px",
+                  borderRadius: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <DateInput
+                    initValue={filtersForBarChart.fromDate}
+                    text="From: "
+                    onChange={setFiltersForBarChart}
+                    name={"fromDate"}
+                    bgColor={COLORS.secondary}
+                    textColor={COLORS.white}
+                    style={{ padding: "5px 7px" }}
+                  />
+
+                  <DateInput
+                    text="To: "
+                    onChange={setFiltersForBarChart}
+                    name={"toDate"}
+                    bgColor={COLORS.secondary}
+                    textColor={COLORS.white}
+                    style={{ padding: "5px 7px" }}
+                  />
+                </Box>
+
+                <SearchInput
+                  style={{
+                    backgroundColor: COLORS.secondary,
+                    color: COLORS.white,
+
+                    "& .MuiOutlinedInput-root": {
+                      color: COLORS.white,
+                    },
+                    "& .MuiInputBase-input": {
+                      padding: "10px",
+                    },
+                  }}
+                  onchange={debouncedOnChange}
+                />
+              </Box>
+            )}
+
             <BarChart />
           </Card>
         </Grid>
