@@ -117,19 +117,11 @@ const router = [
   },
   {
     path: "/mapping-mock",
-    element: (
-      <Layout>
-        <MappingMockup />
-      </Layout>
-    ),
+    element: <MappingMockup />,
   },
   {
     path: "/mapping-mock-to/:id",
-    element: (
-      <Layout>
-        <MappingMockingTo />
-      </Layout>
-    ),
+    element: <MappingMockingTo />,
   },
 ];
 function App() {

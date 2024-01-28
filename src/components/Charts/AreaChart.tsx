@@ -41,6 +41,9 @@ export const options = {
 };
 
 const labels = [
+  "October",
+  "November",
+  "December",
   "January",
   "February",
   "March",
@@ -50,9 +53,6 @@ const labels = [
   "July",
   "August",
   "September",
-  "October",
-  "November",
-  "December",
 ];
 // function generateRandomDataPoints(count: number) {
 //   const dataPoints = [];
@@ -110,6 +110,15 @@ export function AreaChartSimple({ data }: any) {
         backgroundColor: "transparent",
       },
     ],
+    options: {
+      scales: {
+        x: { title: { display: true, text: "Month" } },
+        y: {
+          title: { display: true, text: "Succeed Count" },
+          ticks: { beginAtZero: true, min: 0 }, // Set min to 0 to hide negative values
+        },
+      },
+    },
   };
   return (
     <Box sx={{ height: isSmallScreen ? "300px" : "400px", width: "100% " }}>

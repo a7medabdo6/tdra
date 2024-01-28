@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Box,
   Container,
   FormControl,
   Grid,
@@ -8,8 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import { COLORS } from "../constants/insex";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate, useParams } from "react-router-dom";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useParams } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 
 import { useOneEntityMockingTo } from "../Api/Hooks/EntityManagment";
@@ -18,7 +17,7 @@ import BasicButton from "../components/common/Buttons/Button";
 function MappingMockingTo() {
   const { id } = useParams();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { data, isLoading } = useOneEntityMockingTo({ id });
   const handleDownload = (base64PdfData: any, name: string) => {
     const trimmedBase64 = base64PdfData.split(",")[1];
@@ -43,7 +42,7 @@ function MappingMockingTo() {
   return (
     <Container>
       <Grid container spacing={3}>
-        <Grid
+        {/* <Grid
           item
           xs={6}
           sm={6}
@@ -76,7 +75,7 @@ function MappingMockingTo() {
           <Typography sx={{ marginInline: "10px" }}>
             Mapping Mocking To
           </Typography>
-        </Grid>
+        </Grid> */}
 
         {isLoading ? (
           <SkeletonCom />

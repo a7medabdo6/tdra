@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Box,
   Container,
   FormControl,
   Grid,
@@ -10,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { COLORS } from "../constants/insex";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 
 import BasicButton from "../components/common/Buttons/Button";
@@ -24,7 +21,6 @@ function MappingDynamicInputs() {
   const [text] = useState("");
   const [base64Image, setBase64Image] = useState<any>("");
 
-  const navigate = useNavigate();
   const { data, isLoading } = useEntities(text);
   const { data: allFieldsWithoutDocument } = useFetchAllFieldsWithoutDocument();
 
@@ -80,9 +76,9 @@ function MappingDynamicInputs() {
   };
 
   return (
-    <Container>
+    <Container sx={{ marginTop: "30px" }}>
       <Grid container spacing={3}>
-        <Grid
+        {/* <Grid
           item
           xs={6}
           sm={6}
@@ -113,7 +109,7 @@ function MappingDynamicInputs() {
           </Box>
 
           <Typography sx={{ marginInline: "10px" }}>Mapping Mocking</Typography>
-        </Grid>
+        </Grid> */}
 
         {isLoading ? (
           <SkeletonCom />
@@ -237,7 +233,7 @@ function MappingDynamicInputs() {
                 </Grid>
                 {data?.toFields?.length != 0 && (
                   <BasicButton
-                    text="Save"
+                    text="Submit"
                     bgColor={COLORS.primary}
                     textColor={COLORS.white}
                     style={{

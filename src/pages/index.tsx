@@ -54,22 +54,55 @@ function Dashboard() {
   const [firstChart, setFirstChart] = useState<any>({});
   const [secondChart, setSecondChart] = useState<any>({});
   const [thirdChart, setThirdChart] = useState<any>({});
-
+  const labels = [
+    "October",
+    "November",
+    "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+  ];
   useEffect(() => {
     const months =
       communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
         (item: any) => item.month
       );
-    const succeedCounts =
-      communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
-        (item: any) => item.succeedCount
-      );
-    const failedCounts =
-      communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
-        (item: any) => item.failedCount
-      );
+    // const succeedCounts =
+    //   communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+    //     (item: any) => item.succeedCount
+    //   );
+    // const failedCounts =
+    //   communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+    //     (item: any) => item.failedCount
+    //   );
     const counts = communicationgetcommunicationsperstatusmonth?.counts;
-    setFirstChart({ months, succeedCounts, failedCounts, counts });
+    const datasucceed = labels.map((month) => {
+      const monthData =
+        communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.succeedCount : 0;
+    });
+    const datafailed = labels.map((month) => {
+      const monthData =
+        communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.failedCount : 0;
+    });
+
+    setFirstChart({
+      months,
+      succeedCounts: datasucceed,
+      failedCounts: datafailed,
+      counts,
+    });
   }, [communicationgetcommunicationsperstatusmonth]);
 
   useEffect(() => {
@@ -77,16 +110,35 @@ function Dashboard() {
       aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
         (item: any) => item.month
       );
-    const succeedCounts =
-      aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
-        (item: any) => item.succeedCount
-      );
-    const failedCounts =
-      aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
-        (item: any) => item.failedCount
-      );
+    // const succeedCounts =
+    //   aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
+    //     (item: any) => item.succeedCount
+    //   );
+    // const failedCounts =
+    //   aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
+    //     (item: any) => item.failedCount
+    //   );
+    const datasucceed = labels.map((month) => {
+      const monthData =
+        aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.succeedCount : null;
+    });
+    const datafailed = labels.map((month) => {
+      const monthData =
+        aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.failedCount : null;
+    });
     const counts = aPICommunicationgetapicommunicationssend?.counts;
-    setSecondChart({ months, succeedCounts, failedCounts, counts });
+    setSecondChart({
+      months,
+      succeedCounts: datasucceed,
+      failedCounts: datafailed,
+      counts,
+    });
   }, [aPICommunicationgetapicommunicationssend]);
 
   useEffect(() => {
@@ -94,16 +146,35 @@ function Dashboard() {
       aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
         (item: any) => item.month
       );
-    const succeedCounts =
-      aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
-        (item: any) => item.succeedCount
-      );
-    const failedCounts =
-      aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
-        (item: any) => item.failedCount
-      );
+    // const succeedCounts =
+    //   aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
+    //     (item: any) => item.succeedCount
+    //   );
+    // const failedCounts =
+    //   aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
+    //     (item: any) => item.failedCount
+    //   );
+    const datasucceed = labels.map((month) => {
+      const monthData =
+        aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.succeedCount : null;
+    });
+    const datafailed = labels.map((month) => {
+      const monthData =
+        aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.find(
+          (item: any) => item.month === month
+        );
+      return monthData ? monthData.failedCount : null;
+    });
     const counts = aPICommunicationgetapicommunicationsrecieve?.counts;
-    setThirdChart({ months, succeedCounts, failedCounts, counts });
+    setThirdChart({
+      months,
+      succeedCounts: datasucceed,
+      failedCounts: datafailed,
+      counts,
+    });
   }, [aPICommunicationgetapicommunicationsrecieve]);
   const [showFilters, setShowFilters] = useState(false);
   const handleShowFilters = () => {
