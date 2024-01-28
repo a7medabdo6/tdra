@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Box,
   Container,
   FormControl,
   Grid,
@@ -84,9 +85,9 @@ function MappingDynamicInputs() {
         ...reset,
         // entityId: null,
         // ...(base64Image && { "File Name": fileName }),
-
-        ...(base64Image.length > 0 && { attachments: base64Image }),
       },
+      ...(base64Image.length > 0 && { attachments: base64Image }),
+
       ...(base64Image?.length > 0 && { isAttachment: true }),
     };
     mutatePostMock(obj);
@@ -189,11 +190,12 @@ function MappingDynamicInputs() {
                     }
                     if (item?.type == "Attachment") {
                       return (
-                        <InputFileUpload
-                          key={item.name}
-                          item={item}
-                          handleFileChange={handleFileChange}
-                        />
+                        <Box key={item.name}>
+                          <InputFileUpload
+                            item={item}
+                            handleFileChange={handleFileChange}
+                          />
+                        </Box>
                       );
                     }
                     return (
@@ -247,6 +249,13 @@ function MappingDynamicInputs() {
                       </Grid>
                     );
                   })}
+                  <Box sx={{ marginTop: "20px" }}>
+                    {base64Image.map((item: any, index: any) => (
+                      <Typography sx={{ margin: "10px" }} key={index}>
+                        {item?.fileName}
+                      </Typography>
+                    ))}
+                  </Box>
                 </Grid>
                 {data?.toFields?.length != 0 && (
                   <BasicButton

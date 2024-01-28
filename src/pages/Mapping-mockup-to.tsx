@@ -86,58 +86,76 @@ function MappingMockingTo() {
                 <Grid container spacing={3}>
                   {data?.map((item: any) => {
                     if (
-                      item?.name == "Document" &&
-                      item.value.includes("image")
+                      item?.name == "Main Correspondance" ||
+                      item?.name == "Supportive Documents"
                     ) {
-                      return (
-                        <Grid
-                          item
-                          key={item?.id}
-                          xs={6}
-                          sm={6}
-                          md={6}
-                          sx={{
-                            paddingTop: "0px !important",
-                          }}
-                        >
-                          <Typography sx={{ marginInline: "8px" }}>
-                            {item?.name}
-                          </Typography>
-                          <img
-                            src={item?.value}
-                            alt="Your Image"
-                            style={{ maxWidth: "100%", height: "auto" }}
-                          />
-                        </Grid>
+                      return item?.attachments?.map(
+                        (sub: any, subindex: any) => {
+                          console.log(sub, "subbbb");
+                          if (!sub?.document.includes("image")) {
+                            return (
+                              <Grid
+                                item
+                                key={item?.id}
+                                xs={6}
+                                sm={6}
+                                md={6}
+                                sx={{
+                                  paddingTop: "0px !important",
+                                  justifyContent: "center",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Typography sx={{ marginInline: "8px" }}>
+                                  {item?.name}
+                                </Typography>
+                                <BasicButton
+                                  onClick={() =>
+                                    handleDownload(sub.document, item.name)
+                                  }
+                                  text="Download"
+                                  bgColor={COLORS.secondary}
+                                  textColor={COLORS.white}
+                                  style={{ padding: "5px 7px" }}
+                                />
+                              </Grid>
+                            );
+                          }
+                          return (
+                            <Grid
+                              item
+                              key={subindex}
+                              xs={6}
+                              sm={6}
+                              md={6}
+                              sx={{
+                                paddingTop: "0px !important",
+                                justifyContent: "center",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Typography sx={{ marginInline: "8px" }}>
+                                {item?.name}
+                              </Typography>
+                              <img
+                                src={sub?.document}
+                                alt="Your Image"
+                                style={{
+                                  maxWidth: "100%",
+                                  height: "auto",
+                                  width: "100px",
+                                }}
+                              />
+                            </Grid>
+                          );
+                        }
                       );
                     }
-                    if (item?.name == "Document") {
-                      return (
-                        <Grid
-                          item
-                          key={item?.id}
-                          xs={6}
-                          sm={6}
-                          md={6}
-                          sx={{
-                            paddingTop: "0px !important",
-                          }}
-                        >
-                          <Typography sx={{ marginInline: "8px" }}>
-                            {item?.name}
-                          </Typography>
-                          <BasicButton
-                            onClick={() =>
-                              handleDownload(item.value, item.name)
-                            }
-                            text="Download"
-                            bgColor={COLORS.secondary}
-                            textColor={COLORS.white}
-                            style={{ padding: "5px 7px" }}
-                          />
-                        </Grid>
-                      );
-                    }
+
                     return (
                       <Grid
                         item
