@@ -25,21 +25,6 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  // responsive: true,
-  maintainAspectRatio: false,
-
-  plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    // title: {
-    //   display: true,
-    //   text: "Chart.js Line Chart",
-    // },
-  },
-};
-
 const labels = [
   "October",
   "November",
@@ -67,10 +52,43 @@ const labels = [
 //   return dataPoints;
 // }
 
-export function AreaChartSimple({ data }: any) {
+export function AreaChartSimple({
+  data,
+  type = "percentage",
+  title = "",
+}: any) {
+  const options = {
+    // responsive: true,
+    maintainAspectRatio: false,
+
+    scales: {
+      x: { title: { display: true, text: "Month" } },
+      y: {
+        title: { display: true, text: "Succeed Count" },
+        ticks: {
+          beginAtZero: true,
+          min: 0,
+          callback: function (value: any) {
+            return value + (type == "normal" ? "" : " %");
+          },
+        },
+      },
+    },
+
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: title,
+      },
+    },
+  };
   const isSmallScreen = useMediaQuery("(max-width:700px)");
   const succeedData = data?.succeedCounts;
   const failedData = data?.failedCounts;
+  console.log(data?.succeedCounts, "data?.succeedCounts");
 
   const maxSucceed = succeedData ? Math.max(...succeedData) : 0;
   const maxFailed = failedData ? Math.max(...failedData) : 0;
@@ -115,7 +133,13 @@ export function AreaChartSimple({ data }: any) {
         x: { title: { display: true, text: "Month" } },
         y: {
           title: { display: true, text: "Succeed Count" },
-          ticks: { beginAtZero: true, min: 0 }, // Set min to 0 to hide negative values
+          ticks: {
+            beginAtZero: true,
+            min: 0,
+            callback: function (value: any) {
+              return value + " %";
+            },
+          }, // Set min to 0 to hide negative values
         },
       },
     },

@@ -24,7 +24,11 @@ export default function InputFileUpload({ item, handleFileChange }: any) {
       startIcon={<CloudUploadIcon />}
     >
       {item?.name}
-      <VisuallyHiddenInput onChange={handleFileChange} type="file" />
+      <VisuallyHiddenInput
+        onChange={(e) => handleFileChange(e, item.name)}
+        type="file"
+        multiple
+      />
     </Button>
   );
 }

@@ -31,11 +31,11 @@ function Dashboard() {
   const [text, setText] = useState("");
 
   const [filters, setFilters] = useState({
-    fromDate: moment("1/1/2024").format("lll"),
+    fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
   });
   const [filtersForBarChart, setFiltersForBarChart] = useState({
-    fromDate: moment("1/1/2024").format("lll"),
+    fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
   });
   const { data, isLoading } = useGetCommunicationsCount(filters);
@@ -123,14 +123,14 @@ function Dashboard() {
         aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.find(
           (item: any) => item.month === month
         );
-      return monthData ? monthData.succeedCount : null;
+      return monthData ? monthData.succeedCount : 0;
     });
     const datafailed = labels.map((month) => {
       const monthData =
         aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.find(
           (item: any) => item.month === month
         );
-      return monthData ? monthData.failedCount : null;
+      return monthData ? monthData.failedCount : 0;
     });
     const counts = aPICommunicationgetapicommunicationssend?.counts;
     setSecondChart({
@@ -278,13 +278,17 @@ function Dashboard() {
           </>
         )}
       </Grid>
-      <div className="first_chart">
-        <AreaChartSimple data={firstChart} />
+      <div className="first_chart" style={{ marginTop: "10px" }}>
+        <AreaChartSimple
+          data={firstChart}
+          type="normal"
+          title={"Communication Line Chart"}
+        />
       </div>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
         <Grid item xs={12} sm={9} md={9}>
           <Card>
-            <AreaChartSimple data={secondChart} />
+            <AreaChartSimple title={"Api Send Line Chart"} data={secondChart} />
           </Card>
         </Grid>
         <Grid
@@ -329,7 +333,10 @@ function Dashboard() {
         ) : (
           <Grid item xs={12} sm={9} md={9}>
             <Card>
-              <AreaChartSimple data={thirdChart} />
+              <AreaChartSimple
+                title={"Api Receive Line Chart"}
+                data={thirdChart}
+              />
             </Card>
           </Grid>
         )}
@@ -359,7 +366,7 @@ function Dashboard() {
             count={
               aPICommunicationgetapicommunicationsrecieve?.integrationStatus
             }
-            valueColor={COLORS.red}
+            valueColor={COLORS.green}
           />
           <StaticsCard
             text="Total Calls"

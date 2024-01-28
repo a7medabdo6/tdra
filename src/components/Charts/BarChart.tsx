@@ -21,49 +21,82 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: "",
+export function BarChart({ type }: any) {
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: "Communication ( send / recieved ) Chart",
+      },
     },
-  },
-  // responsive: true,
-  maintainAspectRatio: false,
+    // responsive: true,
+    maintainAspectRatio: false,
 
-  scales: {
-    x: {
-      stacked: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          beginAtZero: true,
+          min: 0,
+          callback: function (value: any) {
+            return value + (type == "normal" ? "" : " %");
+          },
+        },
+      },
     },
-    y: {
-      stacked: true,
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10,
+      },
     },
-  },
-  layout: {
-    padding: {
-      left: 10,
-      right: 10,
-      top: 10,
-      bottom: 10,
-    },
-  },
-  cornerRadius: 20, // Adjust the border radius here
-};
-
-export function BarChart() {
+    cornerRadius: 20, // Adjust the border radius here
+  };
   const { data } = useFetchCommunicationgetcommunicationspertypemonth();
 
   const [firstChart, setFirstChart] = useState<any>({});
-
+  const labels = [
+    "October",
+    "November",
+    "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+  ];
   useEffect(() => {
+    const datasucceed = labels.map((month) => {
+      const monthData = data?.find((item: any) => item.month === month);
+      return monthData ? monthData.sentCount : 0;
+    });
+    console.log(datasucceed, "datasucceeddatasucceeddatasucceed");
+
+    const datafailed = labels.map((month) => {
+      const monthData = data?.find((item: any) => item.month === month);
+      return monthData ? monthData.receivedCount : 0;
+    });
     const months = data?.map((item: any) => item.month);
-    const sentCount = data?.map((item: any) => item.sentCount);
-    const receivedCount = data?.map((item: any) => item.receivedCount);
-    setFirstChart({ months, sentCount, receivedCount });
+    // const sentCount = data?.map((item: any) => item.sentCount);
+    // const receivedCount = data?.map((item: any) => item.receivedCount);
+    setFirstChart({
+      months,
+      sentCount: datasucceed,
+      receivedCount: datafailed,
+    });
   }, [data]);
 
   const datachart = {
-    labels: firstChart?.months,
+    labels: labels,
     datasets: [
       {
         label: "Sent",

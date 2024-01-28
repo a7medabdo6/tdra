@@ -19,7 +19,7 @@ import InputFileUpload from "../components/common/Buttons/FileUpload";
 
 function MappingDynamicInputs() {
   const [text] = useState("");
-  const [base64Image, setBase64Image] = useState<any>("");
+  const [base64Image, setBase64Image] = useState<any>([]);
 
   const { data, isLoading } = useEntities(text);
   const { data: allFieldsWithoutDocument } = useFetchAllFieldsWithoutDocument();
@@ -30,20 +30,37 @@ function MappingDynamicInputs() {
   const [inputFields, setInputFields] = useState<any>({});
   // const [selectedFile, setSelectedFile] = useState(null);
 
-  const [fileName, setFileName] = useState<any>("");
+  // const [fileName, setFileName] = useState<any>("");
 
-  const handleFileChange = (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      const fileName = file.name;
-      setFileName(fileName);
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setBase64Image(base64String);
-      };
+  const handleFileChange = (event: any, type: any) => {
+    const files = event.target.files;
+    console.log(files, "filess");
 
-      reader.readAsDataURL(file);
+    if (files?.length > 0) {
+      console.log(files, "filess length");
+
+      for (let index = 0; index < files.length; index++) {
+        const reader = new FileReader();
+        const fileName = files[index].name;
+        // setFileName(fileName);
+
+        reader.onloadend = () => {
+          console.log(fileName, "filess reas");
+
+          const base64String = reader.result;
+          setBase64Image((old: any) => {
+            return [
+              ...old,
+              {
+                fileName: fileName,
+                document: base64String,
+                documentType: type == "Supportive Documents" ? "Extra" : "Main",
+              },
+            ];
+          });
+        };
+        reader.readAsDataURL(files[index]);
+      }
     }
   };
   const handleEntityChange = (
@@ -66,11 +83,11 @@ function MappingDynamicInputs() {
       fieldValues: {
         ...reset,
         // entityId: null,
-        ...(base64Image && { "File Name": fileName }),
+        // ...(base64Image && { "File Name": fileName }),
 
-        ...(base64Image && { Document: base64Image }),
+        ...(base64Image.length > 0 && { attachments: base64Image }),
       },
-      ...(base64Image && { isAttachment: true }),
+      ...(base64Image?.length > 0 && { isAttachment: true }),
     };
     mutatePostMock(obj);
   };
