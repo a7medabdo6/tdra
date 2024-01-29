@@ -232,6 +232,28 @@ function MappingMockingTo() {
                                       </Typography>
                                       {sub?.documentReference}
                                     </Typography>
+                                    <Typography sx={{ display: "flex" }}>
+                                      <Typography
+                                        sx={{
+                                          marginRight: "5px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        documentNo:
+                                      </Typography>
+                                      {sub?.documentNo}
+                                    </Typography>
+                                    <Typography sx={{ display: "flex" }}>
+                                      <Typography
+                                        sx={{
+                                          marginRight: "5px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        documentDate:
+                                      </Typography>
+                                      {sub?.documentDate}
+                                    </Typography>
                                   </Box>
                                 </Card>
                               </Grid>
@@ -294,17 +316,28 @@ function MappingMockingTo() {
                                     </Typography>
                                     {sub?.documentReference}
                                   </Typography>
-                                  {/* <Typography sx={{ display: "flex" }}>
+                                  <Typography sx={{ display: "flex" }}>
                                     <Typography
                                       sx={{
                                         marginRight: "5px",
                                         fontWeight: "bold",
                                       }}
                                     >
-                                      documentType:
+                                      documentNo:
                                     </Typography>
-                                    {sub?.documentType}
-                                  </Typography> */}
+                                    {sub?.documentNo}
+                                  </Typography>
+                                  <Typography sx={{ display: "flex" }}>
+                                    <Typography
+                                      sx={{
+                                        marginRight: "5px",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      documentDate:
+                                    </Typography>
+                                    {sub?.documentDate}
+                                  </Typography>
                                 </Box>
                               </Card>
                             </Grid>
@@ -400,6 +433,28 @@ function MappingMockingTo() {
                                       </Typography>
                                       {sub?.documentReference}
                                     </Typography>
+                                    <Typography sx={{ display: "flex" }}>
+                                      <Typography
+                                        sx={{
+                                          marginRight: "5px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        documentNo:
+                                      </Typography>
+                                      {sub?.documentNo}
+                                    </Typography>
+                                    <Typography sx={{ display: "flex" }}>
+                                      <Typography
+                                        sx={{
+                                          marginRight: "5px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        documentDate:
+                                      </Typography>
+                                      {sub?.documentDate}
+                                    </Typography>
                                   </Box>
                                 </Card>
                               </Grid>
@@ -461,6 +516,28 @@ function MappingMockingTo() {
                                       documentReference:
                                     </Typography>
                                     {sub?.documentReference}
+                                  </Typography>
+                                  <Typography sx={{ display: "flex" }}>
+                                    <Typography
+                                      sx={{
+                                        marginRight: "5px",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      documentNo:
+                                    </Typography>
+                                    {sub?.documentNo}
+                                  </Typography>
+                                  <Typography sx={{ display: "flex" }}>
+                                    <Typography
+                                      sx={{
+                                        marginRight: "5px",
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      documentDate:
+                                    </Typography>
+                                    {sub?.documentDate}
                                   </Typography>
                                 </Box>
                               </Card>
