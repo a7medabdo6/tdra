@@ -249,14 +249,36 @@ function MappingDynamicInputs() {
                       </Grid>
                     );
                   })}
-                  <Box sx={{ marginTop: "20px" }}>
-                    {base64Image.map((item: any, index: any) => (
-                      <Typography sx={{ margin: "10px" }} key={index}>
-                        {item?.fileName}
-                      </Typography>
-                    ))}
-                  </Box>
                 </Grid>
+                <Grid container spacing={3}>
+                  <Grid item xs={3}>
+                    <Box sx={{ marginTop: "20px" }}>
+                      {base64Image.map((item: any, index: any) => {
+                        if (item?.documentType == "Main") {
+                          return (
+                            <Typography sx={{ margin: "10px" }} key={index}>
+                              {item?.fileName}
+                            </Typography>
+                          );
+                        }
+                      })}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Box sx={{ marginTop: "20px" }}>
+                      {base64Image.map((item: any, index: any) => {
+                        if (item?.documentType == "Extra") {
+                          return (
+                            <Typography sx={{ margin: "10px" }} key={index}>
+                              {item?.fileName}
+                            </Typography>
+                          );
+                        }
+                      })}
+                    </Box>
+                  </Grid>
+                </Grid>
+
                 {data?.toFields?.length != 0 && (
                   <BasicButton
                     text="Submit"
