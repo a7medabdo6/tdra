@@ -18,6 +18,7 @@ import {
   useOneEntityFieldMappingsByEntityId,
   useaddUpdateListEntityFieldMapping,
 } from "../Api/Hooks/EntityManagment";
+import CurrentUser from "../CurrentUser";
 
 function MappingDynamicInputs() {
   const { id } = useParams();
@@ -38,6 +39,14 @@ function MappingDynamicInputs() {
   const Submit = () => {
     mutate(inputFields);
   };
+  const { user }: { user: any } = CurrentUser();
+  useEffect(() => {
+    if (user) {
+      if (user?.role != "Admin" && user.role != "Editor") {
+        navigate("/");
+      }
+    }
+  }, [user]);
   useEffect(() => {
     setInputFields([]);
     if (data?.length > 0 && one?.length > 0) {
@@ -105,92 +114,93 @@ function MappingDynamicInputs() {
           <>
             <Grid item xs={12} sm={12} md={12} sx={{ marginBlock: 4 }}>
               <Grid container spacing={3}>
-                {data?.map((item: any) => (
-                  <Grid
-                    item
-                    key={item?.id}
-                    xs={6}
-                    sm={6}
-                    md={6}
-                    sx={{
-                      paddingTop: "0px !important",
-                    }}
-                  >
-                    <Typography sx={{ marginInline: "8px" }}>
-                      {item?.name}
-                    </Typography>
-
-                    <FormControl
+                {data?.length > 0 &&
+                  data?.map((item: any) => (
+                    <Grid
+                      item
+                      key={item?.id}
+                      xs={6}
+                      sm={6}
+                      md={6}
                       sx={{
-                        m: 1,
-                        minWidth: 120,
-                        "&.MuiFormControl-root": {
-                          height: "40px",
-                          width: "100% !important",
-                          marginTop: "0px",
-                        },
+                        paddingTop: "0px !important",
                       }}
                     >
-                      <TextField
+                      <Typography sx={{ marginInline: "8px" }}>
+                        {item?.name}
+                      </Typography>
+
+                      <FormControl
                         sx={{
-                          "& .MuiOutlinedInput-root": {
+                          m: 1,
+                          minWidth: 120,
+                          "&.MuiFormControl-root": {
                             height: "40px",
-                            backgroundColor: "#bcbbbb1c",
-                            borderRadius: "14px",
-                            border: "unset !important",
-                          },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            border: "unset !important",
+                            width: "100% !important",
+                            marginTop: "0px",
                           },
                         }}
-                        value={
-                          inputFields?.find(
-                            (obj: any) => obj.fieldName === item?.name
-                          )?.fieldMappedName
-                        }
-                        onChange={(e) => {
-                          setInputFields((old: any) => {
-                            if (old.length > 0) {
-                              const newarr = old.filter(
-                                (sub: any) => item.id == sub.index
-                              );
-                              const oldone = old.filter(
-                                (sub: any) => item.id != sub.index
-                              );
-                              if (newarr?.length > 0) {
-                                newarr[0].fieldMappedName = e.target.value;
-                                return [...oldone, newarr[0]];
-                              } else {
-                                return [
-                                  ...old,
-                                  {
-                                    fieldName: item?.name,
-                                    fieldMappedName: e.target.value,
-                                    entityId: id,
-                                    index: item?.id,
-                                  },
-                                ];
+                      >
+                        <TextField
+                          sx={{
+                            "& .MuiOutlinedInput-root": {
+                              height: "40px",
+                              backgroundColor: "#bcbbbb1c",
+                              borderRadius: "14px",
+                              border: "unset !important",
+                            },
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              border: "unset !important",
+                            },
+                          }}
+                          value={
+                            inputFields?.find(
+                              (obj: any) => obj.fieldName === item?.name
+                            )?.fieldMappedName
+                          }
+                          onChange={(e) => {
+                            setInputFields((old: any) => {
+                              if (old.length > 0) {
+                                const newarr = old.filter(
+                                  (sub: any) => item.id == sub.index
+                                );
+                                const oldone = old.filter(
+                                  (sub: any) => item.id != sub.index
+                                );
+                                if (newarr?.length > 0) {
+                                  newarr[0].fieldMappedName = e.target.value;
+                                  return [...oldone, newarr[0]];
+                                } else {
+                                  return [
+                                    ...old,
+                                    {
+                                      fieldName: item?.name,
+                                      fieldMappedName: e.target.value,
+                                      entityId: id,
+                                      index: item?.id,
+                                    },
+                                  ];
+                                }
                               }
-                            }
-                            return [
-                              ...old,
-                              {
-                                fieldName: item?.name,
-                                fieldMappedName: e.target.value,
-                                entityId: id,
-                                index: item?.id,
-                              },
-                            ];
-                          });
-                        }}
-                        variant="outlined"
-                        placeholder={item?.name}
-                        style={{ width: "100%", borderRadius: "20px" }}
-                        inputProps={{ "aria-label": "Without label" }}
-                      ></TextField>
-                    </FormControl>
-                  </Grid>
-                ))}
+                              return [
+                                ...old,
+                                {
+                                  fieldName: item?.name,
+                                  fieldMappedName: e.target.value,
+                                  entityId: id,
+                                  index: item?.id,
+                                },
+                              ];
+                            });
+                          }}
+                          variant="outlined"
+                          placeholder={item?.name}
+                          style={{ width: "100%", borderRadius: "20px" }}
+                          inputProps={{ "aria-label": "Without label" }}
+                        ></TextField>
+                      </FormControl>
+                    </Grid>
+                  ))}
                 <BasicButton
                   text="Save"
                   bgColor={COLORS.primary}

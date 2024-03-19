@@ -16,6 +16,7 @@ import { useAddUpdateUser, useOneUser } from "../Api/Hooks/Users";
 import { useNavigate, useParams } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 import { useRolees } from "../Api/Hooks/Roles";
+import CurrentUser from "../CurrentUser";
 function UserDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,6 +32,15 @@ function UserDetails() {
     password: "",
     confirmPassword: "",
   });
+  const { user }: { user: any } = CurrentUser();
+  useEffect(() => {
+    if (user) {
+      if (user?.role != "Admin" && user.role != "Editor") {
+        navigate("/");
+      }
+    }
+  }, [user]);
+
   useEffect(() => {
     if (data) {
       const userRole = roles?.filter((item: any) => item?.name == data.role);

@@ -16,6 +16,7 @@ import { COLORS } from "../constants/insex";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAddUpdateEntity, useOneEntity } from "../Api/Hooks/EntityManagment";
 import SkeletonCom from "../components/Skeleton";
+import CurrentUser from "../CurrentUser";
 // interface InputField {
 //   name: string;
 //   type: string;
@@ -44,6 +45,14 @@ function EntityDetails() {
     isDeactivated: false,
     fields: [],
   });
+  const { user }: { user: any } = CurrentUser();
+  useEffect(() => {
+    if (user) {
+      if (user?.role != "Admin" && user.role != "Editor") {
+        navigate("/");
+      }
+    }
+  }, [user]);
   useEffect(() => {
     if (data) {
       setObj(data);

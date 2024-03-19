@@ -178,7 +178,7 @@ function MappingDynamicInputs() {
                     </FormControl>
                   </Grid>
 
-                  {allFieldsWithoutDocument?.map((item: any) => {
+                  {allFieldsWithoutDocument?.entityFields?.map((item: any) => {
                     if (item?.type == "Enum") {
                       return (
                         <SelectComponenetForCategory

@@ -24,6 +24,7 @@ interface TableProps {
   isLoadingDelete?: boolean;
   deleteFun?: any;
   textForEdit?: string;
+  user?: any;
 }
 const BasicTable: React.FC<TableProps> = ({
   Headers,
@@ -36,6 +37,7 @@ const BasicTable: React.FC<TableProps> = ({
   isLoadingDelete,
   deleteFun,
   textForEdit,
+  user,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(null);
@@ -154,24 +156,28 @@ const BasicTable: React.FC<TableProps> = ({
                       alignItems: "center",
                     }}
                   >
-                    <BasicButton
-                      text={textForEdit ? textForEdit : "Edit"}
-                      onClick={() => {
-                        navigate(`${link}/${row.id}`);
-                      }}
-                      textColor={COLORS.orange}
-                      bgColor={COLORS.lightOrange}
-                    />
-                    {middleBtn && (
+                    {user?.role == "Admin" && (
+                      <BasicButton
+                        text={textForEdit ? textForEdit : "Edit"}
+                        onClick={() => {
+                          navigate(`${link}/${row.id}`);
+                        }}
+                        textColor={COLORS.orange}
+                        bgColor={COLORS.lightOrange}
+                      />
+                    )}
+
+                    {middleBtn && user?.role == "Admin" && (
                       <BasicButton
                         onClick={() => navigate(`/mapping-screen/${row.id}`)}
                         textColor={COLORS.orange}
                         bgColor={COLORS.lightOrange}
+                        style={{ minWidth: "150px" }}
                         text="Edit Mapping"
                       />
                     )}
 
-                    {deletebtn && (
+                    {deletebtn && user?.role == "Admin" && (
                       <BasicButton
                         textColor={COLORS.red}
                         bgColor={COLORS.lightRed}

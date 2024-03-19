@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 import ServerError from "../components/Error/ServerError";
 import { useOneCategory } from "../Api/Hooks/Category";
+import CurrentUser from "../CurrentUser";
 const Headers = [
   { label: "Id", key: "id" },
   { label: "Lookup Value", key: "value" },
@@ -27,7 +28,7 @@ const LookupManagement: React.FC<any> = () => {
 
   const isSmallScreen = useMediaQuery("(max-width:700px)");
   const [, setText] = useState("");
-
+  const { user } = CurrentUser();
   const { data, isLoading, isError } = useOneCategory(id);
   const navigate = useNavigate();
   const { mutate, isLoading: isLoadingDelete } = useDeleteLookup();
@@ -145,6 +146,7 @@ const LookupManagement: React.FC<any> = () => {
               middleBtn={false}
               deletebtn={true}
               deleteFun={DeleteFun}
+              user={user}
               isLoadingDelete={isLoadingDelete}
               link="/lookup-details"
             />

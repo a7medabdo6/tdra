@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import SkeletonCom from "../components/Skeleton";
 import ServerError from "../components/Error/ServerError";
 import { useCategoryes, useDeleteCategory } from "../Api/Hooks/Category";
+import CurrentUser from "../CurrentUser";
 const Headers = [
   { label: "Id", key: "id" },
   { label: "Name ", key: "name" },
@@ -35,7 +36,7 @@ const Category: React.FC<any> = () => {
     setText(value);
   };
   const debouncedOnChange = debounce(onChangeSearch, 500);
-
+  const { user } = CurrentUser();
   return (
     <Container>
       <Grid
@@ -141,6 +142,7 @@ const Category: React.FC<any> = () => {
               actions={true}
               middleBtn={false}
               deletebtn={true}
+              user={user}
               deleteFun={DeleteFun}
               isLoadingDelete={isLoadingDelete}
               link="/lookup-management"

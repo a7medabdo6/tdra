@@ -12,6 +12,7 @@ import ServerError from "../components/Error/ServerError";
 import SkeletonCom from "../components/Skeleton";
 import { useRolees } from "../Api/Hooks/Roles";
 import TableRole from "../components/common/Table/TableRole";
+import CurrentUser from "../CurrentUser";
 const Headers = [
   { label: "Id", key: "id" },
   { label: "Username ", key: "userName" },
@@ -48,6 +49,7 @@ const UserManagement: React.FC<any> = () => {
     setTextRoles(value);
   };
   const debouncedOnChangeRoles = debounce(onChangeSearchRoles, 500);
+  const { user } = CurrentUser();
 
   return (
     <Container>
@@ -104,6 +106,7 @@ const UserManagement: React.FC<any> = () => {
                   data={data}
                   actions={true}
                   middleBtn={false}
+                  user={user}
                   deletebtn={false}
                   link="/user-details"
                 />

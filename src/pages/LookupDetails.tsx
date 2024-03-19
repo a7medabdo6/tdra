@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import SkeletonCom from "../components/Skeleton";
 import { useAddUpdateLookup, useOneLookup } from "../Api/Hooks/Lookup";
+import CurrentUser from "../CurrentUser";
 function LookupDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ function LookupDetails() {
     value: "",
     description: "",
   });
+  const { user }: { user: any } = CurrentUser();
+  useEffect(() => {
+    if (user) {
+      if (user?.role != "Admin" && user.role != "Editor") {
+        navigate("/");
+      }
+    }
+  }, [user]);
   useEffect(() => {
     if (data) {
       setObj(data);

@@ -14,6 +14,7 @@ import SearchInput from "../components/common/Inputs/Searchinput";
 import { useEntities } from "../Api/Hooks/EntityManagment";
 import SkeletonCom from "../components/Skeleton";
 import { useNavigate } from "react-router-dom";
+import CurrentUser from "../CurrentUser";
 const Headers = [
   { label: "Id", key: "id" },
   { label: "Entity Name", key: "name" },
@@ -60,7 +61,7 @@ const Headers = [
 const EntitiesManagement: React.FC<any> = () => {
   const isSmallScreen = useMediaQuery("(max-width:700px)");
   const [text, setText] = useState("");
-
+  const { user } = CurrentUser();
   const { data, isLoading } = useEntities(text);
   const navigate = useNavigate();
   const onChangeSearch = (value: string) => {
@@ -164,6 +165,7 @@ const EntitiesManagement: React.FC<any> = () => {
               data={data}
               actions={true}
               middleBtn={true}
+              user={user}
               link="/entity-details"
             />
           </Grid>
