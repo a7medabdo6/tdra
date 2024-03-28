@@ -7,7 +7,6 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
-
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
@@ -36,25 +35,19 @@ function Dashboard() {
     fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
   });
-  const [filtersForReceivedChart, setFiltersForReceivedChart] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
-  });
-  const [filtersForSendChart, setFiltersForSendChart] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
-  });
   const { data, isLoading } = useGetCommunicationsCount(filters);
   const { data: communicationgetcommunicationsperstatusmonth } =
     useFetchCommunicationgetcommunicationsperstatusmonth();
   const { data: aPICommunicationgetapicommunicationssend } =
     useFetchAPICommunicationgetapicommunicationssend();
 
-  const { data: aPICommunicationgetapicommunicationsrecieve } =
-    useFetchAPICommunicationgetapicommunicationsreceive({
-      ...filtersForBarChart,
-      name: text,
-    });
+  const {
+    data: aPICommunicationgetapicommunicationsrecieve,
+    isLoading: aPICommunicationgetapicommunicationsrecieveLoading,
+  } = useFetchAPICommunicationgetapicommunicationsreceive({
+    ...filtersForBarChart,
+    name: text,
+  });
   const [firstChart, setFirstChart] = useState<any>({});
   const [secondChart, setSecondChart] = useState<any>({});
   const [thirdChart, setThirdChart] = useState<any>({});
@@ -77,7 +70,14 @@ function Dashboard() {
       communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
         (item: any) => item.month
       );
-
+    // const succeedCounts =
+    //   communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+    //     (item: any) => item.succeedCount
+    //   );
+    // const failedCounts =
+    //   communicationgetcommunicationsperstatusmonth?.communicationPerStatuMonthDTO?.map(
+    //     (item: any) => item.failedCount
+    //   );
     const counts = communicationgetcommunicationsperstatusmonth?.counts;
     const datasucceed = labels.map((month) => {
       const monthData =
@@ -173,6 +173,10 @@ function Dashboard() {
       counts,
     });
   }, [aPICommunicationgetapicommunicationsrecieve]);
+  const [showFilters, setShowFilters] = useState(false);
+  const handleShowFilters = () => {
+    setShowFilters((old) => !old);
+  };
 
   const onChangeSearch = (value: string) => {
     setText(value);
@@ -272,7 +276,7 @@ function Dashboard() {
         )}
       </Grid>
       <div className="first_chart" style={{ marginTop: "10px" }}>
-        <FilterMonth title={"Communication Line Chart"} showFilterBtn={false} />
+        <FilterMonth title={"Communication Line Chart"} />
         <AreaChartSimple
           data={firstChart}
           type="normal"
@@ -281,20 +285,8 @@ function Dashboard() {
       </div>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
         <Grid item xs={12} sm={9} md={9}>
-          <Card
-            sx={{
-              paddingBlock: "20px",
-              boxShadow: "unset",
-              border: " 1px solid #80808045",
-              backgroundColor: "transparent !important",
-            }}
-          >
-            <FilterMonth
-              title={"Api Send Line Chart"}
-              debouncedOnChange={debouncedOnChange}
-              filters={filtersForSendChart}
-              setFilters={setFiltersForSendChart}
-            />
+          <Card sx={{ paddingBlock: "20px" }}>
+            <FilterMonth title={"Api Send Line Chart"} />
             <AreaChartSimple data={secondChart} />
           </Card>
         </Grid>
@@ -335,28 +327,16 @@ function Dashboard() {
         </Grid>
       </Grid>
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
-        {/* {aPICommunicationgetapicommunicationsrecieveLoading ? (
+        {aPICommunicationgetapicommunicationsrecieveLoading ? (
           <SkeletonCom></SkeletonCom>
-        ) : ( */}
-        <Grid item xs={12} sm={9} md={9}>
-          <Card
-            sx={{
-              paddingBlock: "20px",
-              boxShadow: "unset",
-              border: " 1px solid #80808045",
-              backgroundColor: "transparent !important",
-            }}
-          >
-            <FilterMonth
-              title={"Api Receive Line Chart"}
-              debouncedOnChange={debouncedOnChange}
-              filters={filtersForReceivedChart}
-              setFilters={setFiltersForReceivedChart}
-            />
-            <AreaChartSimple data={thirdChart} />
-          </Card>
-        </Grid>
-        {/* )} */}
+        ) : (
+          <Grid item xs={12} sm={9} md={9}>
+            <Card sx={{ paddingBlock: "20px" }}>
+              <FilterMonth title={"Api Receive Line Chart"} />
+              <AreaChartSimple data={thirdChart} />
+            </Card>
+          </Grid>
+        )}
 
         <Grid
           item
@@ -399,22 +379,26 @@ function Dashboard() {
       <Grid container spacing={3} sx={{ marginBlock: "20px" }}>
         <Grid item xs={12} sm={12} md={12}>
           <Card
-            sx={{
-              backgroundColor: COLORS.grey,
-              position: "relative",
-              paddingBlock: "20px",
-            }}
+            sx={{ paddingBlock: "20px" }}
+            // sx={{
+            //   backgroundColor: COLORS.grey,
+            //   width: "100%",
+            //   boxShadow: "unset",
+            //   position: "relative",
+            //   overflow: "visible",
+            //   paddingBlock: "20px",
+            // }}
           >
             <FilterMonth
-              title="Communication ( send / recieved )"
+              title={"Communication ( send / recieved )"}
               showMonths={false}
-              debouncedOnChange={debouncedOnChange}
+              showFilters={showFilters}
               filters={filtersForBarChart}
               setFilters={setFiltersForBarChart}
+              debouncedOnChange={debouncedOnChange}
+              handleShowFilters={handleShowFilters}
             />
-            <Box>
-              <BarChart />
-            </Box>
+            <BarChart />
           </Card>
         </Grid>
         <Grid item xs={12} sm={12} md={12}>
@@ -434,74 +418,74 @@ function Dashboard() {
           </Card>
         </Grid>
         {/* <Grid item xs={12} sm={12} md={12}>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-    }}
-  >
-    <Typography component="h5" variant="h5" sx={{ margin: "10px" }}>
-      Transaction Table
-    </Typography>
-    <BasicButton
-      text="Export Excel"
-      bgColor={COLORS.primary}
-      textColor={COLORS.white}
-    />
-  </Box>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBlock: "10px",
-    }}
-  >
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      <BasicButton
-        text="From: 1/2023"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-      <BasicButton
-        text="To: 1/2023"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-    </Box>
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      <BasicButton
-        text="Source Entity"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-      <BasicButton
-        text="Destination Entity"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-    </Box>
-  </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h5" variant="h5" sx={{ margin: "10px" }}>
+              Transaction Table
+            </Typography>
+            <BasicButton
+              text="Export Excel"
+              bgColor={COLORS.primary}
+              textColor={COLORS.white}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBlock: "10px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="From: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="To: 1/2023"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="Source Entity"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="Destination Entity"
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+          </Box>
 
-  <BasicTable Headers={Headers} data={dummyData} />
-</Grid> */}
+          <BasicTable Headers={Headers} data={dummyData} />
+        </Grid> */}
       </Grid>
     </Container>
   );

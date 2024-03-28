@@ -26,3 +26,36 @@ main{
 body,main{
   background-color: black !important;
 } */
+.d-flex{
+  display: flex;
+  justify-content: space-between;
+}
+.first_chart{
+  position: relative;
+  padding-top: 40px !important;
+}
+.month_filters{
+/* max-width: 400px; */
+min-width: 400px;
+color: gray;
+display: flex;justify-content: center;align-items: center;
+/* position: absolute;
+ top: 10px; 
+right: 100px; */
+}
+.month_filters p{
+  padding-inline: 10px;
+  border-right: 1px solid gray !important;
+}
+.fitler_status{
+  padding-inline: 10px;
+  display: flex;
+  align-items: center;
+
+}
+.justify-content-between{
+  justify-content: space-between;
+}
+canvas{
+  min-height: 400px !important;
+}

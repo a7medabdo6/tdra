@@ -24,8 +24,13 @@ ChartJS.register(
 export function BarChart({ type }: any) {
   const options = {
     plugins: {
+      legend: {
+        display: false,
+
+        position: "top" as const,
+      },
       title: {
-        display: true,
+        display: false,
         text: "Communication ( send / recieved ) Chart",
       },
     },
@@ -61,9 +66,6 @@ export function BarChart({ type }: any) {
 
   const [firstChart, setFirstChart] = useState<any>({});
   const labels = [
-    "October",
-    "November",
-    "December",
     "January",
     "February",
     "March",
@@ -73,13 +75,15 @@ export function BarChart({ type }: any) {
     "July",
     "August",
     "September",
+    "October",
+    "November",
+    "December",
   ];
   useEffect(() => {
     const datasucceed = labels.map((month) => {
       const monthData = data?.find((item: any) => item.month === month);
       return monthData ? monthData.sentCount : 0;
     });
-    console.log(datasucceed, "datasucceeddatasucceeddatasucceed");
 
     const datafailed = labels.map((month) => {
       const monthData = data?.find((item: any) => item.month === month);

@@ -26,9 +26,6 @@ ChartJS.register(
 );
 
 const labels = [
-  "October",
-  "November",
-  "December",
   "January",
   "February",
   "March",
@@ -38,6 +35,9 @@ const labels = [
   "July",
   "August",
   "September",
+  "October",
+  "November",
+  "December",
 ];
 // function generateRandomDataPoints(count: number) {
 //   const dataPoints = [];
@@ -77,10 +77,12 @@ export function AreaChartSimple({
 
     plugins: {
       legend: {
+        display: false,
+
         position: "top" as const,
       },
       title: {
-        display: true,
+        display: false,
         text: title,
       },
     },

@@ -260,6 +260,7 @@ export const useFetchAPICommunicationgetapicommunicationsreceive = (
           error?.response?.data?.Message
         );
       },
+      staleTime: Infinity,
     }
   );
 };
