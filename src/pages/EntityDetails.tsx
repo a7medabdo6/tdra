@@ -60,7 +60,6 @@ function EntityDetails() {
     }
   }, [data]);
   const { mutate, isLoading: isLoadingUpdate } = useAddUpdateEntity();
-  // const { mutate: deleteOne, isLoading: isLoadingDelete } = useDeleteEntity();
   const updateOrAdd = () => {
     mutate(obj);
   };

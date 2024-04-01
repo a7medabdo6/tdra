@@ -33,6 +33,7 @@ const fetchall = async (text: string): Promise<any> => {
   const response = await instance.get(`Entity/get-entities?name=${text}`);
   return response.data;
 };
+
 const fetchEntityFieldGetfields = async (): Promise<any> => {
   const response = await instance.get(`EntityField/get-all-fields`);
   return response.data;

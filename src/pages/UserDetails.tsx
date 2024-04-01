@@ -28,7 +28,7 @@ function UserDetails() {
     fullName: "",
     phoneNumber: "",
     email: "",
-    role: null,
+    roleId: null,
     password: "",
     confirmPassword: "",
   });
@@ -47,30 +47,31 @@ function UserDetails() {
 
       setObj(data);
       setObj((old) => {
-        return { ...old, role: userRole?.[0]?.id };
+        return { ...old, roleId: userRole?.[0]?.id };
       });
     }
   }, [data]);
   const { mutate, isLoading: isLoadingUpdate } = useAddUpdateUser();
   const updateOrAdd = () => {
-    const result = roles.filter((item: any) => obj.role == item?.id);
+    const result = roles.filter((item: any) => obj.roleId == item?.id);
 
     if (!obj.password) {
       mutate({
-        UserName: obj.userName,
-        FullName: obj.fullName,
+        userName: obj.userName,
+        fullName: obj.fullName,
         phoneNumber: obj.phoneNumber,
         email: obj.email,
-        RoleId: result?.[0].id,
+        // RoleId: result?.[0].id,
+        roleId: result?.[0]?.id,
       });
     } else {
       mutate({
         ...obj,
-        role: result?.[0],
+        roleId: result?.[0]?.id,
         phoneNumber: obj.phoneNumber,
-        UserName: obj.userName,
-        FullName: obj.fullName,
-        RoleId: result?.[0].id,
+        userName: obj.userName,
+        fullName: obj.fullName,
+        // RoleId: result?.[0].id,
       });
     }
   };
@@ -255,10 +256,10 @@ function UserDetails() {
                         backgroundColor: "#bcbbbb1c",
                       },
                     }}
-                    value={obj?.role}
+                    value={obj?.roleId}
                     onChange={(e) => {
                       setObj((old: any) => {
-                        return { ...old, role: e.target.value };
+                        return { ...old, roleId: e.target.value };
                       });
                     }}
                     displayEmpty

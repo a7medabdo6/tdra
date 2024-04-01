@@ -10,7 +10,7 @@ import { useDeleteUser, useUseres } from "../Api/Hooks/Users";
 import { useNavigate } from "react-router-dom";
 import ServerError from "../components/Error/ServerError";
 import SkeletonCom from "../components/Skeleton";
-import { useRolees } from "../Api/Hooks/Roles";
+import { useDeleteRole, useRolees } from "../Api/Hooks/Roles";
 import TableRole from "../components/common/Table/TableRole";
 import CurrentUser from "../CurrentUser";
 const Headers = [
@@ -39,6 +39,11 @@ const UserManagement: React.FC<any> = () => {
   const { mutate, isLoading: isLoadingDelete } = useDeleteUser();
   const DeleteFun = (id: any) => {
     mutate({ id });
+  };
+  const { mutate: DeleteRole, isLoading: isLoadingDeleteRole } =
+    useDeleteRole();
+  const handleDeleteRole = (id: any) => {
+    DeleteRole({ id });
   };
   const onChangeSearch = (value: string) => {
     setText(value);
@@ -106,8 +111,11 @@ const UserManagement: React.FC<any> = () => {
                   data={data}
                   actions={true}
                   middleBtn={false}
+                  deletebtn={true}
+                  haveButtons={true}
+                  deleteFun={DeleteFun}
                   user={user}
-                  deletebtn={false}
+                  isLoadingDelete={isLoadingDelete}
                   link="/user-details"
                 />
               </Grid>
@@ -162,10 +170,10 @@ const UserManagement: React.FC<any> = () => {
                   data={roles}
                   actions={true}
                   middleBtn={false}
-                  deletebtn={false}
+                  deletebtn={true}
                   haveButtons={true}
-                  deleteFun={DeleteFun}
-                  isLoadingDelete={isLoadingDelete}
+                  deleteFun={handleDeleteRole}
+                  isLoadingDelete={isLoadingDeleteRole}
                   link="/add-role"
                 />
               </Grid>

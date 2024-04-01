@@ -11,7 +11,7 @@ import BasicTable from "../components/common/Table/Table";
 import BasicButton from "../components/common/Buttons/Button";
 import { COLORS } from "../constants/insex";
 import SearchInput from "../components/common/Inputs/Searchinput";
-import { useEntities } from "../Api/Hooks/EntityManagment";
+import { useDeleteEntity, useEntities } from "../Api/Hooks/EntityManagment";
 import SkeletonCom from "../components/Skeleton";
 import { useNavigate } from "react-router-dom";
 import CurrentUser from "../CurrentUser";
@@ -68,7 +68,10 @@ const EntitiesManagement: React.FC<any> = () => {
     setText(value);
   };
   const debouncedOnChange = debounce(onChangeSearch, 500);
-
+  const { mutate: DeleteEntity } = useDeleteEntity();
+  const handleDeleteEntity = (id: any) => {
+    DeleteEntity({ id });
+  };
   return (
     <Container>
       <Grid
@@ -164,6 +167,8 @@ const EntitiesManagement: React.FC<any> = () => {
               Headers={Headers}
               data={data}
               actions={true}
+              deleteFun={handleDeleteEntity}
+              deletebtn={true}
               middleBtn={true}
               user={user}
               link="/entity-details"
