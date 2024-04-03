@@ -9,7 +9,7 @@ import {
 import { instance } from "../axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import qs from "qs";
 const getcommunicationscount = async (data: any): Promise<any> => {
   // Create a new URLSearchParams object
   const params = new URLSearchParams();
@@ -38,6 +38,23 @@ const fetchCommunicationgetcommunicationsperstatusmonth =
     );
     return response.data;
   };
+const fetchTransactionsData = async (data: any): Promise<any> => {
+  const queryString = qs.stringify(data);
+
+  const response = await instance.get(
+    `Connection/entities/Transactions?${queryString}`
+  );
+  return response.data;
+};
+const fetchTransactionsExcel = async (data: any): Promise<any> => {
+  const queryString = qs.stringify(data);
+
+  const response = await instance.get(
+    `Connection/entities/ExportTransactions?${queryString}`
+  );
+
+  return response;
+};
 
 const fetchCommunicationgetcommunicationspertypemonth =
   async (): Promise<any> => {
@@ -159,6 +176,7 @@ export const useFetchCommunicationgetcommunicationsperstatusmonth =
             error?.response?.data?.Message
           );
         },
+        staleTime: Infinity,
       }
     );
   };
@@ -185,6 +203,7 @@ export const useFetchCommunicationgetcommunicationspertypemonth =
             error?.response?.data?.Message
           );
         },
+        staleTime: Infinity,
       }
     );
   };
@@ -207,7 +226,76 @@ export const useGetTopEntities = (): UseQueryResult<any> => {
         error?.response?.data?.Message
       );
     },
+    staleTime: Infinity,
   });
+};
+export const useFetchTransactionsData = (): UseMutationResult<any | Error> => {
+  return useMutation(fetchTransactionsData, {
+    onSuccess: () => {
+      toast.success("Lookup Updated  successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    },
+    onError: () => {},
+  });
+  // return useMutation(
+  //   ["fetchTransactionsData", data],
+  //   () => fetchTransactionsData(data),
+  //   {
+  //     onSuccess: () => {},
+  //     onError: (error: any) => {
+  //       toast.error(error?.response?.data?.Message, {
+  //         position: "top-right",
+  //         autoClose: 5000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "colored",
+  //       });
+  //       console.error(
+  //         "Error fetching Lookupes : ",
+  //         error?.response?.data?.Message
+  //       );
+  //     },
+  //     staleTime: Infinity,
+  //   }
+  // );
+};
+export const useFetchTransactionsExcel = (data: any): UseQueryResult<any> => {
+  return useQuery(
+    ["fetchTransactionsExcel", data],
+    () => fetchTransactionsExcel(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+      staleTime: Infinity,
+      enabled: false, // Prevents the query from being executed initially
+    }
+  );
 };
 
 export const useFetchAPICommunicationgetapicommunicationssend =
@@ -233,6 +321,7 @@ export const useFetchAPICommunicationgetapicommunicationssend =
             error?.response?.data?.Message
           );
         },
+        staleTime: Infinity,
       }
     );
   };
@@ -274,6 +363,7 @@ export const useGetCommunicationsCount = (data: any): UseQueryResult<any> => {
       onError: (error: Error) => {
         console.error("Error fetching one : ", error.message);
       },
+      staleTime: Infinity,
     }
   );
 };

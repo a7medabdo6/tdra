@@ -90,7 +90,6 @@ export function AreaChartSimple({
   const isSmallScreen = useMediaQuery("(max-width:700px)");
   const succeedData = data?.succeedCounts;
   const failedData = data?.failedCounts;
-  console.log(data?.succeedCounts, "data?.succeedCounts");
 
   const maxSucceed = succeedData ? Math.max(...succeedData) : 0;
   const maxFailed = failedData ? Math.max(...failedData) : 0;

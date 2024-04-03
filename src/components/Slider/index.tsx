@@ -68,8 +68,8 @@ function ReactSimplyCarouselExample() {
           speed={400}
           easing="linear"
         >
-          {data?.map((item: any) => (
-            <CardSlider key={item?.id} item={item} />
+          {data?.map(({ item, i }: any) => (
+            <CardSlider key={i} item={item} />
           ))}
         </ReactSimplyCarousel>
       ) : (

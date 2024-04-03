@@ -7,6 +7,7 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
+// import { CSVLink } from "react-csv";
 
 import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
@@ -18,17 +19,35 @@ import {
   useFetchAPICommunicationgetapicommunicationsreceive,
   useFetchAPICommunicationgetapicommunicationssend,
   useFetchCommunicationgetcommunicationsperstatusmonth,
+  useFetchTransactionsData,
   useGetCommunicationsCount,
 } from "../Api/Hooks/Dashboard";
 import SkeletonCom from "../components/Skeleton";
 import DateInput from "../components/common/Buttons/DateInput";
 import moment from "moment";
 import FilterMonth from "../components/Filters";
+import BasicButton from "../components/common/Buttons/Button";
+import TransactionsTable from "../components/common/Table/TransactionsTable";
+const Headers = [
+  { label: "Id ", key: "id" },
+  { label: "Entity Name ", key: "name" },
+  { label: "phone ", key: "phone" },
+  { label: "Email ", key: "email" },
+  { label: "Services URL ", key: "serviceUrl" },
+  { label: "Is Enabled ", key: "isEnabled" },
+  { label: "Is Deactivated ", key: "isDeactivated" },
+];
 
 function Dashboard() {
   const [text, setText] = useState("");
+  const [destination, setDestination] = useState(false);
+  const [source, setSource] = useState(false);
 
   const [filters, setFilters] = useState({
+    fromDate: moment("10/1/2023").format("lll"),
+    toDate: moment(new Date()).format("lll"),
+  });
+  const [filtersForTransctions, setFiltersForTransctions] = useState({
     fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
   });
@@ -49,6 +68,39 @@ function Dashboard() {
     useFetchCommunicationgetcommunicationsperstatusmonth();
   const { data: aPICommunicationgetapicommunicationssend } =
     useFetchAPICommunicationgetapicommunicationssend();
+  const { mutate: GettransactionsData, data: transactionsData } =
+    useFetchTransactionsData();
+  const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
+    useFetchTransactionsData();
+  useEffect(() => {
+    GettransactionsData({
+      ...filtersForTransctions,
+      source,
+      destination,
+      pageSize: 0,
+      pageNumber: 0,
+      showAll: true,
+    });
+    GettransactionsDataCSV({
+      ...filtersForTransctions,
+      source,
+      destination,
+      showAll: true,
+      pageSize: 0,
+      pageNumber: 0,
+    });
+  }, []);
+  // const { data: transactionsExcel } = useFetchTransactionsData({
+  //   ...filtersForTransctions,
+  //   source,
+  //   destination,
+  // });
+
+  useEffect(() => {
+    if (transactionsExcel) {
+      console.log(transactionsExcel, "transactionsExcel");
+    }
+  }, [transactionsExcel]);
 
   const { data: aPICommunicationgetapicommunicationsrecieve } =
     useFetchAPICommunicationgetapicommunicationsreceive({
@@ -107,14 +159,7 @@ function Dashboard() {
       aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
         (item: any) => item.month
       );
-    // const succeedCounts =
-    //   aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
-    //     (item: any) => item.succeedCount
-    //   );
-    // const failedCounts =
-    //   aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.map(
-    //     (item: any) => item.failedCount
-    //   );
+
     const datasucceed = labels.map((month) => {
       const monthData =
         aPICommunicationgetapicommunicationssend?.apiCommunicationStatusDayDTOs?.find(
@@ -143,14 +188,7 @@ function Dashboard() {
       aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
         (item: any) => item.month
       );
-    // const succeedCounts =
-    //   aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
-    //     (item: any) => item.succeedCount
-    //   );
-    // const failedCounts =
-    //   aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.map(
-    //     (item: any) => item.failedCount
-    //   );
+
     const datasucceed = labels.map((month) => {
       const monthData =
         aPICommunicationgetapicommunicationsrecieve?.apiCommunicationStatusDayDTOs?.find(
@@ -433,75 +471,82 @@ function Dashboard() {
             <ReactSimplyCarouselExample />
           </Card>
         </Grid>
-        {/* <Grid item xs={12} sm={12} md={12}>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-    }}
-  >
-    <Typography component="h5" variant="h5" sx={{ margin: "10px" }}>
-      Transaction Table
-    </Typography>
-    <BasicButton
-      text="Export Excel"
-      bgColor={COLORS.primary}
-      textColor={COLORS.white}
-    />
-  </Box>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBlock: "10px",
-    }}
-  >
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      <BasicButton
-        text="From: 1/2023"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-      <BasicButton
-        text="To: 1/2023"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-    </Box>
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      <BasicButton
-        text="Source Entity"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-      <BasicButton
-        text="Destination Entity"
-        bgColor={COLORS.secondary}
-        textColor={COLORS.white}
-        style={{ padding: "5px 7px" }}
-      />
-    </Box>
-  </Box>
+        <Grid item xs={12} sm={12} md={12}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography component="h5" variant="h5" sx={{ margin: "10px" }}>
+              Transaction Table
+            </Typography>
 
-  <BasicTable Headers={Headers} data={dummyData} />
-</Grid> */}
+            <div className="export-excel">
+              {/* <CSVLink data={csvData}>Export Excel</CSVLink> */}
+            </div>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBlock: "10px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <DateInput
+                initValue={filtersForTransctions.fromDate}
+                text="From: "
+                onChange={setFiltersForTransctions}
+                name={"fromDate"}
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+
+              <DateInput
+                text="To: "
+                onChange={setFiltersForTransctions}
+                name={"toDate"}
+                bgColor={COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <BasicButton
+                text="Source Entity"
+                onClick={() => setSource(!source)}
+                bgColor={source ? COLORS?.primary : COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+              <BasicButton
+                text="Destination Entity"
+                onClick={() => setDestination(!destination)}
+                bgColor={destination ? COLORS?.primary : COLORS.secondary}
+                textColor={COLORS.white}
+                style={{ padding: "5px 7px" }}
+              />
+            </Box>
+          </Box>
+
+          <TransactionsTable Headers={Headers} data={transactionsData || []} />
+        </Grid>
       </Grid>
     </Container>
   );

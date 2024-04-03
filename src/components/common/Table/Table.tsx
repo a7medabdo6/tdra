@@ -135,6 +135,7 @@ const BasicTable: React.FC<TableProps> = ({
                   {row?.[`${Headers[5].key}`]}
                 </TableCell>
               )}
+
               {/* {Headers?.[5]?.key && (
                 <TableCell align="center">
                   {row?.[`${Headers[5].key}`] ? (
