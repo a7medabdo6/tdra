@@ -7,6 +7,7 @@ import { COLORS } from "../../constants/insex";
 import BasicButton from "../common/Buttons/Button";
 import DateInput from "../common/Buttons/DateInput";
 import SearchInput from "../common/Inputs/Searchinput";
+import moment from "moment";
 
 function FilterMonth({
   title,
@@ -19,8 +20,68 @@ function FilterMonth({
   setFilters,
 }: any) {
   const [showFilters, setShowFilters] = useState(false);
+  const [monthClicked, setmonthClicked] = useState("");
+
   const handleShowFilters = () => {
     setShowFilters((old) => !old);
+  };
+  const handleMonthClicked = (type: any) => {
+    if (type == "1m") {
+      setmonthClicked("1m");
+      const firstDay = moment().startOf("month").format("YYYY-MM-DD");
+      const lastDay = moment().endOf("month").format("YYYY-MM-DD");
+      setFilters(() => {
+        return {
+          fromDate: moment(firstDay).format("lll"),
+          toDate: moment(lastDay).format("lll"),
+        };
+      });
+    } else if (type == "6m") {
+      setmonthClicked("6m");
+      const firstDay = moment().startOf("month").format("YYYY-MM-DD");
+      const lastDaySixMonthsLater = moment()
+        .add(6, "months")
+        .endOf("month")
+        .format("YYYY-MM-DD");
+      setFilters(() => {
+        return {
+          fromDate: moment(firstDay).format("lll"),
+          toDate: moment(lastDaySixMonthsLater).format("lll"),
+        };
+      });
+    } else if (type == "1y") {
+      setmonthClicked("1y");
+      const firstDay = moment().startOf("month").format("YYYY-MM-DD");
+      const lastDay12MonthsLater = moment()
+        .add(12, "months")
+        .endOf("month")
+        .format("YYYY-MM-DD");
+      setFilters(() => {
+        return {
+          fromDate: moment(firstDay).format("lll"),
+          toDate: moment(lastDay12MonthsLater).format("lll"),
+        };
+      });
+    } else if (type == "5y") {
+      setmonthClicked("5y");
+      const firstDay = moment().startOf("month").format("YYYY-MM-DD");
+      const lastDay12MonthsLater = moment()
+        .add(5, "years")
+        .endOf("year")
+        .format("YYYY-MM-DD");
+      setFilters(() => {
+        return {
+          fromDate: moment(firstDay).format("lll"),
+          toDate: moment(lastDay12MonthsLater).format("lll"),
+        };
+      });
+    } else {
+      setmonthClicked("max");
+
+      setFilters(() => {
+        return {};
+      });
+    }
   };
   return (
     <Box className="d-flex justify-content-between" sx={{ marginLeft: "40px" }}>
@@ -32,27 +93,62 @@ function FilterMonth({
           <>
             {" "}
             <Typography
-              sx={{ display: "flex", alignItems: "center", height: "20px" }}
+              onClick={() => handleMonthClicked("1m")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                cursor: "pointer",
+                color: monthClicked == "1m" ? "#9D805F" : "unset",
+              }}
             >
               1M
             </Typography>
             <Typography
-              sx={{ display: "flex", alignItems: "center", height: "20px" }}
+              onClick={() => handleMonthClicked("6m")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                cursor: "pointer",
+                color: monthClicked == "6m" ? "#9D805F" : "unset",
+              }}
             >
               6M
             </Typography>
             <Typography
-              sx={{ display: "flex", alignItems: "center", height: "20px" }}
+              onClick={() => handleMonthClicked("1y")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                cursor: "pointer",
+                color: monthClicked == "1y" ? "#9D805F" : "unset",
+              }}
             >
               1Y
             </Typography>
             <Typography
-              sx={{ display: "flex", alignItems: "center", height: "20px" }}
+              onClick={() => handleMonthClicked("5y")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                cursor: "pointer",
+                color: monthClicked == "5y" ? "#9D805F" : "unset",
+              }}
             >
               5Y
             </Typography>
             <Typography
-              sx={{ display: "flex", alignItems: "center", height: "20px" }}
+              onClick={() => handleMonthClicked("max")}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                cursor: "pointer",
+                color: monthClicked == "max" ? "#9D805F" : "unset",
+              }}
             >
               MAX
             </Typography>

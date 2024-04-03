@@ -31,13 +31,23 @@ const fetchTopEntities = async (): Promise<any> => {
   const response = await instance.get(`Entity/get-top-entities/`);
   return response.data;
 };
-const fetchCommunicationgetcommunicationsperstatusmonth =
-  async (): Promise<any> => {
-    const response = await instance.get(
-      `Communication/get-communications-per-status-month`
-    );
-    return response.data;
-  };
+const fetchCommunicationgetcommunicationsperstatusmonth = async (
+  data: any
+): Promise<any> => {
+  const params = new URLSearchParams();
+
+  // Iterate over the key-value pairs in the data object and append them to the URLSearchParams
+  for (const [key, value] of Object.entries(data)) {
+    params.append(key, String(value));
+  }
+
+  // Use the params object in your URL
+  const queryString = params.toString();
+  const response = await instance.get(
+    `Communication/get-communications-per-status-month?${queryString}`
+  );
+  return response.data;
+};
 const fetchTransactionsData = async (data: any): Promise<any> => {
   const queryString = qs.stringify(data);
 
@@ -153,33 +163,34 @@ export const useDeleteLookup = (): UseMutationResult<any, Error> => {
     },
   });
 };
-export const useFetchCommunicationgetcommunicationsperstatusmonth =
-  (): UseQueryResult<any> => {
-    return useQuery(
-      ["Communicationgetcommunicationsperstatusmonth"],
-      () => fetchCommunicationgetcommunicationsperstatusmonth(),
-      {
-        onSuccess: () => {},
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.Message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          console.error(
-            "Error fetching Lookupes : ",
-            error?.response?.data?.Message
-          );
-        },
-        staleTime: Infinity,
-      }
-    );
-  };
+export const useFetchCommunicationgetcommunicationsperstatusmonth = (
+  data: any
+): UseQueryResult<any> => {
+  return useQuery(
+    ["Communicationgetcommunicationsperstatusmonth", data],
+    () => fetchCommunicationgetcommunicationsperstatusmonth(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+      staleTime: Infinity,
+    }
+  );
+};
 export const useFetchCommunicationgetcommunicationspertypemonth =
   (): UseQueryResult<any> => {
     return useQuery(

@@ -88,14 +88,13 @@ export function AreaChartSimple({
     },
   };
   const isSmallScreen = useMediaQuery("(max-width:700px)");
-  const succeedData = data?.succeedCounts;
-  const failedData = data?.failedCounts;
+  // const succeedData = data?.succeedCounts;
+  // const failedData = data?.failedCounts;
 
-  const maxSucceed = succeedData ? Math.max(...succeedData) : 0;
-  const maxFailed = failedData ? Math.max(...failedData) : 0;
+  // const maxSucceed = succeedData ? Math.max(...succeedData) : 0;
+  // const maxFailed = failedData ? Math.max(...failedData) : 0;
 
-  const maxY = Math.max(maxSucceed, maxFailed) + 10;
-  console.log(maxY, "MAXXX");
+  // const maxY = Math.max(maxSucceed, maxFailed) + 10;
 
   const dataChart = {
     labels: labels,

@@ -13,7 +13,6 @@ import StaticsCard from "../components/common/Cards/StaticsCard";
 import { COLORS } from "../constants/insex";
 import { AreaChartSimple } from "../components/Charts/AreaChart";
 import { BarChart } from "../components/Charts/BarChart";
-// import BasicTable from "../components/common/Table/Table";
 import ReactSimplyCarouselExample from "../components/Slider";
 import {
   useFetchAPICommunicationgetapicommunicationsreceive,
@@ -51,6 +50,10 @@ function Dashboard() {
     fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
   });
+  const [filtersForCommunications, setfiltersForCommunications] = useState({
+    fromDate: moment("10/1/2023").format("lll"),
+    toDate: moment(new Date()).format("lll"),
+  });
   const [filtersForBarChart, setFiltersForBarChart] = useState({
     fromDate: moment("10/1/2023").format("lll"),
     toDate: moment(new Date()).format("lll"),
@@ -65,13 +68,16 @@ function Dashboard() {
   });
   const { data, isLoading } = useGetCommunicationsCount(filters);
   const { data: communicationgetcommunicationsperstatusmonth } =
-    useFetchCommunicationgetcommunicationsperstatusmonth();
+    useFetchCommunicationgetcommunicationsperstatusmonth({
+      ...filtersForCommunications,
+      name: text,
+    });
   const { data: aPICommunicationgetapicommunicationssend } =
     useFetchAPICommunicationgetapicommunicationssend();
   const { mutate: GettransactionsData, data: transactionsData } =
     useFetchTransactionsData();
-  const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
-    useFetchTransactionsData();
+  // const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
+  //   useFetchTransactionsData();
   useEffect(() => {
     GettransactionsData({
       ...filtersForTransctions,
@@ -81,14 +87,14 @@ function Dashboard() {
       pageNumber: 0,
       showAll: true,
     });
-    GettransactionsDataCSV({
-      ...filtersForTransctions,
-      source,
-      destination,
-      showAll: true,
-      pageSize: 0,
-      pageNumber: 0,
-    });
+    // GettransactionsDataCSV({
+    //   ...filtersForTransctions,
+    //   source,
+    //   destination,
+    //   showAll: true,
+    //   pageSize: 0,
+    //   pageNumber: 0,
+    // });
   }, []);
   // const { data: transactionsExcel } = useFetchTransactionsData({
   //   ...filtersForTransctions,
@@ -96,11 +102,11 @@ function Dashboard() {
   //   destination,
   // });
 
-  useEffect(() => {
-    if (transactionsExcel) {
-      console.log(transactionsExcel, "transactionsExcel");
-    }
-  }, [transactionsExcel]);
+  // useEffect(() => {
+  //   if (transactionsExcel) {
+  //     console.log(transactionsExcel, "transactionsExcel");
+  //   }
+  // }, [transactionsExcel]);
 
   const { data: aPICommunicationgetapicommunicationsrecieve } =
     useFetchAPICommunicationgetapicommunicationsreceive({
@@ -310,7 +316,12 @@ function Dashboard() {
         )}
       </Grid>
       <div className="first_chart" style={{ marginTop: "10px" }}>
-        <FilterMonth title={"Communication Line Chart"} showFilterBtn={false} />
+        <FilterMonth
+          title={"Communication Line Chart"}
+          showFilterBtn={false}
+          filters={filtersForCommunications}
+          setFilters={setfiltersForCommunications}
+        />
         <AreaChartSimple
           data={firstChart}
           type="normal"
