@@ -38,8 +38,12 @@ const DateInput: React.FC<BasicButtonProps> = ({
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date?.$d);
+
     onChange((old: any) => {
-      return { ...old, [`${name}`]: moment(date?.$d).format("lll") };
+      return {
+        ...old,
+        [`${name}`]: moment(date?.$d).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+      };
     });
     setIsDatePickerVisible(false);
   };

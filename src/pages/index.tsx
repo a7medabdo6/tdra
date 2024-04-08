@@ -4,6 +4,7 @@ import {
   Card,
   Container,
   Grid,
+  Pagination,
   Typography,
   debounce,
 } from "@mui/material";
@@ -27,6 +28,7 @@ import moment from "moment";
 import FilterMonth from "../components/Filters";
 import BasicButton from "../components/common/Buttons/Button";
 import TransactionsTable from "../components/common/Table/TransactionsTable";
+import { CSVLink } from "react-csv";
 const Headers = [
   { label: "Id ", key: "id" },
   { label: "Entity Name ", key: "name" },
@@ -43,28 +45,28 @@ function Dashboard() {
   const [source, setSource] = useState(false);
 
   const [filters, setFilters] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const [filtersForTransctions, setFiltersForTransctions] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const [filtersForCommunications, setfiltersForCommunications] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const [filtersForBarChart, setFiltersForBarChart] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const [filtersForReceivedChart, setFiltersForReceivedChart] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const [filtersForSendChart, setFiltersForSendChart] = useState({
-    fromDate: moment("10/1/2023").format("lll"),
-    toDate: moment(new Date()).format("lll"),
+    fromDate: moment("10/1/2023").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
+    toDate: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]"),
   });
   const { data, isLoading } = useGetCommunicationsCount(filters);
   const { data: communicationgetcommunicationsperstatusmonth } =
@@ -73,29 +75,33 @@ function Dashboard() {
       name: text,
     });
   const { data: aPICommunicationgetapicommunicationssend } =
-    useFetchAPICommunicationgetapicommunicationssend();
+    useFetchAPICommunicationgetapicommunicationssend({
+      ...filtersForSendChart,
+    });
   const { mutate: GettransactionsData, data: transactionsData } =
     useFetchTransactionsData();
-  // const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
-  //   useFetchTransactionsData();
+  const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
+    useFetchTransactionsData();
+  const [page, setPage] = React.useState(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
   useEffect(() => {
     GettransactionsData({
       ...filtersForTransctions,
+
       source,
       destination,
-      pageSize: 0,
-      pageNumber: 0,
+      pageSize: 10,
+      pageNumber: page,
+    });
+    GettransactionsDataCSV({
+      ...filtersForTransctions,
+      source,
+      destination,
       showAll: true,
     });
-    // GettransactionsDataCSV({
-    //   ...filtersForTransctions,
-    //   source,
-    //   destination,
-    //   showAll: true,
-    //   pageSize: 0,
-    //   pageNumber: 0,
-    // });
-  }, []);
+  }, [page, source, destination, filtersForTransctions]);
   // const { data: transactionsExcel } = useFetchTransactionsData({
   //   ...filtersForTransctions,
   //   source,
@@ -110,8 +116,7 @@ function Dashboard() {
 
   const { data: aPICommunicationgetapicommunicationsrecieve } =
     useFetchAPICommunicationgetapicommunicationsreceive({
-      ...filtersForBarChart,
-      name: text,
+      ...filtersForReceivedChart,
     });
   const [firstChart, setFirstChart] = useState<any>({});
   const [secondChart, setSecondChart] = useState<any>({});
@@ -342,6 +347,7 @@ function Dashboard() {
               title={"Api Send Line Chart"}
               debouncedOnChange={debouncedOnChange}
               filters={filtersForSendChart}
+              showSearchInput={false}
               setFilters={setFiltersForSendChart}
             />
             <AreaChartSimple data={secondChart} />
@@ -399,6 +405,7 @@ function Dashboard() {
             <FilterMonth
               title={"Api Receive Line Chart"}
               debouncedOnChange={debouncedOnChange}
+              showSearchInput={false}
               filters={filtersForReceivedChart}
               setFilters={setFiltersForReceivedChart}
             />
@@ -457,12 +464,13 @@ function Dashboard() {
             <FilterMonth
               title="Communication ( send / recieved )"
               showMonths={false}
+              showSearchInput={false}
               debouncedOnChange={debouncedOnChange}
               filters={filtersForBarChart}
               setFilters={setFiltersForBarChart}
             />
             <Box>
-              <BarChart />
+              <BarChart filters={filtersForBarChart} />
             </Box>
           </Card>
         </Grid>
@@ -495,7 +503,15 @@ function Dashboard() {
             </Typography>
 
             <div className="export-excel">
-              {/* <CSVLink data={csvData}>Export Excel</CSVLink> */}
+              <CSVLink
+                data={
+                  transactionsExcel?.transactions
+                    ? transactionsExcel?.transactions
+                    : []
+                }
+              >
+                Export Excel
+              </CSVLink>
             </div>
           </Box>
           <Box
@@ -525,6 +541,7 @@ function Dashboard() {
 
               <DateInput
                 text="To: "
+                initValue={filtersForTransctions.toDate}
                 onChange={setFiltersForTransctions}
                 name={"toDate"}
                 bgColor={COLORS.secondary}
@@ -556,7 +573,13 @@ function Dashboard() {
             </Box>
           </Box>
 
-          <TransactionsTable Headers={Headers} data={transactionsData || []} />
+          <TransactionsTable
+            Headers={Headers}
+            data={transactionsData?.transactions || []}
+          />
+          <div className="pagination">
+            <Pagination count={10} page={page} onChange={handleChange} />
+          </div>
         </Grid>
       </Grid>
     </Container>

@@ -49,10 +49,9 @@ const fetchCommunicationgetcommunicationsperstatusmonth = async (
   return response.data;
 };
 const fetchTransactionsData = async (data: any): Promise<any> => {
-  const queryString = qs.stringify(data);
-
-  const response = await instance.get(
-    `Connection/entities/Transactions?${queryString}`
+  const response = await instance.post(
+    `Connection/entities/Transactions`,
+    data
   );
   return response.data;
 };
@@ -66,20 +65,26 @@ const fetchTransactionsExcel = async (data: any): Promise<any> => {
   return response;
 };
 
-const fetchCommunicationgetcommunicationspertypemonth =
-  async (): Promise<any> => {
-    const response = await instance.get(
-      `Communication/get-communications-per-type-month`
-    );
-    return response.data;
-  };
-const fetchAPICommunicationgetapicommunicationssend =
-  async (): Promise<any> => {
-    const response = await instance.get(
-      `APICommunication/get-api-communications-send`
-    );
-    return response.data;
-  };
+const fetchCommunicationgetcommunicationspertypemonth = async (
+  data?: any
+): Promise<any> => {
+  const queryString = qs.stringify(data);
+
+  const response = await instance.get(
+    `Communication/get-communications-per-type-month?${queryString}`
+  );
+  return response.data;
+};
+const fetchAPICommunicationgetapicommunicationssend = async (
+  data: any
+): Promise<any> => {
+  const queryString = qs.stringify(data);
+
+  const response = await instance.get(
+    `APICommunication/get-api-communications-send?${queryString}`
+  );
+  return response.data;
+};
 
 const fetchAPICommunicationgetapicommunicationsreceive = async (
   data: any
@@ -191,33 +196,34 @@ export const useFetchCommunicationgetcommunicationsperstatusmonth = (
     }
   );
 };
-export const useFetchCommunicationgetcommunicationspertypemonth =
-  (): UseQueryResult<any> => {
-    return useQuery(
-      ["Communicationgetcommunicationspertypemonth"],
-      () => fetchCommunicationgetcommunicationspertypemonth(),
-      {
-        onSuccess: () => {},
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.Message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          console.error(
-            "Error fetching Lookupes : ",
-            error?.response?.data?.Message
-          );
-        },
-        staleTime: Infinity,
-      }
-    );
-  };
+export const useFetchCommunicationgetcommunicationspertypemonth = (
+  data?: any
+): UseQueryResult<any> => {
+  return useQuery(
+    ["Communicationgetcommunicationspertypemonth", data],
+    () => fetchCommunicationgetcommunicationspertypemonth(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+      staleTime: Infinity,
+    }
+  );
+};
 export const useGetTopEntities = (): UseQueryResult<any> => {
   return useQuery(["fetchTopEntities"], () => fetchTopEntities(), {
     onSuccess: () => {},
@@ -243,16 +249,16 @@ export const useGetTopEntities = (): UseQueryResult<any> => {
 export const useFetchTransactionsData = (): UseMutationResult<any | Error> => {
   return useMutation(fetchTransactionsData, {
     onSuccess: () => {
-      toast.success("Lookup Updated  successfully!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      // toast.success("Lookup Updated  successfully!", {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "colored",
+      // });
     },
     onError: () => {},
   });
@@ -309,33 +315,34 @@ export const useFetchTransactionsExcel = (data: any): UseQueryResult<any> => {
   );
 };
 
-export const useFetchAPICommunicationgetapicommunicationssend =
-  (): UseQueryResult<any> => {
-    return useQuery(
-      ["APICommunicationgetapicommunicationssend"],
-      () => fetchAPICommunicationgetapicommunicationssend(),
-      {
-        onSuccess: () => {},
-        onError: (error: any) => {
-          toast.error(error?.response?.data?.Message, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          console.error(
-            "Error fetching Lookupes : ",
-            error?.response?.data?.Message
-          );
-        },
-        staleTime: Infinity,
-      }
-    );
-  };
+export const useFetchAPICommunicationgetapicommunicationssend = (
+  data: any
+): UseQueryResult<any> => {
+  return useQuery(
+    ["APICommunicationgetapicommunicationssend", data],
+    () => fetchAPICommunicationgetapicommunicationssend(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+      staleTime: Infinity,
+    }
+  );
+};
 export const useFetchAPICommunicationgetapicommunicationsreceive = (
   data: any
 ): UseQueryResult<any> => {

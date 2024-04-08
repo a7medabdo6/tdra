@@ -21,7 +21,7 @@ ChartJS.register(
   Legend
 );
 
-export function BarChart({ type }: any) {
+export function BarChart({ type, filters }: any) {
   const options = {
     plugins: {
       legend: {
@@ -62,7 +62,9 @@ export function BarChart({ type }: any) {
     },
     cornerRadius: 20, // Adjust the border radius here
   };
-  const { data } = useFetchCommunicationgetcommunicationspertypemonth();
+  const { data } = useFetchCommunicationgetcommunicationspertypemonth({
+    ...filters,
+  });
 
   const [firstChart, setFirstChart] = useState<any>({});
   const labels = [

@@ -15,7 +15,7 @@ function FilterMonth({
   showFilterBtn = true,
 
   debouncedOnChange,
-
+  showSearchInput = false,
   filters,
   setFilters,
 }: any) {
@@ -248,21 +248,22 @@ function FilterMonth({
                     style={{ padding: "5px 7px" }}
                   />
                 </Box>
-
-                <SearchInput
-                  style={{
-                    backgroundColor: COLORS.secondary,
-                    color: COLORS.white,
-
-                    "& .MuiOutlinedInput-root": {
+                {showSearchInput && (
+                  <SearchInput
+                    style={{
+                      backgroundColor: COLORS.secondary,
                       color: COLORS.white,
-                    },
-                    "& .MuiInputBase-input": {
-                      padding: "10px",
-                    },
-                  }}
-                  onchange={debouncedOnChange}
-                />
+
+                      "& .MuiOutlinedInput-root": {
+                        color: COLORS.white,
+                      },
+                      "& .MuiInputBase-input": {
+                        padding: "10px",
+                      },
+                    }}
+                    onchange={debouncedOnChange}
+                  />
+                )}
               </Box>
             )}
           </Box>
