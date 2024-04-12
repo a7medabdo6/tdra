@@ -44,11 +44,11 @@ display: flex;justify-content: center;align-items: center;
 right: 100px; */
 }
 .month_filters p{
-  padding-inline: 10px;
+  padding-inline: 5px;
   border-right: 1px solid gray !important;
 }
 .fitler_status{
-  padding-inline: 10px;
+  padding-inline: 5px;
   display: flex;
   align-items: center;
 
