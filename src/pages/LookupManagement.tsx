@@ -91,7 +91,9 @@ const LookupManagement: React.FC<any> = () => {
                 }}
               >
                 <BasicButton
-                  onClick={() => navigate("/lookup-details/add")}
+                  onClick={() =>
+                    navigate(`/lookup-details/add?categoryId=${id}`)
+                  }
                   text="Add Lookup value"
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
@@ -125,7 +127,9 @@ const LookupManagement: React.FC<any> = () => {
               >
                 <BasicButton
                   text="Add Lookup value"
-                  onClick={() => navigate("/lookup-details/add")}
+                  onClick={() =>
+                    navigate(`/lookup-details/add?categoryId=${id}`)
+                  }
                   bgColor={COLORS.primary}
                   textColor={COLORS.white}
                 />

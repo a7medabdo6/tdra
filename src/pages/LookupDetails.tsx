@@ -10,6 +10,8 @@ import SkeletonCom from "../components/Skeleton";
 import { useAddUpdateLookup, useOneLookup } from "../Api/Hooks/Lookup";
 import CurrentUser from "../CurrentUser";
 function LookupDetails() {
+  const [queryParams, setQueryParams] = useState<any>({});
+
   const { id } = useParams();
   const navigate = useNavigate();
   const { data, isLoading } =
@@ -33,9 +35,23 @@ function LookupDetails() {
   }, [data]);
   const { mutate, isLoading: isLoadingUpdate } = useAddUpdateLookup();
   const updateOrAdd = () => {
-    mutate(obj);
+    mutate({
+      ...obj,
+      ...(queryParams.categoryId && { categoryId: +queryParams.categoryId }),
+    });
   };
 
+  useEffect(() => {
+    const params: any = new URLSearchParams(window.location.search);
+    const queryObj: any = {};
+    for (const [key, value] of params.entries()) {
+      queryObj[key] = value;
+    }
+    setQueryParams(queryObj);
+  }, []);
+  useEffect(() => {
+    console.log(queryParams, "queryParams");
+  }, [queryParams]);
   return (
     <Container>
       <Grid container spacing={3}>
@@ -145,7 +161,7 @@ function LookupDetails() {
                     });
                   }}
                   variant="outlined"
-                  placeholder="Phone"
+                  placeholder="Description"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
               </Grid>

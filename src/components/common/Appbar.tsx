@@ -75,7 +75,9 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
     setAnchorElUser(null);
     logout();
   };
-
+  const handleCloseUserMenuWithoutLogout = () => {
+    setAnchorElUser(null);
+  };
   return (
     <>
       <AppBar
@@ -140,7 +142,7 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={handleCloseUserMenuWithoutLogout}
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>

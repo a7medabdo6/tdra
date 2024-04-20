@@ -19,7 +19,9 @@ const fetchall = async (): Promise<any> => {
   return response.data;
 };
 const fetchallfieldswithoutdocument = async (): Promise<any> => {
-  const response = await instance.get(`EntityField/get-all-fields`);
+  const response = await instance.get(
+    `EntityField/get-all-fields-without-document`
+  );
   return response.data;
 };
 

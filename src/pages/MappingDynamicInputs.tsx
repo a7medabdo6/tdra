@@ -14,11 +14,11 @@ import SkeletonCom from "../components/Skeleton";
 // import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import BasicButton from "../components/common/Buttons/Button";
 import {
-  useGetAllEntityField,
   useOneEntityFieldMappingsByEntityId,
   useaddUpdateListEntityFieldMapping,
 } from "../Api/Hooks/EntityManagment";
 import CurrentUser from "../CurrentUser";
+import { useFetchAllFieldsWithoutDocument } from "../Api/Hooks/EntityMapping";
 
 function MappingDynamicInputs() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ function MappingDynamicInputs() {
   const [inputFields, setInputFields] = useState<any[]>([]);
 
   const navigate = useNavigate();
-  const { data, isLoading } = useGetAllEntityField();
+  const { data, isLoading } = useFetchAllFieldsWithoutDocument();
   const { data: one } = useOneEntityFieldMappingsByEntityId({ id });
 
   const { mutate, isLoading: isLoadingMapping } =
@@ -48,11 +48,13 @@ function MappingDynamicInputs() {
     }
   }, [user]);
   useEffect(() => {
+    console.log(data, "datadatadata");
+
     setInputFields([]);
     if (data?.length > 0 && one?.length > 0) {
       for (let index = 0; index < data?.length; index++) {
         const result = one?.find(
-          (obj: any) => obj.fieldName === data[index]?.name
+          (obj: any) => obj.fieldName === data?.[index]?.name
         );
         if (result) {
           setInputFields((old: any) => {
@@ -201,17 +203,17 @@ function MappingDynamicInputs() {
                       </FormControl>
                     </Grid>
                   ))}
-                <BasicButton
-                  text="Save"
-                  bgColor={COLORS.primary}
-                  textColor={COLORS.white}
-                  style={{
-                    borderRadius: "10px",
-                  }}
-                  isLoading={isLoadingMapping}
-                  onClick={Submit}
-                />
               </Grid>
+              <BasicButton
+                text="Save"
+                bgColor={COLORS.primary}
+                textColor={COLORS.white}
+                style={{
+                  borderRadius: "10px",
+                }}
+                isLoading={isLoadingMapping}
+                onClick={Submit}
+              />
             </Grid>
           </>
         )}

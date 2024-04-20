@@ -20,7 +20,7 @@ const EntityFieldMappingsByEntityId = async (data: any): Promise<any> => {
   return response.data;
 };
 const fetchOneConnectionTo = async (data: any): Promise<any> => {
-  const response = await instance.get(`Connection/to-entity-${data?.id}`);
+  const response = await instance.get(`Connection/entities/${data?.id}`);
   return response.data;
 };
 
