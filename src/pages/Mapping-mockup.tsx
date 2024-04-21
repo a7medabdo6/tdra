@@ -13,8 +13,12 @@ import { COLORS } from "../constants/insex";
 import SkeletonCom from "../components/Skeleton";
 
 import BasicButton from "../components/common/Buttons/Button";
-import { useEntities, usePostMock } from "../Api/Hooks/EntityManagment";
-import { useFetchAllFieldsWithoutDocument } from "../Api/Hooks/EntityMapping";
+import {
+  useEntities,
+  useGetAllEntityField,
+  usePostMock,
+} from "../Api/Hooks/EntityManagment";
+// import { useFetchAllFieldsWithoutDocument } from "../Api/Hooks/EntityMapping";
 import SelectComponenetForCategory from "../components/SelectComponenetForCategory";
 import InputFileUpload from "../components/common/Buttons/FileUpload";
 
@@ -23,7 +27,7 @@ function MappingDynamicInputs() {
   const [base64Image, setBase64Image] = useState<any>([]);
 
   const { data, isLoading } = useEntities(text);
-  const { data: allFieldsWithoutDocument } = useFetchAllFieldsWithoutDocument();
+  const { data: allFieldsWithoutDocument } = useGetAllEntityField();
 
   const { mutate: mutatePostMock, isLoading: isLoadingFieldMapping } =
     usePostMock();
