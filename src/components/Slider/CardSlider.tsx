@@ -3,6 +3,8 @@ import React from "react";
 import { COLORS } from "../../constants/insex";
 
 function CardSlider({ item }: any) {
+  console.log(item, "dattttt");
+
   return (
     <Card
       sx={{

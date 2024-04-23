@@ -14,6 +14,8 @@ interface ResponsiveProps {
 function ReactSimplyCarouselExample() {
   const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
   const { data } = useGetTopEntities();
+  console.log(data, "dattttt data");
+
   return (
     <div>
       {data?.length > 0 ? (
@@ -68,8 +70,8 @@ function ReactSimplyCarouselExample() {
           speed={400}
           easing="linear"
         >
-          {data?.map(({ item, i }: any) => (
-            <CardSlider key={i} item={item} />
+          {data?.map((item: any) => (
+            <CardSlider key={item?.entity} item={item} />
           ))}
         </ReactSimplyCarousel>
       ) : (

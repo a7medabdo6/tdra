@@ -504,6 +504,7 @@ function Dashboard() {
 
             <div className="export-excel">
               <CSVLink
+                filename={`${moment().format("lll")}`}
                 data={
                   transactionsExcel?.transactions
                     ? transactionsExcel?.transactions
