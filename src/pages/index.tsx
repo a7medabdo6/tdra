@@ -29,14 +29,18 @@ import FilterMonth from "../components/Filters";
 import BasicButton from "../components/common/Buttons/Button";
 import TransactionsTable from "../components/common/Table/TransactionsTable";
 import { CSVLink } from "react-csv";
+import RequestJsonModalCom from "../components/common/Modal/RequestJsonModal";
 const Headers = [
   { label: "Id ", key: "id" },
-  { label: "Entity Name ", key: "name" },
+  { label: "Destination", key: "destination" },
+  { label: "Source", key: "source" },
+
   { label: "phone ", key: "phone" },
   { label: "Email ", key: "email" },
   { label: "Services URL ", key: "serviceUrl" },
   { label: "Is Enabled ", key: "isEnabled" },
   { label: "Is Deactivated ", key: "isDeactivated" },
+  { label: "Status", key: "status" },
 ];
 
 function Dashboard() {
@@ -78,30 +82,26 @@ function Dashboard() {
     useFetchAPICommunicationgetapicommunicationssend({
       ...filtersForSendChart,
     });
-  const { mutate: GettransactionsData, data: transactionsData } =
-    useFetchTransactionsData();
-  const { mutate: GettransactionsDataCSV, data: transactionsExcel } =
-    useFetchTransactionsData();
   const [page, setPage] = React.useState(1);
+
+  const { data: transactionsData } = useFetchTransactionsData({
+    ...filtersForTransctions,
+
+    source,
+    destination,
+    pageSize: 10,
+    pageNumber: page,
+  });
+  const { data: transactionsExcel } = useFetchTransactionsData({
+    ...filtersForTransctions,
+    source,
+    destination,
+    showAll: true,
+  });
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  useEffect(() => {
-    GettransactionsData({
-      ...filtersForTransctions,
-
-      source,
-      destination,
-      pageSize: 10,
-      pageNumber: page,
-    });
-    GettransactionsDataCSV({
-      ...filtersForTransctions,
-      source,
-      destination,
-      showAll: true,
-    });
-  }, [page, source, destination, filtersForTransctions]);
+  useEffect(() => {}, [page, source, destination, filtersForTransctions]);
   // const { data: transactionsExcel } = useFetchTransactionsData({
   //   ...filtersForTransctions,
   //   source,
@@ -227,7 +227,12 @@ function Dashboard() {
     setText(value);
   };
   const debouncedOnChange = debounce(onChangeSearch, 500);
-
+  const [RequestJsonModal, setRequestJsonModal] = useState(false);
+  const [ReqeustJsonId, setReqeustJsonId] = useState(null);
+  const RequestJsonModalFun = (id: any) => {
+    setRequestJsonModal(!RequestJsonModal);
+    setReqeustJsonId(id);
+  };
   return (
     <Container>
       <Grid container spacing={3}>
@@ -576,7 +581,15 @@ function Dashboard() {
 
           <TransactionsTable
             Headers={Headers}
+            actions={true}
+            RequestJsonModalFun={RequestJsonModalFun}
+            haveRequestJsonModal={true}
             data={transactionsData?.transactions || []}
+          />
+          <RequestJsonModalCom
+            open={RequestJsonModal}
+            id={ReqeustJsonId}
+            setOpen={setRequestJsonModal}
           />
           <div className="pagination">
             <Pagination count={10} page={page} onChange={handleChange} />

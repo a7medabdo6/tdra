@@ -24,6 +24,8 @@ interface TableProps {
   deleteFun?: any;
   textForEdit?: string;
   user?: any;
+  haveRequestJsonModal?: boolean;
+  RequestJsonModalFun?: any;
 }
 const TransactionsTable: React.FC<TableProps> = ({
   Headers,
@@ -36,6 +38,8 @@ const TransactionsTable: React.FC<TableProps> = ({
   deleteFun,
   textForEdit,
   user,
+  haveRequestJsonModal,
+  RequestJsonModalFun,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [id, setId] = React.useState(null);
@@ -50,7 +54,10 @@ const TransactionsTable: React.FC<TableProps> = ({
         {data?.id}
       </TableCell>
       <TableCell align="center" component="th" scope="row">
-        {data?.name}
+        {data?.destination}
+      </TableCell>{" "}
+      <TableCell align="center" component="th" scope="row">
+        {data?.source}
       </TableCell>{" "}
       <TableCell align="center" component="th" scope="row">
         {data?.phone}
@@ -75,6 +82,13 @@ const TransactionsTable: React.FC<TableProps> = ({
           <Typography sx={{ color: "green" }}>Not deactivated</Typography>
         )}
       </TableCell>
+      <TableCell align="center" component="th" scope="row">
+        {data?.status != "Succeed" ? (
+          <Typography sx={{ color: "red" }}>{data?.status}</Typography>
+        ) : (
+          <Typography sx={{ color: "green" }}>{data?.status}</Typography>
+        )}
+      </TableCell>
       {actions && (
         <TableCell align="center">
           <Stack
@@ -91,6 +105,16 @@ const TransactionsTable: React.FC<TableProps> = ({
                 text={textForEdit ? textForEdit : "Edit"}
                 onClick={() => {
                   navigate(`${link}/${data.id}`);
+                }}
+                textColor={COLORS.orange}
+                bgColor={COLORS.lightOrange}
+              />
+            )}
+            {haveRequestJsonModal && (
+              <BasicButton
+                text={"Request Json"}
+                onClick={() => {
+                  RequestJsonModalFun(data?.id);
                 }}
                 textColor={COLORS.orange}
                 bgColor={COLORS.lightOrange}

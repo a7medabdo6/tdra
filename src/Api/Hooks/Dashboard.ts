@@ -31,6 +31,13 @@ const fetchTopEntities = async (): Promise<any> => {
   const response = await instance.get(`Entity/get-top-entities/`);
   return response.data;
 };
+const fetchFetchRequestJsonData = async (data: any): Promise<any> => {
+  const response = await instance.get(`Connection/entities/request-json/`, {
+    params: data,
+  });
+  return response.data;
+};
+
 const fetchCommunicationgetcommunicationsperstatusmonth = async (
   data: any
 ): Promise<any> => {
@@ -49,10 +56,9 @@ const fetchCommunicationgetcommunicationsperstatusmonth = async (
   return response.data;
 };
 const fetchTransactionsData = async (data: any): Promise<any> => {
-  const response = await instance.post(
-    `Connection/entities/Transactions`,
-    data
-  );
+  const response = await instance.get(`Connection/entities/Transactions`, {
+    params: data,
+  });
   return response.data;
 };
 const fetchTransactionsExcel = async (data: any): Promise<any> => {
@@ -246,46 +252,57 @@ export const useGetTopEntities = (): UseQueryResult<any> => {
     staleTime: Infinity,
   });
 };
-export const useFetchTransactionsData = (): UseMutationResult<any | Error> => {
-  return useMutation(fetchTransactionsData, {
-    onSuccess: () => {
-      // toast.success("Lookup Updated  successfully!", {
-      //   position: "top-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "colored",
-      // });
-    },
-    onError: () => {},
-  });
-  // return useMutation(
-  //   ["fetchTransactionsData", data],
-  //   () => fetchTransactionsData(data),
-  //   {
-  //     onSuccess: () => {},
-  //     onError: (error: any) => {
-  //       toast.error(error?.response?.data?.Message, {
-  //         position: "top-right",
-  //         autoClose: 5000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "colored",
-  //       });
-  //       console.error(
-  //         "Error fetching Lookupes : ",
-  //         error?.response?.data?.Message
-  //       );
-  //     },
-  //     staleTime: Infinity,
-  //   }
-  // );
+export const useFetchTransactionsData = (data: any): UseQueryResult<any> => {
+  return useQuery(
+    ["fetchTransactionsData", data, data?.destination, data?.source],
+    () => fetchTransactionsData(data),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Lookupes : ",
+          error?.response?.data?.Message
+        );
+      },
+      // staleTime: Infinity,
+    }
+  );
+};
+export const useFetchRequestJsonData = (data: any): UseQueryResult<any> => {
+  return useQuery(
+    ["fetchFetchRequestJsonData", data],
+    () => (data?.comunnicationId ? fetchFetchRequestJsonData(data) : null),
+    {
+      onSuccess: () => {},
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.Message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.error(
+          "Error fetching Request Json : ",
+          error?.response?.data?.Message
+        );
+      },
+      // staleTime: Infinity,
+    }
+  );
 };
 export const useFetchTransactionsExcel = (data: any): UseQueryResult<any> => {
   return useQuery(
