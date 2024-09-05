@@ -51,9 +51,11 @@ function UserDetails() {
       });
     }
   }, [data]);
-  const { mutate, isLoading: isLoadingUpdate } = useAddUpdateUser();
+  const { mutate, isLoading: isLoadingUpdate, error } = useAddUpdateUser();
+  console.log(error?.response?.data?.errors, "errorerror");
+
   const updateOrAdd = () => {
-    const result = roles.filter((item: any) => obj.roleId == item?.id);
+    const result = roles?.filter((item: any) => obj.roleId == item?.id);
 
     if (!obj.password) {
       mutate({
@@ -107,7 +109,10 @@ function UserDetails() {
             <ArrowBackIcon />
           </Box>
 
-          <Typography sx={{ marginInline: "10px" }}>Edit User</Typography>
+          <Typography sx={{ marginInline: "10px" }}>
+            {" "}
+            {id != "add" ? "Edit User" : "Add User"}
+          </Typography>
         </Grid>
         {isLoading && data ? (
           <SkeletonCom />
@@ -144,6 +149,13 @@ function UserDetails() {
                   placeholder="Full Name  "
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["FullName"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["FullName"][0]}
+                  </Typography>
+                )}
               </Grid>
               <Grid
                 item
@@ -174,6 +186,13 @@ function UserDetails() {
                   placeholder="Username"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["UserName"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["UserName"][0]}
+                  </Typography>
+                )}
               </Grid>
               <Grid
                 item
@@ -204,6 +223,13 @@ function UserDetails() {
                   placeholder=" Email"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["Email"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["Email"][0]}
+                  </Typography>
+                )}
               </Grid>
               <Grid
                 item
@@ -234,6 +260,13 @@ function UserDetails() {
                   placeholder="Phone Number"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["PhoneNumber"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["PhoneNumber"][0]}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={6} sm={6} md={6}>
                 <Typography sx={{ marginInline: "8px" }}>Role</Typography>
@@ -275,6 +308,13 @@ function UserDetails() {
                     ))}
                   </Select>
                 </FormControl>
+                {error?.response?.data?.errors["RoleId"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["RoleId"][0]}
+                  </Typography>
+                )}
               </Grid>
 
               <Grid
@@ -306,6 +346,13 @@ function UserDetails() {
                   placeholder="Password"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["Password"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["Password"][0]}
+                  </Typography>
+                )}
               </Grid>
 
               <Grid
@@ -339,6 +386,13 @@ function UserDetails() {
                   placeholder="Confirm Password"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
+                {error?.response?.data?.errors["ConfirmPassword"] && (
+                  <Typography
+                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                  >
+                    {error?.response?.data?.errors["ConfirmPassword"][0]}
+                  </Typography>
+                )}
               </Grid>
 
               <Grid

@@ -29,7 +29,7 @@ const deleteone = async (payload: any): Promise<any> => {
   const response = await instance.delete(`User/${payload.id}`);
   return response.data;
 };
-export const useAddUpdateUser = (): UseMutationResult<any, Error> => {
+export const useAddUpdateUser = (): any => {
   const navigate = useNavigate();
   return useMutation(addUpdate, {
     onSuccess: () => {
@@ -47,8 +47,8 @@ export const useAddUpdateUser = (): UseMutationResult<any, Error> => {
         navigate(-1);
       }, 1000);
     },
-    onError: (error) => {
-      console.error("Error during addUpdate:", error.message);
+    onError: (error: any) => {
+      console.error("Error during addUpdate:", error?.message);
     },
   });
 };
