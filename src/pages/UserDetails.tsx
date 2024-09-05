@@ -149,11 +149,16 @@ function UserDetails() {
                   placeholder="Full Name  "
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["FullName"] && (
+                {error?.response?.data?.errors?.["FullName"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["FullName"][0]}
+                    {error?.response?.data?.errors?.["FullName"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -186,11 +191,16 @@ function UserDetails() {
                   placeholder="Username"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["UserName"] && (
+                {error?.response?.data?.errors?.["UserName"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["UserName"][0]}
+                    {error?.response?.data?.errors?.["UserName"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -223,11 +233,16 @@ function UserDetails() {
                   placeholder=" Email"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["Email"] && (
+                {error?.response?.data?.errors?.["Email"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["Email"][0]}
+                    {error?.response?.data?.errors?.["Email"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -260,11 +275,16 @@ function UserDetails() {
                   placeholder="Phone Number"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["PhoneNumber"] && (
+                {error?.response?.data?.errors?.["PhoneNumber"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["PhoneNumber"][0]}
+                    {error?.response?.data?.errors?.["PhoneNumber"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -308,11 +328,16 @@ function UserDetails() {
                     ))}
                   </Select>
                 </FormControl>
-                {error?.response?.data?.errors["RoleId"] && (
+                {error?.response?.data?.errors?.["RoleId"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["RoleId"][0]}
+                    {error?.response?.data?.errors?.["RoleId"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -346,11 +371,16 @@ function UserDetails() {
                   placeholder="Password"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["Password"] && (
+                {error?.response?.data?.errors?.["Password"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["Password"][0]}
+                    {error?.response?.data?.errors?.["Password"][0]}
                   </Typography>
                 )}
               </Grid>
@@ -386,11 +416,16 @@ function UserDetails() {
                   placeholder="Confirm Password"
                   style={{ width: "100%", borderRadius: "20px" }}
                 />
-                {error?.response?.data?.errors["ConfirmPassword"] && (
+                {error?.response?.data?.errors?.["ConfirmPassword"] && (
                   <Typography
-                    sx={{ marginInline: "8px", fontSize: "12px", color: "red" }}
+                    sx={{
+                      marginInline: "8px",
+                      fontSize: "12px",
+                      color: "red",
+                      marginTop: "10px",
+                    }}
                   >
-                    {error?.response?.data?.errors["ConfirmPassword"][0]}
+                    {error?.response?.data?.errors?.["ConfirmPassword"][0]}
                   </Typography>
                 )}
               </Grid>
