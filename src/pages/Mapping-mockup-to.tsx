@@ -42,7 +42,7 @@ function MappingMockingTo() {
       });
     }
 
-    const trimmedBase64 = res;
+    const trimmedBase64 = res.split(",")[1];
 
     const byteCharacters = atob(trimmedBase64);
     const byteNumbers = new Array(byteCharacters.length);
