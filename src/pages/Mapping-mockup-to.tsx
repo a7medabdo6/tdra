@@ -42,7 +42,7 @@ function MappingMockingTo() {
       });
     }
 
-    const trimmedBase64 = res.split(",")[1];
+    const trimmedBase64 = res?.document?.split(",")[1];
 
     const byteCharacters = atob(trimmedBase64);
     const byteNumbers = new Array(byteCharacters.length);
@@ -56,7 +56,7 @@ function MappingMockingTo() {
 
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "document.pdf";
+    link.download = res?.fileName || "document.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
