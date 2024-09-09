@@ -32,26 +32,27 @@ const RequestJsonModalCom: React.FC<modalProps> = ({ open, setOpen, id }) => {
   const { data, isLoading } = useFetchRequestJsonData({
     comunnicationId: id,
   });
-  const handleDownload = (base64PdfData: any, name: string) => {
-    const trimmedBase64 = base64PdfData.split(",")[1];
 
-    const byteCharacters = atob(trimmedBase64);
-    const byteNumbers = new Array(byteCharacters.length);
+  // const handleDownload = (base64PdfData: any, name: string) => {
+  //   const trimmedBase64 = base64PdfData; //.split(",")[1];
 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
+  //   const byteCharacters = atob(trimmedBase64);
+  //   const byteNumbers = new Array(byteCharacters.length);
 
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: "application/pdf" });
+  //   for (let i = 0; i < byteCharacters.length; i++) {
+  //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //   }
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = name || "document.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  //   const byteArray = new Uint8Array(byteNumbers);
+  //   const blob = new Blob([byteArray], { type: "application/pdf" });
+
+  //   const link = document.createElement("a");
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = name || "document.pdf";
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // };
   return (
     <div>
       <Modal
@@ -316,9 +317,9 @@ const RequestJsonModalCom: React.FC<modalProps> = ({ open, setOpen, id }) => {
                     <Grid
                       item
                       key={item?.id}
-                      xs={12}
-                      sm={12}
-                      md={12}
+                      xs={6}
+                      sm={6}
+                      md={6}
                       sx={{
                         paddingTop: "0px !important",
                         display: "flex",
@@ -328,9 +329,16 @@ const RequestJsonModalCom: React.FC<modalProps> = ({ open, setOpen, id }) => {
                       }}
                     >
                       <Typography sx={{ marginInline: "8px" }}>
+                        File Name
+                      </Typography>
+                      <Typography
+                        component={"p"}
+                        style={{ marginInline: "5px" }}
+                        color={COLORS.primary}
+                      >
                         {item?.FileName}
                       </Typography>
-                      <BasicButton
+                      {/* <BasicButton
                         onClick={() =>
                           handleDownload(item.Document, item.FileName)
                         }
@@ -338,7 +346,7 @@ const RequestJsonModalCom: React.FC<modalProps> = ({ open, setOpen, id }) => {
                         bgColor={COLORS.secondary}
                         textColor={COLORS.white}
                         style={{ padding: "5px 7px" }}
-                      />
+                      /> */}
                     </Grid>
                   );
                 }

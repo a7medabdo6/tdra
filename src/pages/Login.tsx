@@ -129,7 +129,7 @@ export default function Login() {
                 },
               }}
             >
-              <Typography sx={{ padding: "10px" }}>Paasword</Typography>
+              <Typography sx={{ padding: "10px" }}>Password</Typography>
 
               <TextField
                 sx={{

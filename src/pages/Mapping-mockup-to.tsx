@@ -16,14 +16,33 @@ import SkeletonCom from "../components/Skeleton";
 
 import { useOneEntityMockingTo } from "../Api/Hooks/EntityManagment";
 import BasicButton from "../components/common/Buttons/Button";
+import { GetAttachment } from "../Api/Hooks/Dashboard";
+import { toast } from "react-toastify";
 
 function MappingMockingTo() {
   const { id } = useParams();
 
   // const navigate = useNavigate();
   const { data, isLoading } = useOneEntityMockingTo({ id });
-  const handleDownload = (base64PdfData: any, name: string) => {
-    const trimmedBase64 = base64PdfData.split(",")[1];
+
+  const handleDownload = async (id: any) => {
+    const res = await GetAttachment(id);
+    console.log(res, "ressss");
+
+    if (res?.response?.data?.StatusCode == 500) {
+      toast.error(res?.response?.data?.Message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+
+    const trimmedBase64 = res;
 
     const byteCharacters = atob(trimmedBase64);
     const byteNumbers = new Array(byteCharacters.length);
@@ -37,7 +56,7 @@ function MappingMockingTo() {
 
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = name || "document.pdf";
+    link.download = "document.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -218,12 +237,7 @@ function MappingMockingTo() {
                                           {sub?.fileName}
                                         </Typography>
                                         <BasicButton
-                                          onClick={() =>
-                                            handleDownload(
-                                              sub.document,
-                                              item.name
-                                            )
-                                          }
+                                          onClick={() => handleDownload(sub.id)}
                                           text="Download"
                                           bgColor={COLORS.secondary}
                                           textColor={COLORS.white}
@@ -429,12 +443,7 @@ function MappingMockingTo() {
                                           {sub?.fileName}
                                         </Typography>
                                         <BasicButton
-                                          onClick={() =>
-                                            handleDownload(
-                                              sub.document,
-                                              item.name
-                                            )
-                                          }
+                                          onClick={() => handleDownload(sub.id)}
                                           text="Download"
                                           bgColor={COLORS.secondary}
                                           textColor={COLORS.white}

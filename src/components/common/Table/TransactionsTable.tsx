@@ -11,6 +11,7 @@ import { COLORS } from "../../../constants/insex";
 import BasicButton from "../Buttons/Button";
 import { useNavigate } from "react-router-dom";
 import ModalForDelete from "../Modal";
+import moment from "moment";
 // import MenuListComposition from "../Buttons/Dropdown";
 
 interface TableProps {
@@ -67,6 +68,14 @@ const TransactionsTable: React.FC<TableProps> = ({
       </TableCell>{" "}
       <TableCell align="center" component="th" scope="row">
         {data?.serviceUrl}
+      </TableCell>{" "}
+      <TableCell
+        align="center"
+        component="th"
+        style={{ textWrap: "nowrap" }}
+        scope="row"
+      >
+        {moment(data?.date).format("ll")}
       </TableCell>{" "}
       <TableCell align="center" component="th" scope="row">
         {data?.isEnabled ? (

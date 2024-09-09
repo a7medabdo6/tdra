@@ -38,6 +38,8 @@ const Headers = [
   { label: "phone ", key: "phone" },
   { label: "Email ", key: "email" },
   { label: "Services URL ", key: "serviceUrl" },
+  { label: "Date ", key: "date" },
+
   { label: "Is Enabled ", key: "isEnabled" },
   { label: "Is Deactivated ", key: "isDeactivated" },
   { label: "Status", key: "status" },
@@ -101,7 +103,9 @@ function Dashboard() {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  useEffect(() => {}, [page, source, destination, filtersForTransctions]);
+  useEffect(() => {
+    console.log(transactionsData, "transactionsData");
+  }, [page, source, destination, filtersForTransctions]);
   // const { data: transactionsExcel } = useFetchTransactionsData({
   //   ...filtersForTransctions,
   //   source,
@@ -586,13 +590,18 @@ function Dashboard() {
             haveRequestJsonModal={true}
             data={transactionsData?.transactions || []}
           />
+
           <RequestJsonModalCom
             open={RequestJsonModal}
             id={ReqeustJsonId}
             setOpen={setRequestJsonModal}
           />
           <div className="pagination">
-            <Pagination count={10} page={page} onChange={handleChange} />
+            <Pagination
+              count={Math.ceil(transactionsData?.total / 10)}
+              page={page}
+              onChange={handleChange}
+            />
           </div>
         </Grid>
       </Grid>

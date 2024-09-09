@@ -37,7 +37,16 @@ const fetchFetchRequestJsonData = async (data: any): Promise<any> => {
   });
   return response.data;
 };
-
+export const GetAttachment = async (id: any): Promise<any> => {
+  try {
+    const response = await instance.get(
+      `Connection/download?attachmentId=${id}`
+    );
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
 const fetchCommunicationgetcommunicationsperstatusmonth = async (
   data: any
 ): Promise<any> => {
@@ -304,6 +313,7 @@ export const useFetchRequestJsonData = (data: any): UseQueryResult<any> => {
     }
   );
 };
+
 export const useFetchTransactionsExcel = (data: any): UseQueryResult<any> => {
   return useQuery(
     ["fetchTransactionsExcel", data],
