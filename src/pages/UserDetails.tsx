@@ -65,6 +65,7 @@ function UserDetails() {
         email: obj.email,
         // RoleId: result?.[0].id,
         roleId: result?.[0]?.id,
+        id,
       });
     } else {
       mutate({

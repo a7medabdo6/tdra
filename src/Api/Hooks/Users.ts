@@ -21,8 +21,13 @@ const fetchall = async (text: string): Promise<any> => {
 };
 
 const addUpdate = async (payload: any): Promise<any> => {
-  const response = await instance.post("User/add-user", payload);
-  return response.data;
+  if (payload.id) {
+    const response = await instance.post("User/update-user", payload);
+    return response.data;
+  } else {
+    const response = await instance.post("User/add-user", payload);
+    return response.data;
+  }
 };
 
 const deleteone = async (payload: any): Promise<any> => {
