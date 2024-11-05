@@ -20,7 +20,7 @@ const EntityFieldMappingsByEntityId = async (data: any): Promise<any> => {
   return response.data;
 };
 const fetchOneConnectionTo = async (data: any): Promise<any> => {
-  const response = await instance.get(`Connection/entities/${data?.id}`);
+  const response = await instance.get(`Connection/entities-gsb/${data?.id}`);
   return response.data;
 };
 
@@ -35,7 +35,7 @@ const fetchall = async (text: string): Promise<any> => {
 };
 
 const fetchEntityFieldGetfields = async (): Promise<any> => {
-  const response = await instance.get(`EntityField/get-all-fields`);
+  const response = await instance.get(`EntityField/get-all-fields-gsb`);
   return response.data;
 };
 const addUpdate = async (payload: any): Promise<any> => {
@@ -44,7 +44,7 @@ const addUpdate = async (payload: any): Promise<any> => {
 };
 
 const PostMock = async (payload: any): Promise<any> => {
-  const response = await instance.post("Connection/submit", payload);
+  const response = await instance.post("Connection/submit-gsb", payload);
   return response.data;
 };
 
